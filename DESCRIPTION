@@ -1,0 +1,22 @@
+Package: obr
+Title: Access Office for Budget Responsibility Data
+Version: 0.1.0
+Authors@R: person("Charles", "Coverdale", email = "charlesfcoverdale@gmail.com", role = c("aut", "cre"))
+Description: Provides clean, tidy access to data published by the Office for
+    Budget Responsibility (OBR), the UK's independent fiscal watchdog. Includes
+    the Public Finances Databank (monthly outturn for PSNB, PSND, receipts, and
+    expenditure) and the Historical Official Forecasts Database (OBR forecasts
+    vs outturn at each fiscal event since 2010). Data is downloaded from the OBR
+    on first use and cached locally for subsequent calls.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: en-GB
+URL: https://github.com/charlescoverdale/obr
+BugReports: https://github.com/charlescoverdale/obr/issues
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends: R (>= 3.5.0)
+Imports:
+    httr2,
+    readxl,
+    cli
