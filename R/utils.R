@@ -33,7 +33,7 @@ obr_fetch <- function(url, filename, refresh = FALSE) {
 #' @return Invisibly returns `NULL`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' clear_cache()
 #' }
 #'

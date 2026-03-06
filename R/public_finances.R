@@ -88,7 +88,7 @@ parse_receipts_bn <- function(path) {
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pf <- get_public_finances()
 #' unique(pf$series)
 #' }
@@ -114,7 +114,7 @@ get_public_finances <- function(refresh = FALSE) {
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' psnb <- get_psnb()
 #' tail(psnb)
 #' }
@@ -143,7 +143,7 @@ get_psnb <- function(refresh = FALSE) {
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' psnd <- get_psnd()
 #' tail(psnd)
 #' }
@@ -173,7 +173,7 @@ get_psnd <- function(refresh = FALSE) {
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' tme <- get_expenditure()
 #' tail(tme)
 #' }
@@ -204,7 +204,7 @@ get_expenditure <- function(refresh = FALSE) {
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' receipts <- get_receipts()
 #' # Filter to income tax
 #' receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]

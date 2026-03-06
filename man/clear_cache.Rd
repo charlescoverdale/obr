@@ -14,7 +14,7 @@ Deletes all files downloaded and cached by the obr package. The next
 function call will re-download fresh data from the OBR website.
 }
 \examples{
-\dontrun{
+\donttest{
 clear_cache()
 }
 

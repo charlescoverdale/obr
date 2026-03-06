@@ -22,7 +22,7 @@ Downloads (and caches) the OBR Public Finances Databank and returns
 annual Public Sector Net Debt in £ billion.
 }
 \examples{
-\dontrun{
+\donttest{
 psnd <- get_psnd()
 tail(psnd)
 }

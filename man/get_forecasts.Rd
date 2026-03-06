@@ -34,7 +34,7 @@ This is useful for visualising how OBR forecasts have evolved over time,
 and for comparing forecasts against outturns.
 }
 \examples{
-\dontrun{
+\donttest{
 # All PSNB forecasts
 get_forecasts("PSNB")
 

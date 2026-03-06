@@ -23,7 +23,7 @@ annual Total Managed Expenditure (TME) in £ billion. TME is the broadest
 measure of UK government spending.
 }
 \examples{
-\dontrun{
+\donttest{
 tme <- get_expenditure()
 tail(tme)
 }

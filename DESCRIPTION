@@ -7,7 +7,8 @@ Description: Provides clean, tidy access to data published by the Office for
     the Public Finances Databank (monthly outturn for PSNB, PSND, receipts, and
     expenditure) and the Historical Official Forecasts Database (OBR forecasts
     vs outturn at each fiscal event since 2010). Data is downloaded from the OBR
-    on first use and cached locally for subsequent calls.
+    on first use and cached locally for subsequent calls. Data is sourced from
+    the OBR website <https://obr.uk>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-GB

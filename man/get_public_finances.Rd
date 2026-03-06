@@ -29,7 +29,7 @@ managed expenditure, Public sector current receipts, Nominal GDP, GDP
 deflator, and more.
 }
 \examples{
-\dontrun{
+\donttest{
 pf <- get_public_finances()
 unique(pf$series)
 }

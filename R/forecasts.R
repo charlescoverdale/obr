@@ -77,7 +77,7 @@ list_forecast_series <- function() {
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # All PSNB forecasts
 #' get_forecasts("PSNB")
 #'

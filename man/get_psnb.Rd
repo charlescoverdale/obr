@@ -23,7 +23,7 @@ annual Public Sector Net Borrowing in £ billion. A positive value means
 the government is borrowing (deficit); a negative value means a surplus.
 }
 \examples{
-\dontrun{
+\donttest{
 psnb <- get_psnb()
 tail(psnb)
 }

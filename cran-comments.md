@@ -15,9 +15,17 @@ The 3 notes are:
 
 ## Notes on data access
 
-This package downloads data from the OBR website (obr.uk) on first use and
-caches it locally using `tools::R_user_dir()`. No data is bundled. All
-examples that make network calls are wrapped in `\dontrun{}`.
+This package downloads data from the OBR website <https://obr.uk> on first
+use and caches it locally using `tools::R_user_dir()`. No data is bundled.
+All examples that make network calls are wrapped in `\donttest{}`.
+
+## Acronyms
+
+- **OBR**: Office for Budget Responsibility (UK independent fiscal watchdog)
+- **PSNB**: Public Sector Net Borrowing (the annual deficit)
+- **PSND**: Public Sector Net Debt
+- **TME**: Total Managed Expenditure
+- **PSCR**: Public Sector Current Receipts
 
 ## Downstream dependencies
 

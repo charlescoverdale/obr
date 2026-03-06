@@ -24,7 +24,7 @@ public sector current receipts broken down by individual tax type,
 in tidy long format. Coverage begins in 1999-00.
 }
 \examples{
-\dontrun{
+\donttest{
 receipts <- get_receipts()
 # Filter to income tax
 receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
