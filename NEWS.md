@@ -1,3 +1,20 @@
+# obr 0.2.0
+
+## New datasets
+
+### Economic and Fiscal Outlook (EFO)
+* `get_efo_fiscal()` — five-year fiscal projections (net borrowing components) from the latest Budget
+* `get_efo_economy(measure)` — quarterly economic projections: `"inflation"` (CPI, CPIH, RPI, RPIX), `"labour"` (employment, unemployment, participation), or `"output_gap"`
+* `list_efo_economy_measures()` — list available economy measures
+
+### Welfare Trends Report (WTR)
+* `get_welfare_spending()` — working-age welfare spending split by incapacity and non-incapacity (% of GDP, from 1978-79)
+* `get_incapacity_spending()` — incapacity benefits spending by benefit type (ESA, IB, Invalidity Benefit, Sickness Benefit, SDA) as % of GDP
+* `get_incapacity_caseloads()` — combined incapacity benefit caseloads and prevalence since 2008-09
+
+### Fiscal Risks and Sustainability Report (FSR)
+* `get_pension_projections()` — 50-year state pension spending projections (% of GDP) under alternative demographic and triple-lock scenarios
+
 # obr 0.1.0
 
 * Initial release

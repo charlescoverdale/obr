@@ -22,7 +22,7 @@ In practice, this means the OBR publishes forecasts at each Budget and Autumn St
 | [Fiscal Sustainability Report](https://obr.uk/fsr/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics | Annual |
 | [Welfare Trends Report](https://obr.uk/wtr/) | Spending trends across the benefits system | Annual |
 
-This package covers the **Public Finances Databank** and **Historical Official Forecasts Database** — the two datasets most useful for programmatic analysis.
+This package covers all five datasets listed above.
 
 ---
 
@@ -66,6 +66,28 @@ get_psnb()
 |---|---|
 | `list_forecast_series()` | Data frame of available series (no download needed) |
 | `get_forecasts(series)` | Every OBR forecast for a given series, in tidy long format |
+
+### Economic and Fiscal Outlook (EFO)
+
+| Function | Returns |
+|---|---|
+| `get_efo_fiscal()` | Five-year net borrowing component projections from the latest Budget (£bn, annual) |
+| `get_efo_economy(measure)` | Quarterly economic projections: `"inflation"`, `"labour"`, or `"output_gap"` |
+| `list_efo_economy_measures()` | Available economy measures (no download needed) |
+
+### Welfare Trends Report (WTR)
+
+| Function | Returns |
+|---|---|
+| `get_welfare_spending()` | Working-age welfare spending split by incapacity/non-incapacity (% GDP, from 1978-79) |
+| `get_incapacity_spending()` | Incapacity benefit spending by benefit type (ESA, IB, etc.) as % GDP |
+| `get_incapacity_caseloads()` | Combined incapacity caseloads and prevalence since 2008-09 |
+
+### Fiscal Risks and Sustainability Report (FSR)
+
+| Function | Returns |
+|---|---|
+| `get_pension_projections()` | 50-year state pension spending projections (% GDP) under demographic and triple-lock scenarios |
 
 ### Cache management
 
@@ -166,6 +188,81 @@ head(r[, c("series", "value")], 8)
 ```
 
 Income tax, VAT, and National Insurance together account for around 60% of all government receipts. Breaking this down over time reveals long-run shifts — such as the rising share of income tax as fiscal drag pulls more earners into higher bands.
+
+---
+
+### 5. What does the March 2026 Budget forecast for borrowing?
+
+```r
+efo <- get_efo_fiscal()
+efo[efo$series == "Net borrowing", ]
+#>   fiscal_year        series value_bn
+#>       2025-26 Net borrowing    132.7
+#>       2026-27 Net borrowing    115.5
+#>       2027-28 Net borrowing     96.5
+#>       2028-29 Net borrowing     86.0
+#>       2029-30 Net borrowing     63.4
+#>       2030-31 Net borrowing     59.0
+```
+
+The EFO detailed tables also include the full breakdown: current receipts, current expenditure, depreciation, net investment, and net borrowing — enabling you to see exactly how the deficit is projected to narrow.
+
+---
+
+### 6. Is the UK's incapacity benefits bill rising?
+
+```r
+welfare <- get_welfare_spending()
+# Working-age incapacity spending, last 10 years
+ic <- welfare[welfare$series == "Working-age incapacity benefits spending" &
+              welfare$year >= "2014-15", ]
+ic
+#>        year                                      series value
+#>     2014-15 Working-age incapacity benefits spending  1.44
+#>     2015-16 Working-age incapacity benefits spending  1.33
+#>     ...
+#>     2023-24 Working-age incapacity benefits spending  1.78
+#>     2024-25 Working-age incapacity benefits spending  2.02
+#>     2025-26 Working-age incapacity benefits spending  2.16
+
+# Number of people on incapacity benefits
+cases <- get_incapacity_caseloads()
+cases[cases$series == "Share of working age population", ]
+#>  2008-09   Share of working age population  6.80
+#>  ...
+#>  2023-24   Share of working age population  6.82
+```
+
+Incapacity benefit spending and caseloads have risen sharply since the pandemic — a key driver of welfare reform debate in 2025.
+
+---
+
+### 7. What happens to the state pension bill as the UK ages?
+
+```r
+proj <- get_pension_projections()
+
+# Central demographic projection: pension spending rises from 5% to 7.7% of GDP
+central <- proj[proj$scenario_type == "Demographic scenarios" &
+                proj$scenario == "Central projection", ]
+head(central[, c("fiscal_year", "pct_gdp")], 5)
+#>   fiscal_year pct_gdp
+#>       2023-24    4.56
+#>       2024-25    4.95
+#>       2025-26    5.06
+#>       2026-27    5.13
+#>       2027-28    5.05
+
+tail(central[, c("fiscal_year", "pct_gdp")], 5)
+#>   fiscal_year pct_gdp
+#>       2069-70    7.73
+#>       2070-71    7.82
+#>       2071-72    7.77
+#>       2072-73    7.66
+#>       2073-74    7.65
+```
+
+The OBR's central projection has the state pension rising from 4.6% of GDP today to 7.7% by 2073-74 as the UK population ages. The FSR also publishes scenarios for higher/lower life expectancy and different triple-lock uprating assumptions.
 
 ---
 
