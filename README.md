@@ -278,6 +278,16 @@ The OBR's central projection has the state pension rising from 4.6% of GDP today
 
 ---
 
+## Data currency
+
+The two core datasets — the Public Finances Databank and Historical Official Forecasts Database — are accessed via stable generic URLs that the OBR keeps pointed at the latest file. They update automatically whenever you call `refresh = TRUE`.
+
+The EFO, WTR, and FSR functions work differently. The OBR publishes each edition at a new URL containing the publication date (e.g. `march-2026-economic-and-fiscal-outlook-...`), and does not maintain a generic redirect. This means the URLs in the package are hardcoded to a specific edition: calls to `get_efo_fiscal()` will always return the March 2026 Budget forecasts until the package is updated, even after the OBR publishes a new edition.
+
+The OBR publishes on a roughly predictable schedule — the EFO twice a year (March and October/November), the FSR and WTR once a year each. This package will be updated to track each new edition, meaning **2–3 patch releases per year**. Check the [NEWS](https://github.com/charlescoverdale/obr/blob/main/NEWS.md) to see which edition each function currently reflects. If you need data from the absolute latest publication before a package update is available, download directly from [obr.uk](https://obr.uk).
+
+---
+
 ## Issues
 
 Please report bugs or requests at <https://github.com/charlescoverdale/obr/issues>.
