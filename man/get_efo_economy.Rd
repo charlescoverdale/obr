@@ -29,7 +29,7 @@ for a chosen measure in tidy long format.
 }
 \details{
 Data runs from 2008 Q1 through the current forecast horizon
-(\href{https://obr.uk}{OBR}, \Sexpr[results=rd]{paste(obr:::EFO_DATE)}).
+(OBR, March 2026).
 Use \code{\link{list_efo_economy_measures}} to see all available measures.
 }
 \examples{

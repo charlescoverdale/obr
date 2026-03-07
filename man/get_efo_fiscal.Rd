@@ -25,7 +25,7 @@ borrowing (Table 6.5) in tidy long format.
 }
 \details{
 Covers the five-year forecast horizon published at the most recent Budget
-(\href{https://obr.uk}{OBR}, \Sexpr[results=rd]{paste(obr:::EFO_DATE)}).
+(OBR, March 2026).
 Key series include current receipts, current expenditure, depreciation,
 net investment, and net borrowing (PSNB).
 }

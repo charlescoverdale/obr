@@ -29,7 +29,7 @@ alternative demographic and triple-lock uprating scenarios.
 }
 \details{
 This data is unique to the Fiscal Risks and Sustainability Report
-(\href{https://obr.uk}{OBR}, \Sexpr[results=rd]{paste(obr:::FSR_DATE)})
+(OBR, July 2025)
 and is not available in any other OBR publication. It illustrates how
 ageing demographics and pension uprating rules interact to determine the
 long-run cost of the state pension.

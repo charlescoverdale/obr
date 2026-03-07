@@ -26,7 +26,7 @@ split into incapacity-related and non-incapacity spending.
 }
 \details{
 Data cover fiscal years from 1978-79 through the current forecast horizon
-(\href{https://obr.uk}{OBR}, \Sexpr[results=rd]{paste(obr:::WTR_DATE)}).
+(OBR, October 2024).
 }
 \examples{
 \donttest{

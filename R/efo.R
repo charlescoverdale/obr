@@ -147,7 +147,7 @@ list_efo_economy_measures <- function() {
 #' borrowing (Table 6.5) in tidy long format.
 #'
 #' Covers the five-year forecast horizon published at the most recent Budget
-#' (\href{https://obr.uk}{OBR}, \Sexpr[results=rd]{paste(obr:::EFO_DATE)}).
+#' (OBR, March 2026).
 #' Key series include current receipts, current expenditure, depreciation,
 #' net investment, and net borrowing (PSNB).
 #'
@@ -179,7 +179,7 @@ get_efo_fiscal <- function(refresh = FALSE) {
 #' for a chosen measure in tidy long format.
 #'
 #' Data runs from 2008 Q1 through the current forecast horizon
-#' (\href{https://obr.uk}{OBR}, \Sexpr[results=rd]{paste(obr:::EFO_DATE)}).
+#' (OBR, March 2026).
 #' Use \code{\link{list_efo_economy_measures}} to see all available measures.
 #'
 #' @param measure Character. Which economy table to return. One of

@@ -10,7 +10,7 @@ The 3 notes are:
 
 ## Test suite
 
-49 tests across 3 test files. All network-dependent tests are wrapped in
+121 tests across 6 test files. All network-dependent tests are wrapped in
 `skip_on_cran()` and `skip_if_offline()`.
 
 ## Notes on data access
@@ -19,6 +19,11 @@ This package downloads data from the OBR website <https://obr.uk> on first
 use and caches it locally using `tools::R_user_dir()`. No data is bundled.
 All examples that make network calls are wrapped in `\donttest{}`.
 
+Download URLs for the EFO, WTR, and FSR embed the publication date
+(e.g. `march-2026`). These are hardcoded to the most recent edition at the
+time of submission and will be updated in subsequent package versions as new
+editions are published.
+
 ## Acronyms
 
 - **OBR**: Office for Budget Responsibility (UK independent fiscal watchdog)
@@ -26,6 +31,12 @@ All examples that make network calls are wrapped in `\donttest{}`.
 - **PSND**: Public Sector Net Debt
 - **TME**: Total Managed Expenditure
 - **PSCR**: Public Sector Current Receipts
+- **EFO**: Economic and Fiscal Outlook (OBR's flagship Budget publication)
+- **WTR**: Welfare Trends Report
+- **FSR**: Fiscal Risks and Sustainability Report
+- **ESA**: Employment and Support Allowance
+- **CPI**: Consumer Prices Index
+- **CPIH**: Consumer Prices Index including owner-occupiers' housing costs
 
 ## Downstream dependencies
 
