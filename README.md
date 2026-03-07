@@ -278,7 +278,7 @@ The OBR's central projection has the state pension rising from 4.6% of GDP today
 
 ---
 
-## Data currency
+## Keeping data up to date
 
 The two core datasets — the Public Finances Databank and Historical Official Forecasts Database — are accessed via stable generic URLs that the OBR keeps pointed at the latest file. They update automatically whenever you call `refresh = TRUE`.
 
