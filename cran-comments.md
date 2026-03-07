@@ -24,6 +24,17 @@ Download URLs for the EFO, WTR, and FSR embed the publication date
 time of submission and will be updated in subsequent package versions as new
 editions are published.
 
+## URL redirects in README
+
+`urlchecker::url_check()` reports 4 redirect warnings for the following
+README links: `https://obr.uk/efo/`, `https://obr.uk/fsr/`,
+`https://obr.uk/public-finances-databank/`, and `https://obr.uk/wtr/`.
+These are stable OBR dataset index pages that redirect to the most recent
+edition. The redirects are intentional: using index pages ensures links
+remain meaningful after new editions are published, whereas linking directly
+to a dated page (e.g. `/efo/economic-and-fiscal-outlook-march-2026/`) would
+become stale after the next Budget. All links resolve successfully.
+
 ## Acronyms
 
 - **OBR**: Office for Budget Responsibility (UK independent fiscal watchdog)
