@@ -1,6 +1,6 @@
 Package: obr
 Title: Access Office for Budget Responsibility Data
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: person("Charles", "Coverdale", email = "charlesfcoverdale@gmail.com", role = c("aut", "cre"))
 Description: Provides clean, tidy access to data published by the Office for
     Budget Responsibility (OBR), the UK's independent fiscal watchdog. Covers

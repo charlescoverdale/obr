@@ -1,3 +1,7 @@
+# obr 0.2.1
+
+* Update WORDLIST with domain-specific terms (EFO, FSR, WTR, CPIH, etc.)
+
 # obr 0.2.0
 
 ## New datasets
