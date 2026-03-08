@@ -268,15 +268,20 @@ The OBR's central projection has the state pension rising from 4.6% of GDP today
 
 ---
 
+## Part of a suite
+
+This package is part of a family of R packages for UK economic and fiscal data. They share a consistent interface — named functions, tidy data frames, local caching — and are designed to work together. Combine OBR fiscal forecasts with [HMRC](https://github.com/charlescoverdale/hmrc) tax receipt actuals, [ONS](https://github.com/charlescoverdale/ons) GDP and inflation data, [Bank of England](https://github.com/charlescoverdale/boe) interest rates, or adjust any series for inflation with [`inflateR`](https://github.com/charlescoverdale/inflateR). All outputs join cleanly on date columns.
+
 ## Related packages
 
 | Package | What it covers |
 |---|---|
-| [`nomisr`](https://github.com/ropensci/nomisr) | ONS/Nomis labour market data: employment, unemployment, earnings, by geography |
-| [`WDI`](https://github.com/vincentarelbundock/WDI) | World Bank Development Indicators — useful for international comparisons with UK fiscal data |
-| [`OECD`](https://github.com/expersso/OECD) | OECD statistics API, covering fiscal, economic, and social indicators across member countries |
-| [`fredr`](https://github.com/sboysel/fredr) | US Federal Reserve FRED database — macroeconomic time series for cross-country analysis |
-| [`inflateR`](https://github.com/charlescoverdale/inflateR) | Adjust nominal values for inflation across 13 currencies — pairs naturally with OBR nominal spending and receipts data |
+| [`ons`](https://github.com/charlescoverdale/ons) | ONS data (GDP, inflation, unemployment, wages, trade, house prices, population) |
+| [`boe`](https://github.com/charlescoverdale/boe) | Bank of England data (Bank Rate, SONIA, gilt yields, exchange rates, mortgage rates) |
+| [`hmrc`](https://github.com/charlescoverdale/hmrc) | HMRC tax receipts, corporation tax, stamp duty, R&D credits, and tax gap data |
+| [`readoecd`](https://github.com/charlescoverdale/readoecd) | OECD economic indicators (GDP, CPI, unemployment, tax, health, education) |
+| [`inflateR`](https://github.com/charlescoverdale/inflateR) | Adjust values for inflation using CPI or GDP deflator data |
+| [`nomisr`](https://github.com/ropensci/nomisr) | ONS/Nomis labour market data |
 
 ---
 
