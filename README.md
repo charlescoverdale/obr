@@ -1,5 +1,7 @@
 # obr
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 An R package for accessing data published by the [Office for Budget Responsibility](https://obr.uk/) (OBR).
 
 ## What is the OBR?
