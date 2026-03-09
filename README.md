@@ -18,11 +18,11 @@ In practice, this means the OBR publishes forecasts at each Budget and Autumn St
 
 | Dataset | What it contains | Frequency |
 |---|---|---|
-| [Public Finances Databank](https://obr.uk/public-finances-databank/) | Outturn data on PSNB, PSND, receipts, and expenditure back to 1946-47 | Monthly |
+| [Public Finances Databank](https://obr.uk/public-finances-databank-2019-20/) | Outturn data on PSNB, PSND, receipts, and expenditure back to 1946-47 | Monthly |
 | [Historical Official Forecasts Database](https://obr.uk/data/) | Every forecast the OBR (and pre-OBR Treasury) has published for key fiscal and economic variables since 1970 | Each fiscal event |
-| [Economic and Fiscal Outlook](https://obr.uk/efo/) | The flagship publication at each Budget — detailed projections across 5 years | Each Budget / Autumn Statement |
-| [Fiscal Sustainability Report](https://obr.uk/fsr/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics | Annual |
-| [Welfare Trends Report](https://obr.uk/wtr/) | Spending trends across the benefits system | Annual |
+| [Economic and Fiscal Outlook](https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/) | The flagship publication at each Budget — detailed projections across 5 years | Each Budget / Autumn Statement |
+| [Fiscal Sustainability Report](https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics | Annual |
+| [Welfare Trends Report](https://obr.uk/wtr/welfare-trends-report-october-2024/) | Spending trends across the benefits system | Annual |
 
 This package covers all five datasets listed above.
 
