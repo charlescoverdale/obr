@@ -1,6 +1,6 @@
 # obr
 
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CRAN status](https://www.r-pkg.org/badges/version/obr)](https://CRAN.R-project.org/package=obr) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/obr)](https://cran.r-project.org/package=obr) [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 An R package for accessing data published by the [Office for Budget Responsibility](https://obr.uk/) (OBR).
 
@@ -17,6 +17,9 @@ In practice, this means the OBR publishes forecasts at each Budget and Autumn St
 ## Installation
 
 ```r
+install.packages("obr")
+
+# Or install the development version from GitHub
 # install.packages("devtools")
 devtools::install_github("charlescoverdale/obr")
 ```
