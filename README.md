@@ -14,6 +14,15 @@ In practice, this means the OBR publishes forecasts at each Budget and Autumn St
 
 ---
 
+## Installation
+
+```r
+# install.packages("devtools")
+devtools::install_github("charlescoverdale/obr")
+```
+
+---
+
 ## Key OBR datasets
 
 | Dataset | What it contains | Frequency |
