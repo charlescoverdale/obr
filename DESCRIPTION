@@ -15,7 +15,8 @@ Description: Provides clean, tidy access to data published by the 'Office for
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-GB
-URL: https://github.com/charlescoverdale/obr
+URL: https://charlescoverdale.github.io/obr/,
+    https://github.com/charlescoverdale/obr
 BugReports: https://github.com/charlescoverdale/obr/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

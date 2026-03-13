@@ -1,6 +1,6 @@
 # obr
 
-[![CRAN status](https://www.r-pkg.org/badges/version/obr)](https://CRAN.R-project.org/package=obr) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/obr)](https://cran.r-project.org/package=obr) [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CRAN status](https://www.r-pkg.org/badges/version/obr)](https://CRAN.R-project.org/package=obr) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/obr)](https://cran.r-project.org/package=obr) [![R-CMD-check](https://github.com/charlescoverdale/obr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/charlescoverdale/obr/actions/workflows/R-CMD-check.yaml) [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 An R package for accessing data published by the [Office for Budget Responsibility](https://obr.uk/) (OBR).
 
@@ -289,6 +289,9 @@ This package is part of a family of R packages for UK economic and fiscal data. 
 | [`ons`](https://github.com/charlescoverdale/ons) | ONS data (GDP, inflation, unemployment, wages, trade, house prices, population) |
 | [`boe`](https://github.com/charlescoverdale/boe) | Bank of England data (Bank Rate, SONIA, gilt yields, exchange rates, mortgage rates) |
 | [`hmrc`](https://github.com/charlescoverdale/hmrc) | HMRC tax receipts, corporation tax, stamp duty, R&D credits, and tax gap data |
+| [`readecb`](https://github.com/charlescoverdale/readecb) | European Central Bank data (policy rates, HICP, exchange rates, yield curves) |
+| [`readoecd`](https://github.com/charlescoverdale/readoecd) | OECD data (GDP, unemployment, inflation, trade across 38 member countries) |
+| [`fred`](https://github.com/charlescoverdale/fred) | US Federal Reserve (FRED) data (800,000+ economic time series) |
 | [`inflateR`](https://github.com/charlescoverdale/inflateR) | Adjust values for inflation using CPI or GDP deflator data |
 
 ---
@@ -306,3 +309,7 @@ The OBR publishes on a roughly predictable schedule - the EFO twice a year (Marc
 ## Issues
 
 Please report bugs or requests at <https://github.com/charlescoverdale/obr/issues>.
+
+## Keywords
+
+Office for Budget Responsibility, OBR, UK fiscal forecasts, economic forecasts, GDP forecast, inflation forecast, public finances, government borrowing, fiscal policy, UK budget, R package

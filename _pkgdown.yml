@@ -1,0 +1,53 @@
+url: https://charlescoverdale.github.io/obr/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/charlescoverdale/obr
+
+reference:
+  - title: Public Finances Databank
+    desc: Outturn data on borrowing, debt, receipts, and expenditure since 1946.
+    contents:
+      - get_public_finances
+      - get_psnb
+      - get_psnd
+      - get_expenditure
+      - get_receipts
+
+  - title: Historical Official Forecasts
+    desc: Every OBR forecast since 2010 for key fiscal and economic variables.
+    contents:
+      - list_forecast_series
+      - get_forecasts
+
+  - title: Economic and Fiscal Outlook
+    desc: Five-year projections from the latest Budget.
+    contents:
+      - get_efo_fiscal
+      - get_efo_economy
+      - list_efo_economy_measures
+
+  - title: Welfare Trends Report
+    desc: Incapacity benefit spending and caseloads.
+    contents:
+      - get_welfare_spending
+      - get_incapacity_spending
+      - get_incapacity_caseloads
+
+  - title: Fiscal Risks and Sustainability Report
+    desc: 50-year state pension projections.
+    contents:
+      - get_pension_projections
+
+  - title: Cache Management
+    desc: Manage locally cached OBR data files.
+    contents:
+      - clear_cache
