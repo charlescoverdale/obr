@@ -75,6 +75,7 @@ parse_wtr_chart <- function(path, sheet) {
 #'         welfare$year >= "2000-01", ]
 #' }
 #'
+#' @family welfare
 #' @export
 get_welfare_spending <- function(refresh = FALSE) {
   parse_wtr_chart(wtr_path(refresh), "C1.3")
@@ -106,6 +107,7 @@ get_welfare_spending <- function(refresh = FALSE) {
 #' unique(ib$series)
 #' }
 #'
+#' @family welfare
 #' @export
 get_incapacity_spending <- function(refresh = FALSE) {
   parse_wtr_chart(wtr_path(refresh), "C1.1")
@@ -136,6 +138,7 @@ get_incapacity_spending <- function(refresh = FALSE) {
 #' cases[cases$series == "Claimants", ]
 #' }
 #'
+#' @family welfare
 #' @export
 get_incapacity_caseloads <- function(refresh = FALSE) {
   parse_wtr_chart(wtr_path(refresh), "C3.1")

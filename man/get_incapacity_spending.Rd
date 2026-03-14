@@ -35,3 +35,9 @@ unique(ib$series)
 }
 
 }
+\seealso{
+Other welfare: 
+\code{\link{get_incapacity_caseloads}()},
+\code{\link{get_welfare_spending}()}
+}
+\concept{welfare}

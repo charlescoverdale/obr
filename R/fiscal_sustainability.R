@@ -101,6 +101,7 @@ parse_pension_projections <- function(path) {
 #' dem <- proj[proj$scenario_type == "Demographic scenarios", ]
 #' }
 #'
+#' @family long-term fiscal
 #' @export
 get_pension_projections <- function(refresh = FALSE) {
   parse_pension_projections(fsr_exec_path(refresh))

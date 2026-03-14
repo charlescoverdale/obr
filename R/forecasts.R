@@ -31,6 +31,7 @@ SERIES_MAP <- c(
 #' @examples
 #' list_forecast_series()
 #'
+#' @family forecasts
 #' @export
 list_forecast_series <- function() {
   data.frame(
@@ -86,6 +87,7 @@ list_forecast_series <- function() {
 #' psnb[psnb$fiscal_year == "2024-25", ]
 #' }
 #'
+#' @family forecasts
 #' @export
 get_forecasts <- function(series = "PSNB", refresh = FALSE) {
 

@@ -29,3 +29,11 @@ tail(tme)
 }
 
 }
+\seealso{
+Other public finances: 
+\code{\link{get_psnb}()},
+\code{\link{get_psnd}()},
+\code{\link{get_public_finances}()},
+\code{\link{get_receipts}()}
+}
+\concept{public finances}

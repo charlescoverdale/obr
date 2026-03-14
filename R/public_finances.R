@@ -93,6 +93,7 @@ parse_receipts_bn <- function(path) {
 #' unique(pf$series)
 #' }
 #'
+#' @family public finances
 #' @export
 get_public_finances <- function(refresh = FALSE) {
   parse_aggregates_bn(pfd_path(refresh))
@@ -119,6 +120,7 @@ get_public_finances <- function(refresh = FALSE) {
 #' tail(psnb)
 #' }
 #'
+#' @family public finances
 #' @export
 get_psnb <- function(refresh = FALSE) {
   agg <- parse_aggregates_bn(pfd_path(refresh))
@@ -148,6 +150,7 @@ get_psnb <- function(refresh = FALSE) {
 #' tail(psnd)
 #' }
 #'
+#' @family public finances
 #' @export
 get_psnd <- function(refresh = FALSE) {
   agg <- parse_aggregates_bn(pfd_path(refresh))
@@ -178,6 +181,7 @@ get_psnd <- function(refresh = FALSE) {
 #' tail(tme)
 #' }
 #'
+#' @family public finances
 #' @export
 get_expenditure <- function(refresh = FALSE) {
   agg <- parse_aggregates_bn(pfd_path(refresh))
@@ -210,6 +214,7 @@ get_expenditure <- function(refresh = FALSE) {
 #' receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
 #' }
 #'
+#' @family public finances
 #' @export
 get_receipts <- function(refresh = FALSE) {
   parse_receipts_bn(pfd_path(refresh))

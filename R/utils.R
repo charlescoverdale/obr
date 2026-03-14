@@ -37,6 +37,7 @@ obr_fetch <- function(url, filename, refresh = FALSE) {
 #' clear_cache()
 #' }
 #'
+#' @family data access
 #' @export
 clear_cache <- function() {
   files <- list.files(obr_cache_dir(), full.names = TRUE)

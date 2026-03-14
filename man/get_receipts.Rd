@@ -31,3 +31,11 @@ receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
 }
 
 }
+\seealso{
+Other public finances: 
+\code{\link{get_expenditure}()},
+\code{\link{get_psnb}()},
+\code{\link{get_psnd}()},
+\code{\link{get_public_finances}()}
+}
+\concept{public finances}

@@ -33,3 +33,9 @@ cases[cases$series == "Claimants", ]
 }
 
 }
+\seealso{
+Other welfare: 
+\code{\link{get_incapacity_spending}()},
+\code{\link{get_welfare_spending}()}
+}
+\concept{welfare}

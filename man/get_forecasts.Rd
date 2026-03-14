@@ -44,3 +44,8 @@ psnb[psnb$fiscal_year == "2024-25", ]
 }
 
 }
+\seealso{
+Other forecasts: 
+\code{\link{list_forecast_series}()}
+}
+\concept{forecasts}

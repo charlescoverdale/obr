@@ -37,3 +37,9 @@ welfare[welfare$series == "Working-age incapacity benefits spending" &
 }
 
 }
+\seealso{
+Other welfare: 
+\code{\link{get_incapacity_caseloads}()},
+\code{\link{get_incapacity_spending}()}
+}
+\concept{welfare}

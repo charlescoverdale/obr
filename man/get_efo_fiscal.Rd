@@ -36,3 +36,9 @@ efo[efo$series == "Net borrowing", ]
 }
 
 }
+\seealso{
+Other EFO: 
+\code{\link{get_efo_economy}()},
+\code{\link{list_efo_economy_measures}()}
+}
+\concept{EFO}

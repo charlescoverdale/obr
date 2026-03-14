@@ -43,3 +43,9 @@ lab <- get_efo_economy("labour")
 }
 
 }
+\seealso{
+Other EFO: 
+\code{\link{get_efo_fiscal}()},
+\code{\link{list_efo_economy_measures}()}
+}
+\concept{EFO}
