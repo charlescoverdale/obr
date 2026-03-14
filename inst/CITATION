@@ -3,6 +3,6 @@ bibentry(
   title   = "obr: Access Office for Budget Responsibility Forecast Data",
   author  = person("Charles", "Coverdale"),
   year    = "2026",
-  note    = "R package version 0.2.1",
+  note    = "R package version 0.2.2",
   url     = "https://github.com/charlescoverdale/obr"
 )
