@@ -1,6 +1,6 @@
 # Cache directory (platform-aware, base R)
 obr_cache_dir <- function() {
-  d <- tools::R_user_dir("obr", "cache")
+  d <- getOption("obr.cache_dir", default = tools::R_user_dir("obr", "cache"))
   if (!dir.exists(d)) dir.create(d, recursive = TRUE)
   d
 }
@@ -52,7 +52,9 @@ obr_fetch <- function(url, filename, refresh = FALSE) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' clear_cache()
+#' options(op)
 #' }
 #'
 #' @family data access

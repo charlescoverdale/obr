@@ -30,8 +30,10 @@ deflator, and more.
 }
 \examples{
 \donttest{
+op <- options(obr.cache_dir = tempdir())
 pf <- get_public_finances()
 unique(pf$series)
+options(op)
 }
 
 }

@@ -30,8 +30,10 @@ Allowance.
 }
 \examples{
 \donttest{
+op <- options(obr.cache_dir = tempdir())
 ib <- get_incapacity_spending()
 unique(ib$series)
+options(op)
 }
 
 }

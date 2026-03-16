@@ -90,6 +90,7 @@ parse_pension_projections <- function(path) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' proj <- get_pension_projections()
 #'
 #' # Central demographic projection over the 50-year horizon
@@ -99,6 +100,7 @@ parse_pension_projections <- function(path) {
 #'
 #' # How much more expensive is 'higher life expectancy' vs central?
 #' dem <- proj[proj$scenario_type == "Demographic scenarios", ]
+#' options(op)
 #' }
 #'
 #' @family long-term fiscal

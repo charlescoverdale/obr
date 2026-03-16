@@ -31,8 +31,10 @@ net investment, and net borrowing (PSNB).
 }
 \examples{
 \donttest{
+op <- options(obr.cache_dir = tempdir())
 efo <- get_efo_fiscal()
 efo[efo$series == "Net borrowing", ]
+options(op)
 }
 
 }

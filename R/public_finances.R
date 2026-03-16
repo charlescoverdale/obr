@@ -89,8 +89,10 @@ parse_receipts_bn <- function(path) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' pf <- get_public_finances()
 #' unique(pf$series)
+#' options(op)
 #' }
 #'
 #' @family public finances
@@ -116,8 +118,10 @@ get_public_finances <- function(refresh = FALSE) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' psnb <- get_psnb()
 #' tail(psnb)
+#' options(op)
 #' }
 #'
 #' @family public finances
@@ -146,8 +150,10 @@ get_psnb <- function(refresh = FALSE) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' psnd <- get_psnd()
 #' tail(psnd)
+#' options(op)
 #' }
 #'
 #' @family public finances
@@ -177,8 +183,10 @@ get_psnd <- function(refresh = FALSE) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' tme <- get_expenditure()
 #' tail(tme)
+#' options(op)
 #' }
 #'
 #' @family public finances
@@ -209,9 +217,11 @@ get_expenditure <- function(refresh = FALSE) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' receipts <- get_receipts()
 #' # Filter to income tax
 #' receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
+#' options(op)
 #' }
 #'
 #' @family public finances

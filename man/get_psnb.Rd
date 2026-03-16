@@ -24,8 +24,10 @@ the government is borrowing (deficit); a negative value means a surplus.
 }
 \examples{
 \donttest{
+op <- options(obr.cache_dir = tempdir())
 psnb <- get_psnb()
 tail(psnb)
+options(op)
 }
 
 }

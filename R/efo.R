@@ -164,8 +164,10 @@ list_efo_economy_measures <- function() {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' efo <- get_efo_fiscal()
 #' efo[efo$series == "Net borrowing", ]
+#' options(op)
 #' }
 #'
 #' @family EFO
@@ -199,12 +201,14 @@ get_efo_fiscal <- function(refresh = FALSE) {
 #'
 #' @examples
 #' \donttest{
+#' op <- options(obr.cache_dir = tempdir())
 #' # CPI and RPI since 2008
 #' inf <- get_efo_economy("inflation")
 #' inf[inf$series == "CPI", ]
 #'
 #' # Labour market
 #' lab <- get_efo_economy("labour")
+#' options(op)
 #' }
 #'
 #' @family EFO

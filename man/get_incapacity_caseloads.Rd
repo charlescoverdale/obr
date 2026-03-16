@@ -27,9 +27,11 @@ the working-age population.
 }
 \examples{
 \donttest{
+op <- options(obr.cache_dir = tempdir())
 cases <- get_incapacity_caseloads()
 # Total claimants
 cases[cases$series == "Claimants", ]
+options(op)
 }
 
 }
