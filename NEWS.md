@@ -1,3 +1,7 @@
+# obr 0.2.4
+
+* Removed non-existent pkgdown URL from DESCRIPTION.
+
 # obr 0.2.3
 
 * Examples now cache to `tempdir()` instead of the user's home directory,

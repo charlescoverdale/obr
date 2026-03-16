@@ -1,13 +1,14 @@
-# CRAN submission comments — obr 0.2.3
+# CRAN submission comments — obr 0.2.4
 
 ## Resubmission
 
-This is a resubmission of obr 0.2.2. Changes made in response to CRAN
-feedback (Prof Ripley, 2026-03-15):
+This is a resubmission addressing CRAN feedback (Prof Ripley, 2026-03-15).
+Changes since obr 0.2.2 (currently on CRAN):
 
 * Examples now cache to `tempdir()` instead of the user's home directory,
   fixing CRAN policy compliance for `\donttest` examples.
 * Cache directory is now configurable via `options(obr.cache_dir = ...)`.
+* Removed non-existent pkgdown URL from DESCRIPTION (was returning 404).
 
 ## R CMD check results
 
@@ -25,11 +26,6 @@ use and caches it locally using `tools::R_user_dir()`. No data is bundled.
 All examples that make network calls are wrapped in `\donttest{}`, with
 caching redirected to `tempdir()` so that no files are written to the user's
 home filespace.
-
-Download URLs for the EFO, WTR, and FSR embed the publication date
-(e.g. `march-2026`). These are hardcoded to the most recent edition at the
-time of submission and will be updated in subsequent package versions as new
-editions are published.
 
 ## Downstream dependencies
 

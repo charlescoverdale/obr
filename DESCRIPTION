@@ -1,6 +1,6 @@
 Package: obr
 Title: Access 'Office for Budget Responsibility' Data
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: person("Charles", "Coverdale", email = "charlesfcoverdale@gmail.com", role = c("aut", "cre"))
 Description: Provides clean, tidy access to data published by the 'Office for
     Budget Responsibility' ('OBR'), the UK's independent fiscal watchdog. Covers
@@ -15,8 +15,7 @@ Description: Provides clean, tidy access to data published by the 'Office for
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-GB
-URL: https://charlescoverdale.github.io/obr/,
-    https://github.com/charlescoverdale/obr
+URL: https://github.com/charlescoverdale/obr
 BugReports: https://github.com/charlescoverdale/obr/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

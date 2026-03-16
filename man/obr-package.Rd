@@ -11,7 +11,6 @@ Provides clean, tidy access to data published by the 'Office for Budget Responsi
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://charlescoverdale.github.io/obr/}
   \item \url{https://github.com/charlescoverdale/obr}
   \item Report bugs at \url{https://github.com/charlescoverdale/obr/issues}
 }
