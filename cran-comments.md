@@ -1,14 +1,18 @@
-# CRAN submission comments — obr 0.2.4
+# CRAN submission comments — obr 0.2.5
 
-## Resubmission
+## Resubmission of archived package
 
-This is a resubmission addressing CRAN feedback (Prof Ripley, 2026-03-15).
-Changes since obr 0.2.2 (currently on CRAN):
+This package was archived on 2026-03-30 ("issues were not corrected in time").
+The original issue (Prof Ripley, 2026-03-15) was fixed in v0.2.4 but did not
+clear the incoming queue before the deadline. All issues are resolved:
 
-* Examples now cache to `tempdir()` instead of the user's home directory,
-  fixing CRAN policy compliance for `\donttest` examples.
-* Cache directory is now configurable via `options(obr.cache_dir = ...)`.
-* Removed non-existent pkgdown URL from DESCRIPTION (was returning 404).
+* Examples redirect cache to `tempdir()` via `options(obr.cache_dir = ...)`,
+  so no files are written to the user's home filespace (original issue).
+* Download URLs for OBR publications (EFO, WTR, FSR) are now resolved
+  dynamically, trying recent publication dates in reverse chronological order.
+  This prevents breakage when OBR publishes new editions.
+* Test suite isolates cache operations to temporary directories, preventing
+  rate-limit failures during R CMD check.
 
 ## R CMD check results
 
