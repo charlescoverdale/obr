@@ -282,17 +282,36 @@ The OBR's central projection has the state pension rising from 4.6% of GDP today
 
 ## Related packages
 
-This package is part of a family of R packages for UK economic and fiscal data. They share a consistent interface - named functions, tidy data frames, local caching - and are designed to work together. All outputs join cleanly on date columns.
+This package is part of a suite of R packages for economic, financial, and policy data. They share a consistent interface (named functions, tidy data frames, local caching) and are designed to work together.
 
-| Package | What it covers |
+**Data access:**
+
+| Package | Source |
 |---|---|
-| [`ons`](https://github.com/charlescoverdale/ons) | ONS data (GDP, inflation, unemployment, wages, trade, house prices, population) |
-| [`boe`](https://github.com/charlescoverdale/boe) | Bank of England data (Bank Rate, SONIA, gilt yields, exchange rates, mortgage rates) |
-| [`hmrc`](https://github.com/charlescoverdale/hmrc) | HMRC tax receipts, corporation tax, stamp duty, R&D credits, and tax gap data |
-| [`readecb`](https://github.com/charlescoverdale/readecb) | European Central Bank data (policy rates, HICP, exchange rates, yield curves) |
-| [`readoecd`](https://github.com/charlescoverdale/readoecd) | OECD data (GDP, unemployment, inflation, trade across 38 member countries) |
-| [`fred`](https://github.com/charlescoverdale/fred) | US Federal Reserve (FRED) data (800,000+ economic time series) |
-| [`inflateR`](https://github.com/charlescoverdale/inflateR) | Adjust values for inflation using CPI or GDP deflator data |
+| [`ons`](https://github.com/charlescoverdale/ons) | UK Office for National Statistics |
+| [`boe`](https://github.com/charlescoverdale/boe) | Bank of England |
+| [`hmrc`](https://github.com/charlescoverdale/hmrc) | HM Revenue & Customs |
+| [`ukhousing`](https://github.com/charlescoverdale/ukhousing) | UK Land Registry, EPC, Planning |
+| [`fred`](https://github.com/charlescoverdale/fred) | US Federal Reserve (FRED) |
+| [`readecb`](https://github.com/charlescoverdale/readecb) | European Central Bank |
+| [`readoecd`](https://github.com/charlescoverdale/readoecd) | OECD |
+| [`readnoaa`](https://github.com/charlescoverdale/readnoaa) | NOAA Climate Data |
+| [`readaec`](https://github.com/charlescoverdale/readaec) | Australian Electoral Commission |
+| [`comtrade`](https://github.com/charlescoverdale/comtrade) | UN Comtrade |
+| [`carbondata`](https://github.com/charlescoverdale/carbondata) | Carbon markets (EU ETS, UK ETS, voluntary registries) |
+
+**Analytical toolkits:**
+
+| Package | Purpose |
+|---|---|
+| [`inflateR`](https://github.com/charlescoverdale/inflateR) | Inflation adjustment for price series |
+| [`inflationkit`](https://github.com/charlescoverdale/inflationkit) | Inflation analysis (decomposition, persistence, Phillips curve) |
+| [`yieldcurves`](https://github.com/charlescoverdale/yieldcurves) | Yield curve fitting (Nelson-Siegel, Svensson) |
+| [`debtkit`](https://github.com/charlescoverdale/debtkit) | Debt sustainability analysis |
+| [`nowcast`](https://github.com/charlescoverdale/nowcast) | Economic nowcasting |
+| [`predictset`](https://github.com/charlescoverdale/predictset) | Conformal prediction |
+| [`climatekit`](https://github.com/charlescoverdale/climatekit) | Climate indices |
+| [`inequality`](https://github.com/charlescoverdale/inequality) | Inequality and poverty measurement |
 
 ---
 
