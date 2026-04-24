@@ -51,3 +51,7 @@ reference:
     desc: Manage locally cached OBR data files.
     contents:
       - clear_cache
+
+  - title: "Package"
+    contents:
+      - obr-package
