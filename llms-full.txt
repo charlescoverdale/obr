@@ -1,0 +1,482 @@
+# obr — full API reference
+
+> Provides clean, tidy access to data published by the 'Office for Budget Responsibility' ('OBR'), the UK's independent fiscal watchdog.
+
+- Version: 0.2.5
+- Install: `install.packages("obr")`
+- CRAN: https://CRAN.R-project.org/package=obr
+- GitHub: https://github.com/charlescoverdale/obr
+- Reference site: https://charlescoverdale.github.io/obr/
+
+This file is a self-contained reference for LLM agents: every exported
+function with its signature, arguments, return value, and example.
+
+---
+
+## `clear_cache()`
+
+**Clear cached OBR files**
+
+Deletes all files downloaded and cached by the obr package. The next function call will re-download fresh data from the OBR website.
+
+**Usage**
+
+```r
+clear_cache()
+```
+
+**Returns**
+
+Invisibly returns `NULL`.
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+clear_cache()
+options(op)
+```
+
+---
+
+## `get_efo_economy()`
+
+**Get EFO economy projections**
+
+Downloads (and caches) the OBR Economic and Fiscal Outlook Detailed Forecast Tables — Economy file and returns quarterly economic projections for a chosen measure in tidy long format.
+
+**Usage**
+
+```r
+get_efo_economy(measure = "inflation", refresh = FALSE)
+```
+
+**Arguments**
+
+- `measure` — Character. Which economy table to return. One of `"labour"`, `"inflation"`, or `"output_gap"`. Defaults to `"inflation"`.
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: periodCalendar quarter, e.g. `"2025Q1"` (character) seriesVariable name, e.g. `"CPI"` (character) valueValue in units appropriate to the series (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+# CPI and RPI since 2008
+inf <- get_efo_economy("inflation")
+inf[inf$series == "CPI", ]
+
+# Labour market
+lab <- get_efo_economy("labour")
+options(op)
+```
+
+---
+
+## `get_efo_fiscal()`
+
+**Get EFO fiscal projections (net borrowing components)**
+
+Downloads (and caches) the OBR Economic and Fiscal Outlook Detailed Forecast Tables — Aggregates file and returns the components of net borrowing (Table 6.5) in tidy long format.
+
+**Usage**
+
+```r
+get_efo_fiscal(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: fiscal_yearFiscal year being forecast, e.g. `"2025-26"` (character) seriesComponent name, e.g. `"Net borrowing"` (character) value_bnProjected value in £GBP billion (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+efo <- get_efo_fiscal()
+efo[efo$series == "Net borrowing", ]
+options(op)
+```
+
+---
+
+## `get_expenditure()`
+
+**Get Total Managed Expenditure**
+
+Downloads (and caches) the OBR Public Finances Databank and returns annual Total Managed Expenditure (TME) in £ billion. TME is the broadest measure of UK government spending.
+
+**Usage**
+
+```r
+get_expenditure(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) tme_bnTotal managed expenditure in £ billion (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+tme <- get_expenditure()
+tail(tme)
+options(op)
+```
+
+---
+
+## `get_forecasts()`
+
+**Get OBR forecast history for a fiscal series**
+
+Downloads (and caches) the OBR Historical Official Forecasts Database and returns a tidy long-format data frame showing every forecast the OBR has ever published for a given series. Each row is one forecast for one fiscal year, made at one fiscal event.
+
+**Usage**
+
+```r
+get_forecasts(series = "PSNB", refresh = FALSE)
+```
+
+**Arguments**
+
+- `series` — Character. The series to return. Use `list_forecast_series` to see all options. Defaults to `"PSNB"` (Public Sector Net Borrowing in £bn).
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: seriesSeries name as supplied (character) forecast_dateWhen the forecast was published, e.g. `"March 2024"` (character) fiscal_yearThe fiscal year being forecast, e.g. `"2024-25"` (character) valueForecast value (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+# All PSNB forecasts
+get_forecasts("PSNB")
+
+# What did OBR forecast for 2024-25 PSNB at each Budget?
+psnb <- get_forecasts("PSNB")
+psnb[psnb$fiscal_year == "2024-25", ]
+options(op)
+```
+
+---
+
+## `get_incapacity_caseloads()`
+
+**Get incapacity benefit caseloads**
+
+Downloads (and caches) the OBR Welfare Trends Report charts and tables workbook and returns the combined incapacity benefit caseload since 2008-09, in both absolute terms (thousands of claimants) and as a share of the working-age population.
+
+**Usage**
+
+```r
+get_incapacity_caseloads(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year, e.g. `"2023-24"` (character) seriesEither `"Claimants"` (thousands) or `"Share of working age population"` (per cent) (character) valueValue in units appropriate to the series (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+cases <- get_incapacity_caseloads()
+# Total claimants
+cases[cases$series == "Claimants", ]
+options(op)
+```
+
+---
+
+## `get_incapacity_spending()`
+
+**Get incapacity benefits spending by type**
+
+Downloads (and caches) the OBR Welfare Trends Report charts and tables workbook and returns annual spending on each incapacity benefit as a share of GDP, from 1978-79 to the current forecast horizon.
+
+**Usage**
+
+```r
+get_incapacity_spending(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year, e.g. `"2023-24"` (character) seriesBenefit name (character) valueSpending as a percentage of GDP (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+ib <- get_incapacity_spending()
+unique(ib$series)
+options(op)
+```
+
+---
+
+## `get_pension_projections()`
+
+**Get long-run state pension spending projections**
+
+Downloads (and caches) the OBR Fiscal Risks and Sustainability Report executive summary charts and tables workbook and returns 50-year projections for state pension spending as a share of GDP, under alternative demographic and triple-lock uprating scenarios.
+
+**Usage**
+
+```r
+get_pension_projections(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: scenario_typeEither `"Demographic scenarios"` or `"Triple lock scenarios"` (character) scenarioScenario name, e.g. `"Central projection"`, `"Higher life expectancy"` (character) fiscal_yearFiscal year, e.g. `"2030-31"` (character) pct_gdpState pension spending as a percentage of GDP (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+proj <- get_pension_projections()
+
+# Central demographic projection over the 50-year horizon
+central <- proj[proj$scenario_type == "Demographic scenarios" &
+                proj$scenario == "Central projection", ]
+tail(central, 10)
+
+# How much more expensive is 'higher life expectancy' vs central?
+dem <- proj[proj$scenario_type == "Demographic scenarios", ]
+options(op)
+```
+
+---
+
+## `get_psnb()`
+
+**Get Public Sector Net Borrowing (PSNB)**
+
+Downloads (and caches) the OBR Public Finances Databank and returns annual Public Sector Net Borrowing in £ billion. A positive value means the government is borrowing (deficit); a negative value means a surplus.
+
+**Usage**
+
+```r
+get_psnb(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) psnb_bnPSNB in £ billion (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+psnb <- get_psnb()
+tail(psnb)
+options(op)
+```
+
+---
+
+## `get_psnd()`
+
+**Get Public Sector Net Debt (PSND)**
+
+Downloads (and caches) the OBR Public Finances Databank and returns annual Public Sector Net Debt in £ billion.
+
+**Usage**
+
+```r
+get_psnd(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) psnd_bnPSND in £ billion (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+psnd <- get_psnd()
+tail(psnd)
+options(op)
+```
+
+---
+
+## `get_public_finances()`
+
+**Get all Public Finances Databank aggregates**
+
+Downloads (and caches) the OBR Public Finances Databank and returns all aggregate fiscal series in tidy long format. Covers outturn from 1946-47 and OBR projections through the current forecast horizon.
+
+**Usage**
+
+```r
+get_public_finances(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) seriesSeries name (character) valueValue in £ billion (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+pf <- get_public_finances()
+unique(pf$series)
+options(op)
+```
+
+---
+
+## `get_receipts()`
+
+**Get public sector receipts by tax type**
+
+Downloads (and caches) the OBR Public Finances Databank and returns public sector current receipts broken down by individual tax type, in tidy long format. Coverage begins in 1999-00.
+
+**Usage**
+
+```r
+get_receipts(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) seriesTax or receipt category (character) valueValue in £ billion (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+receipts <- get_receipts()
+# Filter to income tax
+receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
+options(op)
+```
+
+---
+
+## `get_welfare_spending()`
+
+**Get working-age welfare spending**
+
+Downloads (and caches) the OBR Welfare Trends Report charts and tables workbook and returns annual working-age welfare spending as a share of GDP, split into incapacity-related and non-incapacity spending.
+
+**Usage**
+
+```r
+get_welfare_spending(refresh = FALSE)
+```
+
+**Arguments**
+
+- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+
+**Returns**
+
+A data frame with columns: yearFiscal year, e.g. `"2023-24"` (character) seriesSpending category: `"Working-age incapacity benefits spending"` or `"Working-age non-incapacity spending"` (character) valueSpending as a percentage of GDP (numeric)
+
+**Example**
+
+```r
+op <- options(obr.cache_dir = tempdir())
+welfare <- get_welfare_spending()
+# Incapacity share since 2000
+welfare[welfare$series == "Working-age incapacity benefits spending" &
+        welfare$year >= "2000-01", ]
+options(op)
+```
+
+---
+
+## `list_efo_economy_measures()`
+
+**List available EFO economy measures**
+
+Returns a data frame of the economy measures available via `get_efo_economy`, showing the `measure` name to pass and a short description of what each covers.
+
+**Usage**
+
+```r
+list_efo_economy_measures()
+```
+
+**Returns**
+
+A data frame with columns `measure`, `sheet`, and `description`.
+
+**Example**
+
+```r
+list_efo_economy_measures()
+```
+
+---
+
+## `list_forecast_series()`
+
+**List available forecast series**
+
+Returns a data frame showing the series names accepted by `get_forecasts`, the corresponding Excel sheet in the OBR Historical Official Forecasts Database, and a plain-English description.
+
+**Usage**
+
+```r
+list_forecast_series()
+```
+
+**Returns**
+
+A data frame with columns `series`, `sheet`, and `description`.
+
+**Example**
+
+```r
+list_forecast_series()
+```
+
+---
+

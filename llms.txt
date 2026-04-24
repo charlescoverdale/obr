@@ -2,6 +2,8 @@
 
 > Provides clean, tidy access to data published by the 'Office for Budget Responsibility' ('OBR'), the UK's independent fiscal watchdog. Install with `install.packages("obr")`.
 
+Full API reference (for agents): https://raw.githubusercontent.com/charlescoverdale/obr/main/llms-full.txt
+
 Version: 0.2.5. License: MIT.
 
 ## Functions
