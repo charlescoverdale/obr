@@ -45,10 +45,17 @@ Data runs from 2008 Q1 through the current forecast horizon (OBR, March
 [`list_efo_economy_measures`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
 to see all available measures.
 
+## See also
+
+Other EFO:
+[`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md),
+[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 # CPI and RPI since 2008
 inf <- get_efo_economy("inflation")
 #> ℹ Downloading efo_economy.xlsx from OBR...
@@ -245,5 +252,6 @@ inf[inf$series == "CPI", ]
 # Labour market
 lab <- get_efo_economy("labour")
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+options(op)
 # }
 ```

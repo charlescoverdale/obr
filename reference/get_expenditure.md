@@ -29,10 +29,19 @@ A data frame with columns:
 
   Total managed expenditure in £ billion (numeric)
 
+## See also
+
+Other public finances:
+[`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md),
+[`get_psnd()`](https://charlescoverdale.github.io/obr/reference/get_psnd.md),
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md),
+[`get_receipts()`](https://charlescoverdale.github.io/obr/reference/get_receipts.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 tme <- get_expenditure()
 #> ℹ Downloading public_finances_databank.xlsx from OBR...
 #> ✔ Saved to cache.
@@ -44,5 +53,6 @@ tail(tme)
 #> 78 2023-24 1027.3872
 #> 79 2024-25 1063.9669
 #> 80 2025-26 1106.0997
+options(op)
 # }
 ```

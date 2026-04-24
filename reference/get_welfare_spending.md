@@ -39,10 +39,17 @@ A data frame with columns:
 Data cover fiscal years from 1978-79 through the current forecast
 horizon (OBR, October 2024).
 
+## See also
+
+Other welfare:
+[`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.md),
+[`get_incapacity_spending()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_spending.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 welfare <- get_welfare_spending()
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 # Incapacity share since 2000
@@ -78,5 +85,6 @@ welfare[welfare$series == "Working-age incapacity benefits spending" &
 #> 49 2026-27 Working-age incapacity benefits spending 1.0038338
 #> 50 2027-28 Working-age incapacity benefits spending 1.0023592
 #> 51 2028-29 Working-age incapacity benefits spending 1.0056712
+options(op)
 # }
 ```

@@ -15,6 +15,11 @@ list_forecast_series()
 
 A data frame with columns `series`, `sheet`, and `description`.
 
+## See also
+
+Other forecasts:
+[`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md)
+
 ## Examples
 
 ``` r

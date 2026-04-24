@@ -51,6 +51,7 @@ to determine the long-run cost of the state pension.
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 proj <- get_pension_projections()
 #> ℹ Downloading fsr_executive_summary.xlsx from OBR...
 #> ✔ Saved to cache.
@@ -73,5 +74,6 @@ tail(central, 10)
 
 # How much more expensive is 'higher life expectancy' vs central?
 dem <- proj[proj$scenario_type == "Demographic scenarios", ]
+options(op)
 # }
 ```

@@ -39,10 +39,17 @@ Series include: Invalidity Benefit, Incapacity Benefit, Employment and
 Support Allowance (ESA), Sickness Benefit, and Severe Disablement
 Allowance.
 
+## See also
+
+Other welfare:
+[`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.md),
+[`get_welfare_spending()`](https://charlescoverdale.github.io/obr/reference/get_welfare_spending.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 ib <- get_incapacity_spending()
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 unique(ib$series)
@@ -54,5 +61,6 @@ unique(ib$series)
 #> [6] "Universal credit health (excluding assessment phase)"         
 #> [7] "Income support (incapacity/sick and disabled)"                
 #> [8] "Incapacity benefits (total)"                                  
+options(op)
 # }
 ```

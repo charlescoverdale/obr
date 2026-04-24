@@ -33,10 +33,19 @@ A data frame with columns:
 
   Value in £ billion (numeric)
 
+## See also
+
+Other public finances:
+[`get_expenditure()`](https://charlescoverdale.github.io/obr/reference/get_expenditure.md),
+[`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md),
+[`get_psnd()`](https://charlescoverdale.github.io/obr/reference/get_psnd.md),
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 receipts <- get_receipts()
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 # Filter to income tax
@@ -123,5 +132,6 @@ receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
 #> 457 2023-24                   Other income tax  -3.209168
 #> 458 2024-25                   Other income tax  -3.387269
 #> 459 2025-26                   Other income tax  -3.556914
+options(op)
 # }
 ```

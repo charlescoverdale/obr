@@ -35,10 +35,17 @@ A data frame with columns:
 
   Value in units appropriate to the series (numeric)
 
+## See also
+
+Other welfare:
+[`get_incapacity_spending()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_spending.md),
+[`get_welfare_spending()`](https://charlescoverdale.github.io/obr/reference/get_welfare_spending.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 cases <- get_incapacity_caseloads()
 #> ℹ Downloading welfare_trends.xlsx from OBR...
 #> ✔ Saved to cache.
@@ -61,5 +68,6 @@ cases[cases$series == "Claimants", ]
 #> 14 2021-22 Claimants 2544.000
 #> 15 2022-23 Claimants 2744.000
 #> 16 2023-24 Claimants 2930.000
+options(op)
 # }
 ```

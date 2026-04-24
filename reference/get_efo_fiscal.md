@@ -39,10 +39,17 @@ Covers the five-year forecast horizon published at the most recent
 Budget (OBR, March 2026). Key series include current receipts, current
 expenditure, depreciation, net investment, and net borrowing (PSNB).
 
+## See also
+
+Other EFO:
+[`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
+[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 efo <- get_efo_fiscal()
 #> ℹ Downloading efo_aggregates.xlsx from OBR...
 #> ✔ Saved to cache.
@@ -54,5 +61,6 @@ efo[efo$series == "Net borrowing", ]
 #> 46     2028-29 Net borrowing  86.01563
 #> 47     2029-30 Net borrowing  63.40344
 #> 48     2030-31 Net borrowing  59.01991
+options(op)
 # }
 ```

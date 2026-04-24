@@ -28,10 +28,19 @@ A data frame with columns:
 
   PSND in £ billion (numeric)
 
+## See also
+
+Other public finances:
+[`get_expenditure()`](https://charlescoverdale.github.io/obr/reference/get_expenditure.md),
+[`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md),
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md),
+[`get_receipts()`](https://charlescoverdale.github.io/obr/reference/get_receipts.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 psnd <- get_psnd()
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 tail(psnd)
@@ -42,5 +51,6 @@ tail(psnd)
 #> 50 2023-24 2720.901
 #> 51 2024-25 2714.067
 #> 52 2025-26 2816.625
+options(op)
 # }
 ```

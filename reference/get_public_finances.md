@@ -39,10 +39,19 @@ Series include: Public sector net borrowing, Public sector net debt,
 Total managed expenditure, Public sector current receipts, Nominal GDP,
 GDP deflator, and more.
 
+## See also
+
+Other public finances:
+[`get_expenditure()`](https://charlescoverdale.github.io/obr/reference/get_expenditure.md),
+[`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md),
+[`get_psnd()`](https://charlescoverdale.github.io/obr/reference/get_psnd.md),
+[`get_receipts()`](https://charlescoverdale.github.io/obr/reference/get_receipts.md)
+
 ## Examples
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 pf <- get_public_finances()
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 unique(pf$series)
@@ -70,5 +79,6 @@ unique(pf$series)
 #> [22] "Nominal GDP, centred end-March (£ billion)"  
 #> [23] "Output gap (per cent of GDP)"                
 #> [24] "GDP Deflator (2019-20=100)"                  
+options(op)
 # }
 ```

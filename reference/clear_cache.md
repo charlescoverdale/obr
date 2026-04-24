@@ -17,7 +17,11 @@ Invisibly returns `NULL`.
 
 ``` r
 # \donttest{
+op <- options(obr.cache_dir = tempdir())
 clear_cache()
-#> Removed 0 cached files.
+#> Warning: cannot remove file '/tmp/RtmpF0LGr7/bslib-246362e7e3ff6191071d5f9b40ba8d62', reason 'Directory not empty'
+#> Warning: cannot remove file '/tmp/RtmpF0LGr7/downlit', reason 'Directory not empty'
+#> Removed 3 cached files.
+options(op)
 # }
 ```

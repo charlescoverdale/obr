@@ -11,7 +11,7 @@ split into incapacity-related and non-incapacity spending."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,10 +76,17 @@ or <code>"Working-age non-incapacity spending"</code> (character)</p></dd>
     <p>Data cover fiscal years from 1978-79 through the current forecast horizon
 (OBR, October 2024).</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other welfare:
+<code><a href="get_incapacity_caseloads.html">get_incapacity_caseloads()</a></code>,
+<code><a href="get_incapacity_spending.html">get_incapacity_spending()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>obr.cache_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">welfare</span> <span class="op">&lt;-</span> <span class="fu">get_welfare_spending</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-in"><span><span class="co"># Incapacity share since 2000</span></span></span>
@@ -115,6 +122,7 @@ or <code>"Working-age non-incapacity spending"</code> (character)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 49 2026-27 Working-age incapacity benefits spending 1.0038338</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 50 2027-28 Working-age incapacity benefits spending 1.0023592</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 51 2028-29 Working-age incapacity benefits spending 1.0056712</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

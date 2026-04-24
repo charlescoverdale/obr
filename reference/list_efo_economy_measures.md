@@ -15,6 +15,12 @@ list_efo_economy_measures()
 
 A data frame with columns `measure`, `sheet`, and `description`.
 
+## See also
+
+Other EFO:
+[`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
+[`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
+
 ## Examples
 
 ``` r

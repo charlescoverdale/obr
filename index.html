@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="obr">obr<a class="anchor" aria-label="anchor" href="#obr"></a>
 </h1></div>
-<p><a href="https://CRAN.R-project.org/package=obr" class="external-link"><img src="https://www.r-pkg.org/badges/version/obr" alt="CRAN status"></a> <a href="https://cran.r-project.org/package=obr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/obr" alt="CRAN downloads"></a> <a href="https://github.com/charlescoverdale/obr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/charlescoverdale/obr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a> <a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></p>
+<p><a href="https://CRAN.R-project.org/package=obr" class="external-link"><img src="https://www.r-pkg.org/badges/version/obr" alt="CRAN status"></a> <a href="https://cran.r-project.org/package=obr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/obr" alt="CRAN downloads"></a> <a href="https://CRAN.R-project.org/package=obr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/obr" alt="Total Downloads"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a> <a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></p>
 <p>An R package for accessing data published by the <a href="https://obr.uk/" class="external-link">Office for Budget Responsibility</a> (OBR).</p>
 <div class="section level2">
 <h2 id="what-is-the-obr">What is the OBR?<a class="anchor" aria-label="anchor" href="#what-is-the-obr"></a>
@@ -129,7 +129,7 @@
 <span><span class="co"># ... 30 more lines of wrangling ...</span></span>
 <span></span>
 <span><span class="co"># With this package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://charlescoverdale.github.io/obr/">obr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/charlescoverdale/obr" class="external-link">obr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/get_psnb.html">get_psnb</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
@@ -291,7 +291,7 @@
 <h3 id="id_1-how-much-did-covid-cost-the-uk">1. How much did COVID cost the UK?<a class="anchor" aria-label="anchor" href="#id_1-how-much-did-covid-cost-the-uk"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://charlescoverdale.github.io/obr/">obr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/charlescoverdale/obr" class="external-link">obr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">psnb</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_psnb.html">get_psnb</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">psnb</span><span class="op">[</span><span class="va">psnb</span><span class="op">$</span><span class="va">year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2018-19"</span>, <span class="st">"2019-20"</span>, <span class="st">"2020-21"</span>, <span class="st">"2021-22"</span>, <span class="st">"2022-23"</span><span class="op">)</span>, <span class="op">]</span></span>
@@ -441,7 +441,8 @@
 <div class="section level2">
 <h2 id="related-packages">Related packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>
 </h2>
-<p>This package is part of a family of R packages for UK economic and fiscal data. They share a consistent interface - named functions, tidy data frames, local caching - and are designed to work together. All outputs join cleanly on date columns.</p>
+<p>This package is part of a suite of R packages for economic, financial, and policy data. They share a consistent interface (named functions, tidy data frames, local caching) and are designed to work together.</p>
+<p><strong>Data access:</strong></p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -449,36 +450,97 @@
 </colgroup>
 <thead><tr class="header">
 <th>Package</th>
-<th>What it covers</th>
+<th>Source</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><a href="https://github.com/charlescoverdale/ons" class="external-link"><code>ons</code></a></td>
-<td>ONS data (GDP, inflation, unemployment, wages, trade, house prices, population)</td>
+<td>UK Office for National Statistics</td>
 </tr>
 <tr class="even">
 <td><a href="https://github.com/charlescoverdale/boe" class="external-link"><code>boe</code></a></td>
-<td>Bank of England data (Bank Rate, SONIA, gilt yields, exchange rates, mortgage rates)</td>
+<td>Bank of England</td>
 </tr>
 <tr class="odd">
 <td><a href="https://github.com/charlescoverdale/hmrc" class="external-link"><code>hmrc</code></a></td>
-<td>HMRC tax receipts, corporation tax, stamp duty, R&amp;D credits, and tax gap data</td>
+<td>HM Revenue &amp; Customs</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/charlescoverdale/ukhousing" class="external-link"><code>ukhousing</code></a></td>
+<td>UK Land Registry, EPC, Planning</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/charlescoverdale/fred" class="external-link"><code>fred</code></a></td>
+<td>US Federal Reserve (FRED)</td>
 </tr>
 <tr class="even">
 <td><a href="https://github.com/charlescoverdale/readecb" class="external-link"><code>readecb</code></a></td>
-<td>European Central Bank data (policy rates, HICP, exchange rates, yield curves)</td>
+<td>European Central Bank</td>
 </tr>
 <tr class="odd">
 <td><a href="https://github.com/charlescoverdale/readoecd" class="external-link"><code>readoecd</code></a></td>
-<td>OECD data (GDP, unemployment, inflation, trade across 38 member countries)</td>
+<td>OECD</td>
 </tr>
 <tr class="even">
-<td><a href="https://github.com/charlescoverdale/fred" class="external-link"><code>fred</code></a></td>
-<td>US Federal Reserve (FRED) data (800,000+ economic time series)</td>
+<td><a href="https://github.com/charlescoverdale/readnoaa" class="external-link"><code>readnoaa</code></a></td>
+<td>NOAA Climate Data</td>
 </tr>
 <tr class="odd">
+<td><a href="https://github.com/charlescoverdale/readaec" class="external-link"><code>readaec</code></a></td>
+<td>Australian Electoral Commission</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/charlescoverdale/comtrade" class="external-link"><code>comtrade</code></a></td>
+<td>UN Comtrade</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/charlescoverdale/carbondata" class="external-link"><code>carbondata</code></a></td>
+<td>Carbon markets (EU ETS, UK ETS, voluntary registries)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Analytical toolkits:</strong></p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Package</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
 <td><a href="https://github.com/charlescoverdale/inflateR" class="external-link"><code>inflateR</code></a></td>
-<td>Adjust values for inflation using CPI or GDP deflator data</td>
+<td>Inflation adjustment for price series</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/charlescoverdale/inflationkit" class="external-link"><code>inflationkit</code></a></td>
+<td>Inflation analysis (decomposition, persistence, Phillips curve)</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/charlescoverdale/yieldcurves" class="external-link"><code>yieldcurves</code></a></td>
+<td>Yield curve fitting (Nelson-Siegel, Svensson)</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/charlescoverdale/debtkit" class="external-link"><code>debtkit</code></a></td>
+<td>Debt sustainability analysis</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/charlescoverdale/nowcast" class="external-link"><code>nowcast</code></a></td>
+<td>Economic nowcasting</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/charlescoverdale/predictset" class="external-link"><code>predictset</code></a></td>
+<td>Conformal prediction</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/charlescoverdale/climatekit" class="external-link"><code>climatekit</code></a></td>
+<td>Climate indices</td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/charlescoverdale/inequality" class="external-link"><code>inequality</code></a></td>
+<td>Inequality and poverty measurement</td>
 </tr>
 </tbody>
 </table>

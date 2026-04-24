@@ -11,7 +11,7 @@ borrowing (Table 6.5) in tidy long format."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,10 +77,17 @@ exists. Defaults to <code>FALSE</code>.</p></dd>
 Key series include current receipts, current expenditure, depreciation,
 net investment, and net borrowing (PSNB).</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other EFO:
+<code><a href="get_efo_economy.html">get_efo_economy()</a></code>,
+<code><a href="list_efo_economy_measures.html">list_efo_economy_measures()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>obr.cache_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">efo</span> <span class="op">&lt;-</span> <span class="fu">get_efo_fiscal</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading <span style="color: #0000BB;">efo_aggregates.xlsx</span> from OBR...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Saved to cache.</span>
@@ -92,6 +99,7 @@ net investment, and net borrowing (PSNB).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 46     2028-29 Net borrowing  86.01563</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 47     2029-30 Net borrowing  63.40344</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 48     2030-31 Net borrowing  59.01991</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
