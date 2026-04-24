@@ -470,3 +470,9 @@ Manage locally cached OBR data files.
 - [`clear_cache()`](https://charlescoverdale.github.io/obr/reference/clear_cache.md)
   : Clear cached OBR files
 
+## Package
+
+- [`obr`](https://charlescoverdale.github.io/obr/reference/obr-package.md)
+  [`obr-package`](https://charlescoverdale.github.io/obr/reference/obr-package.md)
+  : obr: Access 'Office for Budget Responsibility' Data
+
