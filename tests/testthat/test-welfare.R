@@ -52,6 +52,21 @@ test_that("get_incapacity_caseloads() returns correct structure", {
   # Claimants should start from around 2008-09
   claimants <- result[result$series == "Claimants", ]
   expect_true("2008-09" %in% claimants$year)
-  # Values should be in thousands — roughly 2,000–3,500 for incapacity claimants
+  # Values should be in thousands; roughly 2,000 to 3,500 for incapacity claimants
   expect_true(all(claimants$value > 500 & claimants$value < 10000))
+})
+
+test_that("WTR functions return obr_tbl with WTR provenance", {
+  skip_on_cran()
+  skip_if_offline()
+
+  for (fn in list(get_welfare_spending, get_incapacity_spending,
+                  get_incapacity_caseloads)) {
+    res  <- fn()
+    expect_s3_class(res, "obr_tbl")
+    prov <- obr_provenance(res)
+    expect_equal(prov$publication, "WTR")
+    expect_match(prov$source_url, "welfare-trends-report")
+    expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
+  }
 })

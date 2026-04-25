@@ -12,7 +12,7 @@ test_that("list_efo_economy_measures() works without network", {
 test_that("get_efo_economy() errors on invalid measure", {
   expect_error(
     get_efo_economy("NOT_A_MEASURE"),
-    regexp = "Unknown measure"
+    regexp = "should be one of"
   )
 })
 
@@ -87,4 +87,20 @@ test_that("get_efo_economy('output_gap') returns correct structure", {
   expect_true(all(result$series == "Output gap"))
   # Output gap should span from 1970s onwards
   expect_true(any(grepl("^197", result$period)))
+})
+
+test_that("EFO functions return obr_tbl with EFO provenance", {
+  skip_on_cran()
+  skip_if_offline()
+
+  for (call in list(quote(get_efo_fiscal()),
+                    quote(get_efo_economy("inflation")),
+                    quote(get_efo_economy("output_gap")))) {
+    res  <- eval(call)
+    expect_s3_class(res, "obr_tbl")
+    prov <- obr_provenance(res)
+    expect_equal(prov$publication, "EFO")
+    expect_match(prov$source_url, "economic-and-fiscal-outlook")
+    expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
+  }
 })

@@ -1,6 +1,6 @@
 Package: obr
 Title: Access 'Office for Budget Responsibility' Data
-Version: 0.2.5
+Version: 0.3.0
 Authors@R: person("Charles", "Coverdale", email = "charlesfcoverdale@gmail.com", role = c("aut", "cre"))
 Description: Provides clean, tidy access to data published by the 'Office for
     Budget Responsibility' ('OBR'), the UK's independent fiscal watchdog. Covers
@@ -9,9 +9,12 @@ Description: Provides clean, tidy access to data published by the 'Office for
     'OBR' forecast since 2010), the Economic and Fiscal Outlook detailed forecast
     tables (five-year projections from the latest Budget), the Welfare Trends
     Report (incapacity benefit spending and caseloads), and the Fiscal Risks and
-    Sustainability Report (50-year state pension projections). Data is downloaded
-    from the 'OBR' on first use and cached locally for subsequent calls. Data is
-    sourced from the 'OBR' website <https://obr.uk>.
+    Sustainability Report (50-year state pension projections). All returned
+    objects carry provenance metadata recording the source URL, publication
+    vintage, retrieval time, and file fingerprint, so analyses can be audited
+    and reproduced. Data is downloaded from the 'OBR' on first use and cached
+    locally for subsequent calls. Data is sourced from the 'OBR' website
+    <https://obr.uk>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-GB
@@ -25,6 +28,9 @@ Imports:
     httr2,
     readxl,
     tools
-Suggests: 
-    testthat (>= 3.0.0)
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
 Config/testthat/edition: 3

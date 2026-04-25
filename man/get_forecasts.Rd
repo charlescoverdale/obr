@@ -8,14 +8,14 @@ get_forecasts(series = "PSNB", refresh = FALSE)
 }
 \arguments{
 \item{series}{Character. The series to return. Use
-\code{\link{list_forecast_series}} to see all options. Defaults to
-\code{"PSNB"} (Public Sector Net Borrowing in £bn).}
+\code{\link[=list_forecast_series]{list_forecast_series()}} to see all options. Defaults to
+\code{"PSNB"} (Public Sector Net Borrowing in \enc{£}{GBP} billion).}
 
 \item{refresh}{Logical. If \code{TRUE}, re-download even if a cached copy exists.
 Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{series}{Series name as supplied (character)}
 \item{forecast_date}{When the forecast was published, e.g. \code{"March 2024"} (character)}
@@ -31,15 +31,14 @@ year, made at one fiscal event.
 }
 \details{
 This is useful for visualising how OBR forecasts have evolved over time,
-and for comparing forecasts against outturns.
+and for comparing forecasts against outturns. The vintage of the underlying
+database is recorded in the returned object's provenance.
 }
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-# All PSNB forecasts
 get_forecasts("PSNB")
 
-# What did OBR forecast for 2024-25 PSNB at each Budget?
 psnb <- get_forecasts("PSNB")
 psnb[psnb$fiscal_year == "2024-25", ]
 options(op)
@@ -48,6 +47,8 @@ options(op)
 }
 \seealso{
 Other forecasts: 
-\code{\link{list_forecast_series}()}
+\code{\link{get_forecast_revisions}()},
+\code{\link{list_forecast_series}()},
+\code{\link{obr_forecast_panel}()}
 }
 \concept{forecasts}

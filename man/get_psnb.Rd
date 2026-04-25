@@ -11,16 +11,17 @@ get_psnb(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
-\item{psnb_bn}{PSNB in £ billion (numeric)}
+\item{psnb_bn}{PSNB in \enc{£}{GBP} billion (numeric)}
 }
 }
 \description{
 Downloads (and caches) the OBR Public Finances Databank and returns
-annual Public Sector Net Borrowing in £ billion. A positive value means
-the government is borrowing (deficit); a negative value means a surplus.
+annual Public Sector Net Borrowing in \enc{£}{GBP} billion. A positive
+value means the government is borrowing (deficit); a negative value means
+a surplus.
 }
 \examples{
 \donttest{

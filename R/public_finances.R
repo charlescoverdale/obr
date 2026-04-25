@@ -1,15 +1,34 @@
-# Stable OBR download URL (redirects to latest file)
+# Stable OBR download URL (server redirects to the latest vintage).
 PFD_URL      <- "https://obr.uk/download/public-finances-databank/"
 PFD_FILENAME <- "public_finances_databank.xlsx"
 
-pfd_path <- function(refresh = FALSE) {
-  obr_fetch(PFD_URL, PFD_FILENAME, refresh = refresh)
+pfd_source <- function(refresh = FALSE) {
+  obr_get_xlsx(
+    candidates = PFD_URL,
+    fallback   = PFD_URL,
+    filename   = PFD_FILENAME,
+    refresh    = refresh,
+    label      = "Public Finances Databank"
+  )
 }
 
-# Parse "Aggregates (£bn)" sheet → tidy long format
-# Row 4 = series names; data starts at row 8
+# Strip a trailing footnote marker (1 or 2 trailing digits) from a label, but
+# only when preceded by a letter, period, or whitespace, so genuinely numeric
+# trailing chars (e.g. years) are preserved. This protects series names that
+# legitimately end in digits from being silently corrupted.
+strip_footnote <- function(x) {
+  trimws(gsub("(?<=[A-Za-z\\.\\s])[0-9]{1,2}$", "", x, perl = TRUE))
+}
+
+# Parse "Aggregates (£bn)" sheet in tidy long format.
+# Row 4 = series names; data starts at row 8.
 parse_aggregates_bn <- function(path) {
-  raw <- readxl::read_excel(path, sheet = "Aggregates (\u00a3bn)",
+  sheet <- resolve_sheet_name(
+    path,
+    primary          = "Aggregates (\u00a3bn)",
+    fallback_pattern = "^Aggregates \\(.{1,2}bn\\)$"
+  )
+  raw <- readxl::read_excel(path, sheet = sheet,
                              col_names = FALSE, .name_repair = "minimal")
 
   series_names      <- as.character(unlist(raw[4, ]))
@@ -20,10 +39,8 @@ parse_aggregates_bn <- function(path) {
   data <- as.data.frame(raw[8:nrow(raw), keep], stringsAsFactors = FALSE)
   names(data) <- series_names[keep]
 
-  # Keep only fiscal year rows (e.g. "1946-47", "2024-25")
   data <- data[grepl("^[0-9]{4}-[0-9]{2}", data$year), ]
 
-  # Pivot to long format
   value_cols <- setdiff(names(data), "year")
   result <- do.call(rbind, lapply(value_cols, function(col) {
     data.frame(
@@ -36,17 +53,21 @@ parse_aggregates_bn <- function(path) {
   result[!is.na(result$value), ]
 }
 
-# Parse "Receipts (£bn)" sheet → tidy long format
-# Row 4 = series names; data starts at row 7
+# Parse "Receipts (£bn)" sheet in tidy long format.
+# Row 4 = series names; data starts at row 7.
 parse_receipts_bn <- function(path) {
-  raw <- readxl::read_excel(path, sheet = "Receipts (\u00a3bn)",
+  sheet <- resolve_sheet_name(
+    path,
+    primary          = "Receipts (\u00a3bn)",
+    fallback_pattern = "^Receipts \\(.{1,2}bn\\)$"
+  )
+  raw <- readxl::read_excel(path, sheet = sheet,
                              col_names = FALSE, .name_repair = "minimal")
 
   series_names    <- as.character(unlist(raw[4, ]))
   series_names[1] <- "year"
   series_names[series_names %in% c("NA", "NULL")] <- NA
-  # Strip trailing footnote digits from column names
-  series_names <- trimws(gsub("[0-9]+$", "", series_names))
+  series_names    <- strip_footnote(series_names)
   series_names[series_names == ""] <- NA
 
   keep <- !is.na(series_names)
@@ -67,6 +88,18 @@ parse_receipts_bn <- function(path) {
   result[!is.na(result$value), ]
 }
 
+# Internal: build an obr_tbl from a parsed PFD frame and a source descriptor.
+pfd_obr_tbl <- function(data, src) {
+  new_obr_tbl(
+    data        = data,
+    publication = "PFD",
+    vintage     = obr_url_vintage(src$final_url %||% src$url),
+    source_url  = src$url,
+    retrieved   = src$retrieved,
+    file_md5    = src$file_md5
+  )
+}
+
 #' Get all Public Finances Databank aggregates
 #'
 #' Downloads (and caches) the OBR Public Finances Databank and returns all
@@ -80,40 +113,44 @@ parse_receipts_bn <- function(path) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` (a `data.frame` with attached provenance) with columns:
 #' \describe{
 #'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
 #'   \item{series}{Series name (character)}
-#'   \item{value}{Value in £ billion (numeric)}
+#'   \item{value}{Value in \enc{£}{GBP} billion (numeric)}
 #' }
+#' Use [obr_provenance()] to extract source URL, vintage, and retrieval time.
 #'
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
 #' pf <- get_public_finances()
 #' unique(pf$series)
+#' obr_provenance(pf)
 #' options(op)
 #' }
 #'
 #' @family public finances
 #' @export
 get_public_finances <- function(refresh = FALSE) {
-  parse_aggregates_bn(pfd_path(refresh))
+  src <- pfd_source(refresh)
+  pfd_obr_tbl(parse_aggregates_bn(src$path), src)
 }
 
 #' Get Public Sector Net Borrowing (PSNB)
 #'
 #' Downloads (and caches) the OBR Public Finances Databank and returns
-#' annual Public Sector Net Borrowing in £ billion. A positive value means
-#' the government is borrowing (deficit); a negative value means a surplus.
+#' annual Public Sector Net Borrowing in \enc{£}{GBP} billion. A positive
+#' value means the government is borrowing (deficit); a negative value means
+#' a surplus.
 #'
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
-#'   \item{psnb_bn}{PSNB in £ billion (numeric)}
+#'   \item{psnb_bn}{PSNB in \enc{£}{GBP} billion (numeric)}
 #' }
 #'
 #' @examples
@@ -127,25 +164,26 @@ get_public_finances <- function(refresh = FALSE) {
 #' @family public finances
 #' @export
 get_psnb <- function(refresh = FALSE) {
-  agg <- parse_aggregates_bn(pfd_path(refresh))
-  result <- agg[agg$series == "Public sector net borrowing", c("year", "value")]
-  names(result)[2] <- "psnb_bn"
-  rownames(result) <- NULL
-  result
+  src <- pfd_source(refresh)
+  agg <- parse_aggregates_bn(src$path)
+  out <- agg[agg$series == "Public sector net borrowing", c("year", "value")]
+  names(out)[2] <- "psnb_bn"
+  rownames(out) <- NULL
+  pfd_obr_tbl(out, src)
 }
 
 #' Get Public Sector Net Debt (PSND)
 #'
 #' Downloads (and caches) the OBR Public Finances Databank and returns
-#' annual Public Sector Net Debt in £ billion.
+#' annual Public Sector Net Debt in \enc{£}{GBP} billion.
 #'
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
-#'   \item{psnd_bn}{PSND in £ billion (numeric)}
+#'   \item{psnd_bn}{PSND in \enc{£}{GBP} billion (numeric)}
 #' }
 #'
 #' @examples
@@ -159,26 +197,27 @@ get_psnb <- function(refresh = FALSE) {
 #' @family public finances
 #' @export
 get_psnd <- function(refresh = FALSE) {
-  agg <- parse_aggregates_bn(pfd_path(refresh))
-  result <- agg[agg$series == "Public sector net debt", c("year", "value")]
-  names(result)[2] <- "psnd_bn"
-  rownames(result) <- NULL
-  result
+  src <- pfd_source(refresh)
+  agg <- parse_aggregates_bn(src$path)
+  out <- agg[agg$series == "Public sector net debt", c("year", "value")]
+  names(out)[2] <- "psnd_bn"
+  rownames(out) <- NULL
+  pfd_obr_tbl(out, src)
 }
 
 #' Get Total Managed Expenditure
 #'
 #' Downloads (and caches) the OBR Public Finances Databank and returns
-#' annual Total Managed Expenditure (TME) in £ billion. TME is the broadest
-#' measure of UK government spending.
+#' annual Total Managed Expenditure (TME) in \enc{£}{GBP} billion. TME is
+#' the broadest measure of UK government spending.
 #'
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
-#'   \item{tme_bn}{Total managed expenditure in £ billion (numeric)}
+#'   \item{tme_bn}{Total managed expenditure in \enc{£}{GBP} billion (numeric)}
 #' }
 #'
 #' @examples
@@ -192,11 +231,12 @@ get_psnd <- function(refresh = FALSE) {
 #' @family public finances
 #' @export
 get_expenditure <- function(refresh = FALSE) {
-  agg <- parse_aggregates_bn(pfd_path(refresh))
-  result <- agg[agg$series == "Total managed expenditure", c("year", "value")]
-  names(result)[2] <- "tme_bn"
-  rownames(result) <- NULL
-  result
+  src <- pfd_source(refresh)
+  agg <- parse_aggregates_bn(src$path)
+  out <- agg[agg$series == "Total managed expenditure", c("year", "value")]
+  names(out)[2] <- "tme_bn"
+  rownames(out) <- NULL
+  pfd_obr_tbl(out, src)
 }
 
 #' Get public sector receipts by tax type
@@ -208,18 +248,17 @@ get_expenditure <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
 #'   \item{series}{Tax or receipt category (character)}
-#'   \item{value}{Value in £ billion (numeric)}
+#'   \item{value}{Value in \enc{£}{GBP} billion (numeric)}
 #' }
 #'
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
 #' receipts <- get_receipts()
-#' # Filter to income tax
 #' receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
 #' options(op)
 #' }
@@ -227,5 +266,6 @@ get_expenditure <- function(refresh = FALSE) {
 #' @family public finances
 #' @export
 get_receipts <- function(refresh = FALSE) {
-  parse_receipts_bn(pfd_path(refresh))
+  src <- pfd_source(refresh)
+  pfd_obr_tbl(parse_receipts_bn(src$path), src)
 }

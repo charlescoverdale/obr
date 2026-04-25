@@ -11,7 +11,7 @@ get_incapacity_caseloads(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{year}{Fiscal year, e.g. \code{"2023-24"} (character)}
 \item{series}{Either \code{"Claimants"} (thousands) or
@@ -22,14 +22,13 @@ A data frame with columns:
 \description{
 Downloads (and caches) the OBR Welfare Trends Report charts and tables
 workbook and returns the combined incapacity benefit caseload since
-2008-09, in both absolute terms (thousands of claimants) and as a share of
-the working-age population.
+2008-09, in both absolute terms (thousands of claimants) and as a share
+of the working-age population.
 }
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
 cases <- get_incapacity_caseloads()
-# Total claimants
 cases[cases$series == "Claimants", ]
 options(op)
 }

@@ -7,5 +7,7 @@ utils::globalVariables(c(
   # efo.R
   "value_bn", "period",
   # welfare.R / fiscal_sustainability.R
-  "scenario_type", "scenario", "pct_gdp"
+  "scenario_type", "scenario", "pct_gdp",
+  # policy_measures.R (formula NSE in aggregate())
+  "value_mn", "event", "type"
 ))

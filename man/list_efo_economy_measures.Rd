@@ -11,7 +11,7 @@ A data frame with columns \code{measure}, \code{sheet}, and \code{description}.
 }
 \description{
 Returns a data frame of the economy measures available via
-\code{\link{get_efo_economy}}, showing the \code{measure} name to pass and a
+\code{\link[=get_efo_economy]{get_efo_economy()}}, showing the \code{measure} name to pass and a
 short description of what each covers.
 }
 \examples{

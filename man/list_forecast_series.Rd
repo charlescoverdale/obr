@@ -11,7 +11,7 @@ A data frame with columns \code{series}, \code{sheet}, and \code{description}.
 }
 \description{
 Returns a data frame showing the series names accepted by
-\code{\link{get_forecasts}}, the corresponding Excel sheet in the OBR
+\code{\link[=get_forecasts]{get_forecasts()}}, the corresponding Excel sheet in the OBR
 Historical Official Forecasts Database, and a plain-English description.
 }
 \examples{
@@ -20,6 +20,8 @@ list_forecast_series()
 }
 \seealso{
 Other forecasts: 
-\code{\link{get_forecasts}()}
+\code{\link{get_forecast_revisions}()},
+\code{\link{get_forecasts}()},
+\code{\link{obr_forecast_panel}()}
 }
 \concept{forecasts}

@@ -11,11 +11,11 @@ get_receipts(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
 \item{series}{Tax or receipt category (character)}
-\item{value}{Value in £ billion (numeric)}
+\item{value}{Value in \enc{£}{GBP} billion (numeric)}
 }
 }
 \description{
@@ -27,7 +27,6 @@ in tidy long format. Coverage begins in 1999-00.
 \donttest{
 op <- options(obr.cache_dir = tempdir())
 receipts <- get_receipts()
-# Filter to income tax
 receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
 options(op)
 }

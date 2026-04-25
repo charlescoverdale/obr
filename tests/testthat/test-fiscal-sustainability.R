@@ -51,3 +51,15 @@ test_that("get_pension_projections() has plausible pension spending values", {
   expect_gt(nrow(central), 0)
   expect_true(all(central$pct_gdp >= 3 & central$pct_gdp <= 15))
 })
+
+test_that("get_pension_projections() returns obr_tbl with FSR provenance", {
+  skip_on_cran()
+  skip_if_offline()
+
+  res  <- get_pension_projections()
+  expect_s3_class(res, "obr_tbl")
+  prov <- obr_provenance(res)
+  expect_equal(prov$publication, "FSR")
+  expect_match(prov$source_url, "fiscal-risks-and-sustainability")
+  expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
+})

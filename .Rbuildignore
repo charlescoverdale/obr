@@ -5,3 +5,5 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^V0_3_PLAN\.md$
+^llms.*\.txt$

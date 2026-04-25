@@ -11,15 +11,15 @@ get_psnd(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
-\item{psnd_bn}{PSND in £ billion (numeric)}
+\item{psnd_bn}{PSND in \enc{£}{GBP} billion (numeric)}
 }
 }
 \description{
 Downloads (and caches) the OBR Public Finances Databank and returns
-annual Public Sector Net Debt in £ billion.
+annual Public Sector Net Debt in \enc{£}{GBP} billion.
 }
 \examples{
 \donttest{

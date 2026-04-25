@@ -1,12 +1,28 @@
-# Welfare Trends Report: charts and tables
-# URL resolved dynamically; hardcoded fallback to October 2024.
+# Welfare Trends Report: charts and tables.
+# URL resolved dynamically; resolver warns if it falls through to the
+# hardcoded fallback.
 WTR_FALLBACK <- "https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/"
 WTR_FILENAME <- "welfare_trends.xlsx"
 
-wtr_path <- function(refresh = FALSE) {
-  url <- obr_resolve_url(wtr_url_candidates())
-  if (is.null(url)) url <- WTR_FALLBACK
-  obr_fetch(url, WTR_FILENAME, refresh = refresh)
+wtr_source <- function(refresh = FALSE) {
+  obr_get_xlsx(
+    candidates = wtr_url_candidates(),
+    fallback   = WTR_FALLBACK,
+    filename   = WTR_FILENAME,
+    refresh    = refresh,
+    label      = "Welfare Trends Report"
+  )
+}
+
+wtr_obr_tbl <- function(data, src) {
+  new_obr_tbl(
+    data        = data,
+    publication = "WTR",
+    vintage     = obr_url_vintage(src$url),
+    source_url  = src$url,
+    retrieved   = src$retrieved,
+    file_md5    = src$file_md5
+  )
 }
 
 # Generic parser for WTR chart data sheets.
@@ -18,12 +34,10 @@ parse_wtr_chart <- function(path, sheet) {
                             col_names = FALSE, .name_repair = "minimal")
   col2 <- as.character(unlist(raw[, 2]))
 
-  # Series name rows: non-NA in col 2 after the title row (row 2)
-  non_na   <- which(!is.na(col2) & col2 != "")
+  non_na    <- which(!is.na(col2) & col2 != "")
   data_rows <- non_na[non_na > 2L]
   if (length(data_rows) == 0L) return(NULL)
 
-  # The row immediately before the first series row holds fiscal year labels
   year_row_idx <- data_rows[1L] - 1L
   all_yr       <- as.character(unlist(raw[year_row_idx, ]))
   year_cols    <- which(grepl("^[0-9]{4}-[0-9]{2}$", all_yr))
@@ -52,16 +66,16 @@ parse_wtr_chart <- function(path, sheet) {
 #' Get working-age welfare spending
 #'
 #' Downloads (and caches) the OBR Welfare Trends Report charts and tables
-#' workbook and returns annual working-age welfare spending as a share of GDP,
-#' split into incapacity-related and non-incapacity spending.
+#' workbook and returns annual working-age welfare spending as a share of
+#' GDP, split into incapacity-related and non-incapacity spending.
 #'
-#' Data cover fiscal years from 1978-79 through the current forecast horizon
-#' (OBR, October 2024).
+#' Data cover fiscal years from 1978-79 through the current forecast horizon.
+#' The exact vintage is recorded in the returned object's provenance.
 #'
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{year}{Fiscal year, e.g. `"2023-24"` (character)}
 #'   \item{series}{Spending category: `"Working-age incapacity benefits spending"`
@@ -73,7 +87,6 @@ parse_wtr_chart <- function(path, sheet) {
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
 #' welfare <- get_welfare_spending()
-#' # Incapacity share since 2000
 #' welfare[welfare$series == "Working-age incapacity benefits spending" &
 #'         welfare$year >= "2000-01", ]
 #' options(op)
@@ -82,14 +95,15 @@ parse_wtr_chart <- function(path, sheet) {
 #' @family welfare
 #' @export
 get_welfare_spending <- function(refresh = FALSE) {
-  parse_wtr_chart(wtr_path(refresh), "C1.3")
+  src <- wtr_source(refresh)
+  wtr_obr_tbl(parse_wtr_chart(src$path, "C1.3"), src)
 }
 
 #' Get incapacity benefits spending by type
 #'
 #' Downloads (and caches) the OBR Welfare Trends Report charts and tables
-#' workbook and returns annual spending on each incapacity benefit as a share
-#' of GDP, from 1978-79 to the current forecast horizon.
+#' workbook and returns annual spending on each incapacity benefit as a
+#' share of GDP, from 1978-79 to the current forecast horizon.
 #'
 #' Series include: Invalidity Benefit, Incapacity Benefit, Employment and
 #' Support Allowance (ESA), Sickness Benefit, and Severe Disablement
@@ -98,7 +112,7 @@ get_welfare_spending <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{year}{Fiscal year, e.g. `"2023-24"` (character)}
 #'   \item{series}{Benefit name (character)}
@@ -116,20 +130,21 @@ get_welfare_spending <- function(refresh = FALSE) {
 #' @family welfare
 #' @export
 get_incapacity_spending <- function(refresh = FALSE) {
-  parse_wtr_chart(wtr_path(refresh), "C1.1")
+  src <- wtr_source(refresh)
+  wtr_obr_tbl(parse_wtr_chart(src$path, "C1.1"), src)
 }
 
 #' Get incapacity benefit caseloads
 #'
 #' Downloads (and caches) the OBR Welfare Trends Report charts and tables
 #' workbook and returns the combined incapacity benefit caseload since
-#' 2008-09, in both absolute terms (thousands of claimants) and as a share of
-#' the working-age population.
+#' 2008-09, in both absolute terms (thousands of claimants) and as a share
+#' of the working-age population.
 #'
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{year}{Fiscal year, e.g. `"2023-24"` (character)}
 #'   \item{series}{Either `"Claimants"` (thousands) or
@@ -141,7 +156,6 @@ get_incapacity_spending <- function(refresh = FALSE) {
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
 #' cases <- get_incapacity_caseloads()
-#' # Total claimants
 #' cases[cases$series == "Claimants", ]
 #' options(op)
 #' }
@@ -149,5 +163,6 @@ get_incapacity_spending <- function(refresh = FALSE) {
 #' @family welfare
 #' @export
 get_incapacity_caseloads <- function(refresh = FALSE) {
-  parse_wtr_chart(wtr_path(refresh), "C3.1")
+  src <- wtr_source(refresh)
+  wtr_obr_tbl(parse_wtr_chart(src$path, "C3.1"), src)
 }

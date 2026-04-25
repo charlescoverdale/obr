@@ -4,14 +4,20 @@
 \alias{get_efo_fiscal}
 \title{Get EFO fiscal projections (net borrowing components)}
 \usage{
-get_efo_fiscal(refresh = FALSE)
+get_efo_fiscal(refresh = FALSE, vintage = NULL)
 }
 \arguments{
 \item{refresh}{Logical. If \code{TRUE}, re-download even if a cached copy
 exists. Defaults to \code{FALSE}.}
+
+\item{vintage}{Optional EFO vintage label such as \code{"October 2024"}. If
+supplied, the function downloads the file for that specific EFO. If
+\code{NULL} (the default), the function uses any vintage set via \code{\link[=obr_pin]{obr_pin()}},
+or falls back to the latest live EFO via the dynamic URL resolver. See
+\code{\link[=obr_efo_vintages]{obr_efo_vintages()}} for the full list of supported vintages.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{fiscal_year}{Fiscal year being forecast, e.g. \code{"2025-26"} (character)}
 \item{series}{Component name, e.g. \code{"Net borrowing"} (character)}
@@ -20,20 +26,25 @@ A data frame with columns:
 }
 \description{
 Downloads (and caches) the OBR \emph{Economic and Fiscal Outlook} Detailed
-Forecast Tables — Aggregates file and returns the components of net
+Forecast Tables - Aggregates file and returns the components of net
 borrowing (Table 6.5) in tidy long format.
 }
 \details{
-Covers the five-year forecast horizon published at the most recent Budget
-(OBR, March 2026).
-Key series include current receipts, current expenditure, depreciation,
-net investment, and net borrowing (PSNB).
+Covers the five-year forecast horizon published at the most recent
+fiscal event. Key series include current receipts, current expenditure,
+depreciation, net investment, and net borrowing (PSNB). The exact
+vintage is recorded in the returned object's provenance attribute and
+visible in the printed header.
 }
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
 efo <- get_efo_fiscal()
 efo[efo$series == "Net borrowing", ]
+obr_provenance(efo)$vintage
+
+# Pin to a specific EFO for reproducibility
+october_2024 <- get_efo_fiscal(vintage = "October 2024")
 options(op)
 }
 

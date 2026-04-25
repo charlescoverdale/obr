@@ -9,9 +9,10 @@ test_that("list_forecast_series() works without network", {
 })
 
 test_that("get_forecasts() errors on invalid series", {
+  # match.arg() raises a clear error message naming the valid choices
   expect_error(
     get_forecasts("NOT_A_SERIES"),
-    regexp = "Unknown series"
+    regexp = "should be one of"
   )
 })
 
@@ -53,4 +54,16 @@ test_that("get_forecasts() works for CPI series", {
   expect_s3_class(result, "data.frame")
   expect_true(all(result$series == "CPI"))
   expect_gt(nrow(result), 50)
+})
+
+test_that("get_forecasts() returns obr_tbl with HFD provenance", {
+  skip_on_cran()
+  skip_if_offline()
+
+  res  <- get_forecasts("PSNB")
+  expect_s3_class(res, "obr_tbl")
+  prov <- obr_provenance(res)
+  expect_equal(prov$publication, "HFD")
+  expect_match(prov$source_url, "historical-official-forecasts-database")
+  expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
 })

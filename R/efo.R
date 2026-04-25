@@ -1,24 +1,81 @@
 # EFO Detailed Forecast Tables
-# URLs are resolved dynamically; hardcoded fallback to March 2026.
+# URLs are resolved dynamically; the fallback is the latest known good URL
+# at package release. Silent fallbacks were removed in 0.3.0; the resolver
+# warns when it falls through.
 EFO_AGGREGATES_FALLBACK <- "https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/"
 EFO_AGGREGATES_FILENAME <- "efo_aggregates.xlsx"
 EFO_ECONOMY_FALLBACK    <- "https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/"
 EFO_ECONOMY_FILENAME    <- "efo_economy.xlsx"
 
-efo_aggregates_path <- function(refresh = FALSE) {
-  url <- obr_resolve_url(efo_url_candidates("detailed-forecast-tables-aggregates"))
-  if (is.null(url)) url <- EFO_AGGREGATES_FALLBACK
-  obr_fetch(url, EFO_AGGREGATES_FILENAME, refresh = refresh)
+efo_aggregates_source <- function(refresh = FALSE, vintage = NULL) {
+  vintage <- resolve_efo_vintage(vintage)
+  if (!is.null(vintage)) {
+    return(efo_pinned_source(
+      vintage  = vintage,
+      suffix   = "detailed-forecast-tables-aggregates",
+      stem     = "efo_aggregates",
+      refresh  = refresh
+    ))
+  }
+  obr_get_xlsx(
+    candidates = efo_url_candidates("detailed-forecast-tables-aggregates"),
+    fallback   = EFO_AGGREGATES_FALLBACK,
+    filename   = EFO_AGGREGATES_FILENAME,
+    refresh    = refresh,
+    label      = "EFO Aggregates"
+  )
 }
 
-efo_economy_path <- function(refresh = FALSE) {
-  url <- obr_resolve_url(efo_url_candidates("detailed-forecast-tables-economy"))
-  if (is.null(url)) url <- EFO_ECONOMY_FALLBACK
-  obr_fetch(url, EFO_ECONOMY_FILENAME, refresh = refresh)
+efo_economy_source <- function(refresh = FALSE, vintage = NULL) {
+  vintage <- resolve_efo_vintage(vintage)
+  if (!is.null(vintage)) {
+    return(efo_pinned_source(
+      vintage  = vintage,
+      suffix   = "detailed-forecast-tables-economy",
+      stem     = "efo_economy",
+      refresh  = refresh
+    ))
+  }
+  obr_get_xlsx(
+    candidates = efo_url_candidates("detailed-forecast-tables-economy"),
+    fallback   = EFO_ECONOMY_FALLBACK,
+    filename   = EFO_ECONOMY_FILENAME,
+    refresh    = refresh,
+    label      = "EFO Economy"
+  )
+}
+
+# Download an EFO file pinned to a specific vintage. No URL probing: the
+# vintage table determines the slug. Cache filenames carry the vintage tag
+# so different vintages do not overwrite each other.
+efo_pinned_source <- function(vintage, suffix, stem, refresh = FALSE) {
+  url <- efo_url_for_vintage(vintage, suffix)
+  filename <- sprintf("%s_%s.xlsx", stem, vintage_cache_tag(vintage))
+  path <- obr_fetch(url, filename, refresh = refresh)
+  list(
+    path      = path,
+    url       = url,
+    final_url = url,
+    source    = "pinned",
+    retrieved = tryCatch(file.info(path)$mtime, error = function(e) Sys.time()),
+    file_md5  = tryCatch(unname(tools::md5sum(path)), error = function(e) NA_character_)
+  )
+}
+
+# Build an obr_tbl from a parsed EFO frame and a source descriptor.
+efo_obr_tbl <- function(data, src) {
+  new_obr_tbl(
+    data        = data,
+    publication = "EFO",
+    vintage     = obr_url_vintage(src$url),
+    source_url  = src$url,
+    retrieved   = src$retrieved,
+    file_md5    = src$file_md5
+  )
 }
 
 # Parse sheet 6.5 (Components of Net Borrowing) from EFO aggregates file.
-# Row 5 has fiscal year labels in the columns that contain year-like strings.
+# Row 5 has fiscal year labels in columns that contain year-like strings.
 # Data rows are those where col 2 is non-NA and at least one value is numeric.
 parse_efo_fiscal <- function(path) {
   raw <- readxl::read_excel(path, sheet = "6.5",
@@ -52,7 +109,7 @@ parse_efo_fiscal <- function(path) {
 
 # Generic parser for EFO economy sheets (quarterly, wide format).
 # Finds the first row where col 2 has a quarterly period (e.g. "2008Q1"),
-# then takes the row immediately before it as the series name header.
+# then takes the row immediately before it as the series-name header.
 parse_efo_economy_sheet <- function(path, sheet) {
   raw <- readxl::read_excel(path, sheet = sheet,
                             col_names = FALSE, .name_repair = "minimal")
@@ -62,7 +119,6 @@ parse_efo_economy_sheet <- function(path, sheet) {
   first_data_row <- which(is_period)[1]
   if (is.na(first_data_row)) return(NULL)
 
-  # Walk back from first data row to find the series name row
   header_row <- NA
   for (i in (first_data_row - 1):1) {
     v <- as.character(unlist(raw[i, 3]))
@@ -82,7 +138,7 @@ parse_efo_economy_sheet <- function(path, sheet) {
 
   result_list <- list()
   for (j in which(valid_series)) {
-    col_idx <- j + 2L  # series[1] == col 3, series[2] == col 4, etc.
+    col_idx <- j + 2L
     if (col_idx > ncol(raw)) next
     vals <- suppressWarnings(
       as.numeric(as.character(unlist(raw[data_idx, col_idx])))
@@ -101,19 +157,38 @@ parse_efo_economy_sheet <- function(path, sheet) {
   result[!is.na(result$value), ]
 }
 
-# Special-case parser for sheet 1.14 (output gap): data starts at row 3 with
-# no series name header row; single series.
+# Special-case parser for sheet 1.14 (output gap).
+# Fix in 0.3.0: locate the value column by scanning each column for the one
+# containing the most numeric entries aligned with the quarterly periods,
+# rather than hardcoding column 3. This protects us from OBR moving the
+# column or inserting a leading column.
 parse_efo_output_gap <- function(path) {
   raw <- readxl::read_excel(path, sheet = "1.14",
                             col_names = FALSE, .name_repair = "minimal")
   col2 <- as.character(unlist(raw[, 2]))
   is_period <- grepl("^[0-9]{4}Q[1-4]$", col2)
   data_idx  <- which(is_period)
+  if (length(data_idx) == 0L) return(NULL)
+
+  best_col <- NA_integer_
+  best_n   <- -1L
+  for (j in 3:ncol(raw)) {
+    vals <- suppressWarnings(
+      as.numeric(as.character(unlist(raw[data_idx, j])))
+    )
+    n <- sum(!is.na(vals))
+    if (n > best_n) {
+      best_n   <- n
+      best_col <- j
+    }
+  }
+  if (is.na(best_col)) return(NULL)
+
   data.frame(
     period = col2[data_idx],
     series = "Output gap",
     value  = suppressWarnings(
-      as.numeric(as.character(unlist(raw[data_idx, 3])))
+      as.numeric(as.character(unlist(raw[data_idx, best_col])))
     ),
     stringsAsFactors = FALSE
   )
@@ -122,7 +197,7 @@ parse_efo_output_gap <- function(path) {
 #' List available EFO economy measures
 #'
 #' Returns a data frame of the economy measures available via
-#' \code{\link{get_efo_economy}}, showing the `measure` name to pass and a
+#' [get_efo_economy()], showing the `measure` name to pass and a
 #' short description of what each covers.
 #'
 #' @return A data frame with columns `measure`, `sheet`, and `description`.
@@ -148,18 +223,24 @@ list_efo_economy_measures <- function() {
 #' Get EFO fiscal projections (net borrowing components)
 #'
 #' Downloads (and caches) the OBR \emph{Economic and Fiscal Outlook} Detailed
-#' Forecast Tables — Aggregates file and returns the components of net
+#' Forecast Tables - Aggregates file and returns the components of net
 #' borrowing (Table 6.5) in tidy long format.
 #'
-#' Covers the five-year forecast horizon published at the most recent Budget
-#' (OBR, March 2026).
-#' Key series include current receipts, current expenditure, depreciation,
-#' net investment, and net borrowing (PSNB).
+#' Covers the five-year forecast horizon published at the most recent
+#' fiscal event. Key series include current receipts, current expenditure,
+#' depreciation, net investment, and net borrowing (PSNB). The exact
+#' vintage is recorded in the returned object's provenance attribute and
+#' visible in the printed header.
 #'
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
+#' @param vintage Optional EFO vintage label such as `"October 2024"`. If
+#'   supplied, the function downloads the file for that specific EFO. If
+#'   `NULL` (the default), the function uses any vintage set via [obr_pin()],
+#'   or falls back to the latest live EFO via the dynamic URL resolver. See
+#'   [obr_efo_vintages()] for the full list of supported vintages.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{fiscal_year}{Fiscal year being forecast, e.g. `"2025-26"` (character)}
 #'   \item{series}{Component name, e.g. `"Net borrowing"` (character)}
@@ -171,32 +252,40 @@ list_efo_economy_measures <- function() {
 #' op <- options(obr.cache_dir = tempdir())
 #' efo <- get_efo_fiscal()
 #' efo[efo$series == "Net borrowing", ]
+#' obr_provenance(efo)$vintage
+#'
+#' # Pin to a specific EFO for reproducibility
+#' october_2024 <- get_efo_fiscal(vintage = "October 2024")
 #' options(op)
 #' }
 #'
 #' @family EFO
 #' @export
-get_efo_fiscal <- function(refresh = FALSE) {
-  parse_efo_fiscal(efo_aggregates_path(refresh))
+get_efo_fiscal <- function(refresh = FALSE, vintage = NULL) {
+  src <- efo_aggregates_source(refresh = refresh, vintage = vintage)
+  efo_obr_tbl(parse_efo_fiscal(src$path), src)
 }
 
 #' Get EFO economy projections
 #'
 #' Downloads (and caches) the OBR \emph{Economic and Fiscal Outlook} Detailed
-#' Forecast Tables — Economy file and returns quarterly economic projections
+#' Forecast Tables - Economy file and returns quarterly economic projections
 #' for a chosen measure in tidy long format.
 #'
-#' Data runs from 2008 Q1 through the current forecast horizon
-#' (OBR, March 2026).
-#' Use \code{\link{list_efo_economy_measures}} to see all available measures.
+#' Data run from 2008 Q1 through the current forecast horizon. Use
+#' [list_efo_economy_measures()] to see all available measures.
 #'
 #' @param measure Character. Which economy table to return. One of
-#'   `"labour"`, `"inflation"`, or `"output_gap"`. Defaults to
+#'   `"inflation"`, `"labour"`, or `"output_gap"`. Defaults to
 #'   `"inflation"`.
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
+#' @param vintage Optional EFO vintage label such as `"October 2024"`. If
+#'   supplied, the function downloads the file for that specific EFO. If
+#'   `NULL` (the default), the function uses any vintage set via [obr_pin()],
+#'   or falls back to the latest live EFO via the dynamic URL resolver.
 #'
-#' @return A data frame with columns:
+#' @return An `obr_tbl` with columns:
 #' \describe{
 #'   \item{period}{Calendar quarter, e.g. `"2025Q1"` (character)}
 #'   \item{series}{Variable name, e.g. `"CPI"` (character)}
@@ -206,27 +295,29 @@ get_efo_fiscal <- function(refresh = FALSE) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' # CPI and RPI since 2008
 #' inf <- get_efo_economy("inflation")
 #' inf[inf$series == "CPI", ]
 #'
-#' # Labour market
 #' lab <- get_efo_economy("labour")
+#'
+#' # Compare CPI projections from two different EFOs
+#' inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
+#' inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
 #' options(op)
 #' }
 #'
 #' @family EFO
 #' @export
-get_efo_economy <- function(measure = "inflation", refresh = FALSE) {
-  valid <- c("labour", "inflation", "output_gap")
-  if (!measure %in% valid) {
-    cli::cli_abort(c(
-      "Unknown measure {.val {measure}}.",
-      "i" = "Run {.fn list_efo_economy_measures} to see available options."
-    ))
+get_efo_economy <- function(measure = c("inflation", "labour", "output_gap"),
+                            refresh = FALSE,
+                            vintage = NULL) {
+  measure <- match.arg(measure)
+  src <- efo_economy_source(refresh = refresh, vintage = vintage)
+  data <- if (measure == "output_gap") {
+    parse_efo_output_gap(src$path)
+  } else {
+    sheet_map <- c(labour = "1.6", inflation = "1.7")
+    parse_efo_economy_sheet(src$path, sheet_map[[measure]])
   }
-  path <- efo_economy_path(refresh)
-  if (measure == "output_gap") return(parse_efo_output_gap(path))
-  sheet_map <- c(labour = "1.6", inflation = "1.7")
-  parse_efo_economy_sheet(path, sheet_map[[measure]])
+  efo_obr_tbl(data, src)
 }

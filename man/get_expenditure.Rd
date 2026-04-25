@@ -11,16 +11,16 @@ get_expenditure(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
-\item{tme_bn}{Total managed expenditure in £ billion (numeric)}
+\item{tme_bn}{Total managed expenditure in \enc{£}{GBP} billion (numeric)}
 }
 }
 \description{
 Downloads (and caches) the OBR Public Finances Databank and returns
-annual Total Managed Expenditure (TME) in £ billion. TME is the broadest
-measure of UK government spending.
+annual Total Managed Expenditure (TME) in \enc{£}{GBP} billion. TME is
+the broadest measure of UK government spending.
 }
 \examples{
 \donttest{

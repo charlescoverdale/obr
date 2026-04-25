@@ -11,7 +11,7 @@ get_incapacity_spending(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{year}{Fiscal year, e.g. \code{"2023-24"} (character)}
 \item{series}{Benefit name (character)}
@@ -20,8 +20,8 @@ A data frame with columns:
 }
 \description{
 Downloads (and caches) the OBR Welfare Trends Report charts and tables
-workbook and returns annual spending on each incapacity benefit as a share
-of GDP, from 1978-79 to the current forecast horizon.
+workbook and returns annual spending on each incapacity benefit as a
+share of GDP, from 1978-79 to the current forecast horizon.
 }
 \details{
 Series include: Invalidity Benefit, Incapacity Benefit, Employment and

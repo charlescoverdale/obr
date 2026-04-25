@@ -79,3 +79,20 @@ test_that("COVID-19 spike visible in PSNB data", {
 
   expect_gt(covid_year, normal_year * 5)
 })
+
+test_that("PFD-backed functions return obr_tbl with PFD provenance", {
+  skip_on_cran()
+  skip_if_offline()
+
+  for (fn in list(get_psnb, get_psnd, get_expenditure,
+                  get_receipts, get_public_finances)) {
+    res  <- fn()
+    expect_s3_class(res, "obr_tbl")
+    prov <- obr_provenance(res)
+    expect_equal(prov$publication, "PFD")
+    expect_match(prov$source_url, "obr\\.uk")
+    expect_true(inherits(prov$retrieved, "POSIXt"))
+    expect_match(prov$file_md5, "^[a-f0-9]{32}$")
+    expect_match(prov$package_version, "^[0-9]+\\.[0-9]+\\.[0-9]+")
+  }
+})

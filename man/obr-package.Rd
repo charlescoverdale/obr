@@ -6,11 +6,12 @@
 \alias{obr-package}
 \title{obr: Access 'Office for Budget Responsibility' Data}
 \description{
-Provides clean, tidy access to data published by the 'Office for Budget Responsibility' ('OBR'), the UK's independent fiscal watchdog. Covers the Public Finances Databank (outturn for PSNB, PSND, receipts, and expenditure since 1946), the Historical Official Forecasts Database (every 'OBR' forecast since 2010), the Economic and Fiscal Outlook detailed forecast tables (five-year projections from the latest Budget), the Welfare Trends Report (incapacity benefit spending and caseloads), and the Fiscal Risks and Sustainability Report (50-year state pension projections). Data is downloaded from the 'OBR' on first use and cached locally for subsequent calls. Data is sourced from the 'OBR' website \url{https://obr.uk}.
+Provides clean, tidy access to data published by the 'Office for Budget Responsibility' ('OBR'), the UK's independent fiscal watchdog. Covers the Public Finances Databank (outturn for PSNB, PSND, receipts, and expenditure since 1946), the Historical Official Forecasts Database (every 'OBR' forecast since 2010), the Economic and Fiscal Outlook detailed forecast tables (five-year projections from the latest Budget), the Welfare Trends Report (incapacity benefit spending and caseloads), and the Fiscal Risks and Sustainability Report (50-year state pension projections). All returned objects carry provenance metadata recording the source URL, publication vintage, retrieval time, and file fingerprint, so analyses can be audited and reproduced. Data is downloaded from the 'OBR' on first use and cached locally for subsequent calls. Data is sourced from the 'OBR' website \url{https://obr.uk}.
 }
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://charlescoverdale.github.io/obr/}
   \item \url{https://github.com/charlescoverdale/obr}
   \item Report bugs at \url{https://github.com/charlescoverdale/obr/issues}
 }

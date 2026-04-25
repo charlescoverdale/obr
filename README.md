@@ -62,6 +62,34 @@ get_psnb()
 
 ---
 
+## Provenance and reproducibility
+
+Every data-returning function returns an `obr_tbl`: a `data.frame` with attached metadata recording the OBR publication, the publication vintage, the source URL, when the data was retrieved, and the MD5 fingerprint of the underlying spreadsheet. The provenance prints automatically as a header above the data.
+
+```r
+library(obr)
+get_efo_fiscal()
+#> # obr_tbl: <rows> x <cols>
+#> # Source:       OBR Economic and Fiscal Outlook, <vintage>
+#> # URL:          https://obr.uk/download/<vintage-slug>/
+#> # Retrieved:    <timestamp>
+#> # File MD5:     <md5 prefix>
+#> # Package:      obr <version>
+#>
+#> <data rows ...>
+```
+
+Use `obr_provenance()` to extract the metadata as a list, or `summary()` for the full provenance card. Provenance survives `[` subsetting and is stripped only on explicit `as.data.frame()`. This means an analysis pinned against an `obr_tbl` always carries the audit trail of which OBR publication produced the numbers.
+
+```r
+psnb <- get_psnb()
+obr_provenance(psnb)
+# Returns a list with: publication, vintage, source_url,
+# retrieved (POSIXct), file_md5, package_version, notes
+```
+
+---
+
 ## Functions
 
 ### Public Finances Databank
@@ -80,6 +108,8 @@ get_psnb()
 |---|---|
 | `list_forecast_series()` | Data frame of available series (no download needed) |
 | `get_forecasts(series)` | Every OBR forecast for a given series, in tidy long format |
+| `obr_forecast_panel(series)` | Wide real-time panel: rows = forecast vintages, columns = fiscal years |
+| `get_forecast_revisions(unit)` | EFO-to-EFO PSNB revisions decomposed into policy, classifications, and underlying components |
 
 ### Economic and Fiscal Outlook (EFO)
 
@@ -103,6 +133,19 @@ get_psnb()
 |---|---|
 | `get_pension_projections()` | 50-year state pension spending projections (% GDP) under demographic and triple-lock scenarios |
 
+### Policy Measures Database (PMD)
+
+| Function | Returns |
+|---|---|
+| `get_policy_measures()` | Every tax (since 1970) and spending (since 2010) measure scored at a UK fiscal event, with Exchequer effect by fiscal year in GBP million |
+| `policy_measures_summary()` | Net Exchequer effect aggregated by fiscal event and fiscal year |
+
+### Fiscal rules
+
+| Function | Returns |
+|---|---|
+| `obr_fiscal_rules()` | The three Charter for Budget Responsibility rules (stability, investment, welfare cap), with the OBR's last published headroom against each |
+
 ### Cache management
 
 | Function | What it does |
@@ -110,6 +153,18 @@ get_psnb()
 | `clear_cache()` | Deletes all locally cached OBR files |
 
 All download functions accept `refresh = TRUE` to force a fresh download from the OBR website.
+
+### Provenance and vintage control
+
+| Function | What it does |
+|---|---|
+| `obr_provenance(x)` | Extracts the source URL, vintage, retrieval time, and file fingerprint attached to any returned `obr_tbl` |
+| `summary(x)` | Prints the full provenance card alongside the structural summary |
+| `obr_efo_vintages()` | Lists every EFO published since June 2010, with publication dates and URL slugs |
+| `obr_as_of(date)` | Returns the EFO that was current on a given calendar date |
+| `obr_pin(vintage)` | Sets a session-wide EFO vintage; `get_efo_*` then defaults to that vintage |
+| `obr_unpin()` | Clears any pin set by `obr_pin()` |
+| `obr_pinned()` | Returns the currently pinned vintage, or `NULL` |
 
 ---
 
@@ -221,6 +276,29 @@ efo[efo$series == "Net borrowing", ]
 
 The EFO detailed tables also include the full breakdown: current receipts, current expenditure, depreciation, net investment, and net borrowing - enabling you to see exactly how the deficit is projected to narrow.
 
+### 5a. Reproducing an analysis as it would have looked on a past date
+
+Because the OBR revises its forecast at every Budget and Statement, an analysis run today and the same analysis run six months from now can return materially different numbers. The vintage layer pins to a specific EFO so the analysis is reproducible.
+
+```r
+# What did the OBR forecast for 2027-28 borrowing in October 2024 vs March 2026?
+oct_2024 <- get_efo_fiscal(vintage = "October 2024")
+mar_2026 <- get_efo_fiscal(vintage = "March 2026")
+
+oct_2024[oct_2024$series == "Net borrowing" & oct_2024$fiscal_year == "2027-28", ]
+mar_2026[mar_2026$series == "Net borrowing" & mar_2026$fiscal_year == "2027-28", ]
+
+# Or pin once and let every subsequent EFO call use that vintage
+obr_pin("October 2024")
+get_efo_fiscal()                  # uses October 2024
+get_efo_economy("inflation")      # also uses October 2024
+obr_unpin()
+
+# Find which EFO was current on a given date
+obr_as_of("2024-12-15")
+#> [1] "October 2024"
+```
+
 ---
 
 ### 6. Is the UK's incapacity benefits bill rising?
@@ -250,6 +328,33 @@ cases[cases$series == "Share of working age population", ]
 Incapacity benefit spending and caseloads have risen sharply since the pandemic - a key driver of welfare reform debate in 2025.
 
 ---
+
+### 7a. Every tax measure in a Budget
+
+```r
+# All tax measures scored from 2025-26 onwards
+pmd <- get_policy_measures(type = "tax", since = "2025-26")
+
+# Filter to measures from a specific event, ordered by 2025-26 effect
+oct24 <- pmd[grepl("October 2024", pmd$event) &
+             pmd$fiscal_year == "2025-26", ]
+oct24 <- oct24[order(-oct24$value_mn), ]
+head(oct24[, c("measure", "head", "value_mn")])
+```
+
+The PMD covers every measure scored at a UK fiscal event: 1970 onwards for tax, 2010 onwards for spending. Combine `search =` and `since =` to pull a thematic time series, e.g. all alcohol-duty measures since 2010.
+
+```r
+get_policy_measures(type = "tax", search = "alcohol", since = "2010-11")
+```
+
+### 7b. What does the OBR say about the fiscal rules?
+
+```r
+obr_fiscal_rules()
+```
+
+Returns the three Charter for Budget Responsibility rules in force (stability rule, investment rule, welfare cap), with their target metric, direction of pass, and the source Charter version. Numerical headroom is not shipped as a constant because it changes at every fiscal event; derive it from `get_efo_fiscal()` or consult the EFO press release for the relevant vintage.
 
 ### 7. What happens to the state pension bill as the UK ages?
 
@@ -317,11 +422,11 @@ This package is part of a suite of R packages for economic, financial, and polic
 
 ## Keeping data up to date
 
-The two core datasets - the Public Finances Databank and Historical Official Forecasts Database - are accessed via stable generic URLs that the OBR keeps pointed at the latest file. They update automatically whenever you call `refresh = TRUE`.
+The Public Finances Databank is accessed via a stable URL that the OBR keeps pointed at the latest file. The Historical Official Forecasts Database, EFO, WTR, and FSR functions all use a dynamic URL resolver that probes the OBR's recent fiscal events (most recent first) and uses whichever URL is live, so the package automatically picks up new editions without a code change.
 
-The EFO, WTR, and FSR functions work differently. The OBR publishes each edition at a new URL containing the publication date (e.g. `march-2026-economic-and-fiscal-outlook-...`), and does not maintain a generic redirect. This means the URLs in the package are hardcoded to a specific edition: calls to `get_efo_fiscal()` will always return the March 2026 Budget forecasts until the package is updated, even after the OBR publishes a new edition.
+If the resolver cannot find a live URL (for example because of a temporary network outage, or because the OBR has moved to an unfamiliar slug pattern), it falls back to the last-known-good URL and emits an explicit warning rather than failing silently. The returned `obr_tbl` always records the URL that was actually used, so any analysis carries its own audit trail.
 
-The OBR publishes on a roughly predictable schedule - the EFO twice a year (March and October/November), the FSR and WTR once a year each. This package will be updated to track each new edition, meaning **2–3 patch releases per year**. Check the [NEWS](https://github.com/charlescoverdale/obr/blob/main/NEWS.md) to see which edition each function currently reflects. If you need data from the absolute latest publication before a package update is available, download directly from [obr.uk](https://obr.uk).
+The OBR publishes on a roughly predictable schedule: the EFO twice a year (March and October/November), the FSR each summer, the WTR annually. The package's fallback URLs are refreshed at each release; check the [NEWS](https://github.com/charlescoverdale/obr/blob/main/NEWS.md) for the current fallback edition.
 
 ---
 

@@ -4,18 +4,27 @@
 \alias{get_efo_economy}
 \title{Get EFO economy projections}
 \usage{
-get_efo_economy(measure = "inflation", refresh = FALSE)
+get_efo_economy(
+  measure = c("inflation", "labour", "output_gap"),
+  refresh = FALSE,
+  vintage = NULL
+)
 }
 \arguments{
 \item{measure}{Character. Which economy table to return. One of
-\code{"labour"}, \code{"inflation"}, or \code{"output_gap"}. Defaults to
+\code{"inflation"}, \code{"labour"}, or \code{"output_gap"}. Defaults to
 \code{"inflation"}.}
 
 \item{refresh}{Logical. If \code{TRUE}, re-download even if a cached copy
 exists. Defaults to \code{FALSE}.}
+
+\item{vintage}{Optional EFO vintage label such as \code{"October 2024"}. If
+supplied, the function downloads the file for that specific EFO. If
+\code{NULL} (the default), the function uses any vintage set via \code{\link[=obr_pin]{obr_pin()}},
+or falls back to the latest live EFO via the dynamic URL resolver.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{period}{Calendar quarter, e.g. \code{"2025Q1"} (character)}
 \item{series}{Variable name, e.g. \code{"CPI"} (character)}
@@ -24,23 +33,24 @@ A data frame with columns:
 }
 \description{
 Downloads (and caches) the OBR \emph{Economic and Fiscal Outlook} Detailed
-Forecast Tables — Economy file and returns quarterly economic projections
+Forecast Tables - Economy file and returns quarterly economic projections
 for a chosen measure in tidy long format.
 }
 \details{
-Data runs from 2008 Q1 through the current forecast horizon
-(OBR, March 2026).
-Use \code{\link{list_efo_economy_measures}} to see all available measures.
+Data run from 2008 Q1 through the current forecast horizon. Use
+\code{\link[=list_efo_economy_measures]{list_efo_economy_measures()}} to see all available measures.
 }
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-# CPI and RPI since 2008
 inf <- get_efo_economy("inflation")
 inf[inf$series == "CPI", ]
 
-# Labour market
 lab <- get_efo_economy("labour")
+
+# Compare CPI projections from two different EFOs
+inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
+inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
 options(op)
 }
 

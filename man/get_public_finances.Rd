@@ -11,12 +11,13 @@ get_public_finances(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} (a \code{data.frame} with attached provenance) with columns:
 \describe{
 \item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
 \item{series}{Series name (character)}
-\item{value}{Value in £ billion (numeric)}
+\item{value}{Value in \enc{£}{GBP} billion (numeric)}
 }
+Use \code{\link[=obr_provenance]{obr_provenance()}} to extract source URL, vintage, and retrieval time.
 }
 \description{
 Downloads (and caches) the OBR Public Finances Databank and returns all
@@ -33,6 +34,7 @@ deflator, and more.
 op <- options(obr.cache_dir = tempdir())
 pf <- get_public_finances()
 unique(pf$series)
+obr_provenance(pf)
 options(op)
 }
 

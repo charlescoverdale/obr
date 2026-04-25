@@ -11,7 +11,7 @@ get_welfare_spending(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{year}{Fiscal year, e.g. \code{"2023-24"} (character)}
 \item{series}{Spending category: \code{"Working-age incapacity benefits spending"}
@@ -21,18 +21,17 @@ or \code{"Working-age non-incapacity spending"} (character)}
 }
 \description{
 Downloads (and caches) the OBR Welfare Trends Report charts and tables
-workbook and returns annual working-age welfare spending as a share of GDP,
-split into incapacity-related and non-incapacity spending.
+workbook and returns annual working-age welfare spending as a share of
+GDP, split into incapacity-related and non-incapacity spending.
 }
 \details{
-Data cover fiscal years from 1978-79 through the current forecast horizon
-(OBR, October 2024).
+Data cover fiscal years from 1978-79 through the current forecast horizon.
+The exact vintage is recorded in the returned object's provenance.
 }
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
 welfare <- get_welfare_spending()
-# Incapacity share since 2000
 welfare[welfare$series == "Working-age incapacity benefits spending" &
         welfare$year >= "2000-01", ]
 options(op)

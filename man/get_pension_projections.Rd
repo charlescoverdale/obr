@@ -11,7 +11,7 @@ get_pension_projections(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-A data frame with columns:
+An \code{obr_tbl} with columns:
 \describe{
 \item{scenario_type}{Either \code{"Demographic scenarios"} or
 \code{"Triple lock scenarios"} (character)}
@@ -28,23 +28,21 @@ projections for state pension spending as a share of GDP, under
 alternative demographic and triple-lock uprating scenarios.
 }
 \details{
-This data is unique to the Fiscal Risks and Sustainability Report
-(OBR, July 2025)
-and is not available in any other OBR publication. It illustrates how
-ageing demographics and pension uprating rules interact to determine the
-long-run cost of the state pension.
+This data is unique to the Fiscal Risks and Sustainability Report and is
+not available in any other OBR publication. It illustrates how ageing
+demographics and pension uprating rules interact to determine the
+long-run cost of the state pension. The exact vintage is recorded in
+the returned object's provenance.
 }
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
 proj <- get_pension_projections()
 
-# Central demographic projection over the 50-year horizon
 central <- proj[proj$scenario_type == "Demographic scenarios" &
                 proj$scenario == "Central projection", ]
 tail(central, 10)
 
-# How much more expensive is 'higher life expectancy' vs central?
 dem <- proj[proj$scenario_type == "Demographic scenarios", ]
 options(op)
 }
