@@ -19,7 +19,7 @@ get_incapacity_spending(refresh = FALSE)
 
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - year:
 

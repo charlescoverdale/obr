@@ -1,30 +1,42 @@
 # Get EFO economy projections
 
 Downloads (and caches) the OBR *Economic and Fiscal Outlook* Detailed
-Forecast Tables — Economy file and returns quarterly economic
+Forecast Tables - Economy file and returns quarterly economic
 projections for a chosen measure in tidy long format.
 
 ## Usage
 
 ``` r
-get_efo_economy(measure = "inflation", refresh = FALSE)
+get_efo_economy(
+  measure = c("inflation", "labour", "output_gap"),
+  refresh = FALSE,
+  vintage = NULL
+)
 ```
 
 ## Arguments
 
 - measure:
 
-  Character. Which economy table to return. One of `"labour"`,
-  `"inflation"`, or `"output_gap"`. Defaults to `"inflation"`.
+  Character. Which economy table to return. One of `"inflation"`,
+  `"labour"`, or `"output_gap"`. Defaults to `"inflation"`.
 
 - refresh:
 
   Logical. If `TRUE`, re-download even if a cached copy exists. Defaults
   to `FALSE`.
 
+- vintage:
+
+  Optional EFO vintage label such as `"October 2024"`. If supplied, the
+  function downloads the file for that specific EFO. If `NULL` (the
+  default), the function uses any vintage set via
+  [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md),
+  or falls back to the latest live EFO via the dynamic URL resolver.
+
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - period:
 
@@ -40,9 +52,8 @@ A data frame with columns:
 
 ## Details
 
-Data runs from 2008 Q1 through the current forecast horizon (OBR, March
-2026). Use
-[`list_efo_economy_measures`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
+Data run from 2008 Q1 through the current forecast horizon. Use
+[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
 to see all available measures.
 
 ## See also
@@ -56,202 +67,40 @@ Other EFO:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-# CPI and RPI since 2008
 inf <- get_efo_economy("inflation")
 #> ℹ Downloading efo_economy.xlsx from OBR...
 #> ✔ Saved to cache.
 inf[inf$series == "CPI", ]
-#>      period series         value
-#> 187  2008Q1    CPI   2.375720165
-#> 188  2008Q2    CPI   3.419722901
-#> 189  2008Q3    CPI   4.838841289
-#> 190  2008Q4    CPI   3.824051655
-#> 191  2009Q1    CPI   3.005551246
-#> 192  2009Q2    CPI   2.088718321
-#> 193  2009Q3    CPI   1.489726027
-#> 194  2009Q4    CPI   2.103188793
-#> 195  2010Q1    CPI   3.274536585
-#> 196  2010Q2    CPI   3.456673858
-#> 197  2010Q3    CPI   3.085264659
-#> 198  2010Q4    CPI   3.376261482
-#> 199  2011Q1    CPI   4.118409468
-#> 200  2011Q2    CPI   4.377184768
-#> 201  2011Q3    CPI   4.705877977
-#> 202  2011Q4    CPI   4.645818910
-#> 203  2012Q1    CPI   3.490237352
-#> 204  2012Q2    CPI   2.755359530
-#> 205  2012Q3    CPI   2.412561948
-#> 206  2012Q4    CPI   2.669861915
-#> 207  2013Q1    CPI   2.776365301
-#> 208  2013Q2    CPI   2.679388224
-#> 209  2013Q3    CPI   2.708862340
-#> 210  2013Q4    CPI   2.102762897
-#> 211  2014Q1    CPI   1.739151204
-#> 212  2014Q2    CPI   1.720563426
-#> 213  2014Q3    CPI   1.456000811
-#> 214  2014Q4    CPI   0.935231995
-#> 215  2015Q1    CPI   0.100613406
-#> 216  2015Q2    CPI  -0.016651514
-#> 217  2015Q3    CPI   0.009653923
-#> 218  2015Q4    CPI   0.067181056
-#> 219  2016Q1    CPI   0.346767358
-#> 220  2016Q2    CPI   0.351405455
-#> 221  2016Q3    CPI   0.726304402
-#> 222  2016Q4    CPI   1.211106015
-#> 223  2017Q1    CPI   2.143529679
-#> 224  2017Q2    CPI   2.742981565
-#> 225  2017Q3    CPI   2.816854865
-#> 226  2017Q4    CPI   3.021745270
-#> 227  2018Q1    CPI   2.717650674
-#> 228  2018Q2    CPI   2.416473370
-#> 229  2018Q3    CPI   2.515339198
-#> 230  2018Q4    CPI   2.268206854
-#> 231  2019Q1    CPI   1.875000000
-#> 232  2019Q2    CPI   2.047807408
-#> 233  2019Q3    CPI   1.832848942
-#> 234  2019Q4    CPI   1.413459501
-#> 235  2020Q1    CPI   1.667124811
-#> 236  2020Q2    CPI   0.616665739
-#> 237  2020Q3    CPI   0.596669366
-#> 238  2020Q4    CPI   0.533531666
-#> 239  2021Q1    CPI   0.609581865
-#> 240  2021Q2    CPI   2.051863389
-#> 241  2021Q3    CPI   2.771614214
-#> 242  2021Q4    CPI   4.907448451
-#> 243  2022Q1    CPI   6.219518526
-#> 244  2022Q2    CPI   9.169205390
-#> 245  2022Q3    CPI  10.022126463
-#> 246  2022Q4    CPI  10.749545412
-#> 247  2023Q1    CPI  10.174832312
-#> 248  2023Q2    CPI   8.427754814
-#> 249  2023Q3    CPI   6.711850827
-#> 250  2023Q4    CPI   4.177268147
-#> 251  2024Q1    CPI   3.537756159
-#> 252  2024Q2    CPI   2.098878462
-#> 253  2024Q3    CPI   2.042876565
-#> 254  2024Q4    CPI   2.468599485
-#> 255  2025Q1    CPI   2.803667653
-#> 256  2025Q2    CPI   3.487245400
-#> 257  2025Q3    CPI   3.800130250
-#> 258  2025Q4    CPI   3.393335585
-#> 259  2026Q1    CPI   3.076912997
-#> 260  2026Q2    CPI   2.136747033
-#> 261  2026Q3    CPI   2.084105564
-#> 262  2026Q4    CPI   1.925327258
-#> 263  2027Q1    CPI   1.913623928
-#> 264  2027Q2    CPI   2.033869603
-#> 265  2027Q3    CPI   2.012844566
-#> 266  2027Q4    CPI   1.913540944
-#> 267  2028Q1    CPI   1.840502796
-#> 268  2028Q2    CPI   1.978660973
-#> 269  2028Q3    CPI   2.021482508
-#> 270  2028Q4    CPI   2.063068085
-#> 271  2029Q1    CPI   2.080942674
-#> 272  2029Q2    CPI   2.000463883
-#> 273  2029Q3    CPI   2.000085864
-#> 274  2029Q4    CPI   2.000149742
-#> 275  2030Q1    CPI   1.999561230
-#> 276  2030Q2    CPI   1.999664444
-#> 277  2030Q3    CPI   1.999645365
-#> 278  2030Q4    CPI   2.000055865
-#> 279  2031Q1    CPI   1.999994962
-#> 1117 2008Q1    CPI  82.924333333
-#> 1118 2008Q2    CPI  84.597333333
-#> 1119 2008Q3    CPI  85.653333333
-#> 1120 2008Q4    CPI  85.758666667
-#> 1121 2009Q1    CPI  85.416666667
-#> 1122 2009Q2    CPI  86.364333333
-#> 1123 2009Q3    CPI  86.929333333
-#> 1124 2009Q4    CPI  87.562333333
-#> 1125 2010Q1    CPI  88.213666667
-#> 1126 2010Q2    CPI  89.349666667
-#> 1127 2010Q3    CPI  89.611333333
-#> 1128 2010Q4    CPI  90.518666667
-#> 1129 2011Q1    CPI  91.846666667
-#> 1130 2011Q2    CPI  93.260666667
-#> 1131 2011Q3    CPI  93.828333333
-#> 1132 2011Q4    CPI  94.724000000
-#> 1133 2012Q1    CPI  95.052333333
-#> 1134 2012Q2    CPI  95.830333333
-#> 1135 2012Q3    CPI  96.092000000
-#> 1136 2012Q4    CPI  97.253000000
-#> 1137 2013Q1    CPI  97.691333333
-#> 1138 2013Q2    CPI  98.398000000
-#> 1139 2013Q3    CPI  98.695000000
-#> 1140 2013Q4    CPI  99.298000000
-#> 1141 2014Q1    CPI  99.390333333
-#> 1142 2014Q2    CPI 100.091000000
-#> 1143 2014Q3    CPI 100.132000000
-#> 1144 2014Q4    CPI 100.226666667
-#> 1145 2015Q1    CPI  99.490333333
-#> 1146 2015Q2    CPI 100.074333333
-#> 1147 2015Q3    CPI 100.141666667
-#> 1148 2015Q4    CPI 100.294000000
-#> 1149 2016Q1    CPI  99.835333333
-#> 1150 2016Q2    CPI 100.426000000
-#> 1151 2016Q3    CPI 100.869000000
-#> 1152 2016Q4    CPI 101.508666667
-#> 1153 2017Q1    CPI 101.975333333
-#> 1154 2017Q2    CPI 103.180666667
-#> 1155 2017Q3    CPI 103.710333333
-#> 1156 2017Q4    CPI 104.576000000
-#> 1157 2018Q1    CPI 104.746666667
-#> 1158 2018Q2    CPI 105.674000000
-#> 1159 2018Q3    CPI 106.319000000
-#> 1160 2018Q4    CPI 106.948000000
-#> 1161 2019Q1    CPI 106.710666667
-#> 1162 2019Q2    CPI 107.838000000
-#> 1163 2019Q3    CPI 108.267666667
-#> 1164 2019Q4    CPI 108.459666667
-#> 1165 2020Q1    CPI 108.489666667
-#> 1166 2020Q2    CPI 108.503000000
-#> 1167 2020Q3    CPI 108.913666667
-#> 1168 2020Q4    CPI 109.038333333
-#> 1169 2021Q1    CPI 109.151000000
-#> 1170 2021Q2    CPI 110.729333333
-#> 1171 2021Q3    CPI 111.932333333
-#> 1172 2021Q4    CPI 114.389333333
-#> 1173 2022Q1    CPI 115.939666667
-#> 1174 2022Q2    CPI 120.882333333
-#> 1175 2022Q3    CPI 123.150333333
-#> 1176 2022Q4    CPI 126.685666667
-#> 1177 2023Q1    CPI 127.736333333
-#> 1178 2023Q2    CPI 131.070000000
-#> 1179 2023Q3    CPI 131.416000000
-#> 1180 2023Q4    CPI 131.977666667
-#> 1181 2024Q1    CPI 132.255333333
-#> 1182 2024Q2    CPI 133.821000000
-#> 1183 2024Q3    CPI 134.100666667
-#> 1184 2024Q4    CPI 135.235666667
-#> 1185 2025Q1    CPI 135.963333333
-#> 1186 2025Q2    CPI 138.487666667
-#> 1187 2025Q3    CPI 139.196666667
-#> 1188 2025Q4    CPI 139.824666667
-#> 1189 2026Q1    CPI 140.146806808
-#> 1190 2026Q2    CPI 141.446797775
-#> 1191 2026Q3    CPI 142.097672141
-#> 1192 2026Q4    CPI 142.516749088
-#> 1193 2027Q1    CPI 142.828689638
-#> 1194 2027Q2    CPI 144.323641199
-#> 1195 2027Q3    CPI 144.957877413
-#> 1196 2027Q4    CPI 145.243865434
-#> 1197 2028Q1    CPI 145.457455663
-#> 1198 2028Q2    CPI 147.179316762
-#> 1199 2028Q3    CPI 147.888175548
-#> 1200 2028Q4    CPI 148.240345266
-#> 1201 2029Q1    CPI 148.484341931
-#> 1202 2029Q2    CPI 150.123585836
-#> 1203 2029Q3    CPI 150.846066041
-#> 1204 2029Q4    CPI 151.205374149
-#> 1205 2030Q1    CPI 151.453377265
-#> 1206 2030Q2    CPI 153.125553805
-#> 1207 2030Q3    CPI 153.862452409
-#> 1208 2030Q4    CPI 154.229566102
-#> 1209 2031Q1    CPI 154.482437181
+#> # obr_tbl: 186 rows x 3 cols
+#> # Source:       OBR Economic and Fiscal Outlook, March 2026
+#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/
+#> # Retrieved:    2026-04-26 08:06:37 UTC
+#> # File MD5:     da58dba1f8d3
+#> # Package:      obr 0.3.0
+#> 
+#>     period series    value
+#> 183 2008Q1    CPI 2.375720
+#> 184 2008Q2    CPI 3.419723
+#> 185 2008Q3    CPI 4.838841
+#> 186 2008Q4    CPI 3.824052
+#> 187 2009Q1    CPI 3.005551
+#> 188 2009Q2    CPI 2.088718
+#> 189 2009Q3    CPI 1.489726
+#> 190 2009Q4    CPI 2.103189
+#> 191 2010Q1    CPI 3.274537
+#> 192 2010Q2    CPI 3.456674
+#> # ... with 176 more rows
 
-# Labour market
 lab <- get_efo_economy("labour")
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+
+# Compare CPI projections from two different EFOs
+inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
+#> ℹ Downloading efo_economy_october_2024.xlsx from OBR...
+#> ✔ Saved to cache.
+inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
+#> ℹ Downloading efo_economy_march_2026.xlsx from OBR...
+#> ✔ Saved to cache.
 options(op)
 # }
 ```

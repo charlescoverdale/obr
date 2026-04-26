@@ -19,7 +19,7 @@ get_welfare_spending(refresh = FALSE)
 
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - year:
 
@@ -37,7 +37,8 @@ A data frame with columns:
 ## Details
 
 Data cover fiscal years from 1978-79 through the current forecast
-horizon (OBR, October 2024).
+horizon. The exact vintage is recorded in the returned object's
+provenance.
 
 ## See also
 
@@ -52,9 +53,15 @@ Other welfare:
 op <- options(obr.cache_dir = tempdir())
 welfare <- get_welfare_spending()
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-# Incapacity share since 2000
 welfare[welfare$series == "Working-age incapacity benefits spending" &
         welfare$year >= "2000-01", ]
+#> # obr_tbl: 29 rows x 3 cols
+#> # Source:       OBR Welfare Trends Report, October 2024
+#> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
+#> # Retrieved:    2026-04-26 08:08:36 UTC
+#> # File MD5:     c587017c08a1
+#> # Package:      obr 0.3.0
+#> 
 #>       year                                   series     value
 #> 23 2000-01 Working-age incapacity benefits spending 1.0914588
 #> 24 2001-02 Working-age incapacity benefits spending 1.0812179
@@ -66,25 +73,7 @@ welfare[welfare$series == "Working-age incapacity benefits spending" &
 #> 30 2007-08 Working-age incapacity benefits spending 0.8035180
 #> 31 2008-09 Working-age incapacity benefits spending 0.7741892
 #> 32 2009-10 Working-age incapacity benefits spending 0.7877039
-#> 33 2010-11 Working-age incapacity benefits spending 0.7438999
-#> 34 2011-12 Working-age incapacity benefits spending 0.7162770
-#> 35 2012-13 Working-age incapacity benefits spending 0.6692722
-#> 36 2013-14 Working-age incapacity benefits spending 0.6421571
-#> 37 2014-15 Working-age incapacity benefits spending 0.6516647
-#> 38 2015-16 Working-age incapacity benefits spending 0.6971264
-#> 39 2016-17 Working-age incapacity benefits spending 0.6960196
-#> 40 2017-18 Working-age incapacity benefits spending 0.6861634
-#> 41 2018-19 Working-age incapacity benefits spending 0.6756497
-#> 42 2019-20 Working-age incapacity benefits spending 0.7386774
-#> 43 2020-21 Working-age incapacity benefits spending 0.8825464
-#> 44 2021-22 Working-age incapacity benefits spending 0.8717820
-#> 45 2022-23 Working-age incapacity benefits spending 0.8423765
-#> 46 2023-24 Working-age incapacity benefits spending 0.9239248
-#> 47 2024-25 Working-age incapacity benefits spending 0.9980306
-#> 48 2025-26 Working-age incapacity benefits spending 1.0051716
-#> 49 2026-27 Working-age incapacity benefits spending 1.0038338
-#> 50 2027-28 Working-age incapacity benefits spending 1.0023592
-#> 51 2028-29 Working-age incapacity benefits spending 1.0056712
+#> # ... with 19 more rows
 options(op)
 # }
 ```

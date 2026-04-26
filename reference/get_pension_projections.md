@@ -20,7 +20,7 @@ get_pension_projections(refresh = FALSE)
 
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - scenario_type:
 
@@ -42,10 +42,11 @@ A data frame with columns:
 
 ## Details
 
-This data is unique to the Fiscal Risks and Sustainability Report (OBR,
-July 2025) and is not available in any other OBR publication. It
-illustrates how ageing demographics and pension uprating rules interact
-to determine the long-run cost of the state pension.
+This data is unique to the Fiscal Risks and Sustainability Report and is
+not available in any other OBR publication. It illustrates how ageing
+demographics and pension uprating rules interact to determine the
+long-run cost of the state pension. The exact vintage is recorded in the
+returned object's provenance.
 
 ## Examples
 
@@ -56,10 +57,16 @@ proj <- get_pension_projections()
 #> ℹ Downloading fsr_executive_summary.xlsx from OBR...
 #> ✔ Saved to cache.
 
-# Central demographic projection over the 50-year horizon
 central <- proj[proj$scenario_type == "Demographic scenarios" &
                 proj$scenario == "Central projection", ]
 tail(central, 10)
+#> # obr_tbl: 10 rows x 4 cols
+#> # Source:       OBR Fiscal Risks and Sustainability Report, July 2025
+#> # URL:          https://obr.uk/download/july-2025-fiscal-risks-and-sustainability-charts-and-tables-executive-summary/
+#> # Retrieved:    2026-04-26 08:09:36 UTC
+#> # File MD5:     bdf4d8711300
+#> # Package:      obr 0.3.0
+#> 
 #>            scenario_type           scenario fiscal_year  pct_gdp
 #> 42 Demographic scenarios Central projection     2064-65 7.240896
 #> 43 Demographic scenarios Central projection     2065-66 7.344158
@@ -72,7 +79,6 @@ tail(central, 10)
 #> 50 Demographic scenarios Central projection     2072-73 7.661269
 #> 51 Demographic scenarios Central projection     2073-74 7.650863
 
-# How much more expensive is 'higher life expectancy' vs central?
 dem <- proj[proj$scenario_type == "Demographic scenarios", ]
 options(op)
 # }

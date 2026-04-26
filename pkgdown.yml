@@ -1,8 +1,11 @@
 pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
-articles: {}
-last_built: 2026-04-24T13:42Z
+articles:
+  forecast-revisions: forecast-revisions.html
+  policy-measures: policy-measures.html
+  vintages: vintages.html
+last_built: 2026-04-26T08:06Z
 urls:
   reference: https://charlescoverdale.github.io/obr/reference
   article: https://charlescoverdale.github.io/obr/articles

@@ -1,7 +1,7 @@
 # List available forecast series
 
 Returns a data frame showing the series names accepted by
-[`get_forecasts`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md),
+[`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md),
 the corresponding Excel sheet in the OBR Historical Official Forecasts
 Database, and a plain-English description.
 
@@ -18,7 +18,9 @@ A data frame with columns `series`, `sheet`, and `description`.
 ## See also
 
 Other forecasts:
-[`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md)
+[`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md),
+[`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md),
+[`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
 
 ## Examples
 

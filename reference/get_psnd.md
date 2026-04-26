@@ -18,7 +18,7 @@ get_psnd(refresh = FALSE)
 
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - year:
 
@@ -42,15 +42,15 @@ Other public finances:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 psnd <- get_psnd()
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Warning: Could not resolve a current Public Finances Databank URL from 1 candidate.
+#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading public_finances_databank.xlsx from OBR...
+#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
+#> ✖ HTTP 504 Gateway Timeout.
 tail(psnd)
-#>       year  psnd_bn
-#> 47 2020-21 2273.854
-#> 48 2021-22 2478.406
-#> 49 2022-23 2602.171
-#> 50 2023-24 2720.901
-#> 51 2024-25 2714.067
-#> 52 2025-26 2816.625
+#> Error: object 'psnd' not found
 options(op)
 # }
 ```

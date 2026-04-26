@@ -1,7 +1,7 @@
 # List available EFO economy measures
 
 Returns a data frame of the economy measures available via
-[`get_efo_economy`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
+[`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
 showing the `measure` name to pass and a short description of what each
 covers.
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/vintages.html">Pinning to a specific OBR publication</a></li>
+    <li><a class="dropdown-item" href="../articles/policy-measures.html">Tracking fiscal policy measures since 1970</a></li>
+    <li><a class="dropdown-item" href="../articles/forecast-revisions.html">Anatomy of a forecast revision</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -98,6 +104,20 @@
 
         </dt>
         <dd>Get OBR forecast history for a fiscal series</dd>
+
+        <dt>
+
+          <code><a href="obr_forecast_panel.html">obr_forecast_panel()</a></code>
+
+        </dt>
+        <dd>Build a wide real-time panel of OBR forecasts</dd>
+
+        <dt>
+
+          <code><a href="get_forecast_revisions.html">get_forecast_revisions()</a></code>
+
+        </dt>
+        <dd>Get OBR forecast revisions</dd>
       </dl></div><div class="section level2">
       <h2 id="economic-and-fiscal-outlook">Economic and Fiscal Outlook<a class="anchor" aria-label="anchor" href="#economic-and-fiscal-outlook"></a></h2>
 
@@ -175,7 +195,134 @@
         </dt>
         <dd>Get long-run state pension spending projections</dd>
       </dl></div><div class="section level2">
-      <h2 id="cache-management">Cache Management<a class="anchor" aria-label="anchor" href="#cache-management"></a></h2>
+      <h2 id="policy-measures-database">Policy Measures Database<a class="anchor" aria-label="anchor" href="#policy-measures-database"></a></h2>
+
+      <div class="section-desc"><p>Every UK fiscal-event-scored tax measure since 1970 and spending measure since 2010.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="get_policy_measures.html">get_policy_measures()</a></code>
+
+        </dt>
+        <dd>Get OBR policy measures by fiscal event</dd>
+
+        <dt>
+
+          <code><a href="policy_measures_summary.html">policy_measures_summary()</a></code>
+
+        </dt>
+        <dd>Summarise policy measures by fiscal event</dd>
+      </dl></div><div class="section level2">
+      <h2 id="fiscal-rules">Fiscal rules<a class="anchor" aria-label="anchor" href="#fiscal-rules"></a></h2>
+
+      <div class="section-desc"><p>Charter for Budget Responsibility rule definitions.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="obr_fiscal_rules.html">obr_fiscal_rules()</a></code>
+
+        </dt>
+        <dd>Get the current UK fiscal rules</dd>
+      </dl></div><div class="section level2">
+      <h2 id="vintage-layer">Vintage layer<a class="anchor" aria-label="anchor" href="#vintage-layer"></a></h2>
+
+      <div class="section-desc"><p>Pin analyses to a specific OBR Economic and Fiscal Outlook for reproducibility.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="obr_efo_vintages.html">obr_efo_vintages()</a></code>
+
+        </dt>
+        <dd>List known OBR Economic and Fiscal Outlook vintages</dd>
+
+        <dt>
+
+          <code><a href="obr_as_of.html">obr_as_of()</a></code>
+
+        </dt>
+        <dd>Find the OBR publication that was current on a given date</dd>
+
+        <dt>
+
+          <code><a href="obr_pin.html">obr_pin()</a></code>
+
+        </dt>
+        <dd>Pin a session-wide OBR EFO vintage</dd>
+
+        <dt>
+
+          <code><a href="obr_unpin.html">obr_unpin()</a></code>
+
+        </dt>
+        <dd>Clear the pinned OBR EFO vintage</dd>
+
+        <dt>
+
+          <code><a href="obr_pinned.html">obr_pinned()</a></code>
+
+        </dt>
+        <dd>Show the currently pinned OBR EFO vintage</dd>
+      </dl></div><div class="section level2">
+      <h2 id="provenance">Provenance<a class="anchor" aria-label="anchor" href="#provenance"></a></h2>
+
+      <div class="section-desc"><p>Inspect and manage the source metadata attached to every returned object.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="obr_provenance.html">obr_provenance()</a></code>
+
+        </dt>
+        <dd>Extract OBR provenance metadata</dd>
+
+        <dt>
+
+          <code><a href="print.obr_tbl.html">print(<i>&lt;obr_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print an obr_tbl</dd>
+
+        <dt>
+
+          <code><a href="summary.obr_tbl.html">summary(<i>&lt;obr_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Summary of an obr_tbl</dd>
+
+        <dt>
+
+          <code><a href="sub-.obr_tbl.html">`[`(<i>&lt;obr_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Subset an obr_tbl, preserving provenance</dd>
+
+        <dt>
+
+          <code><a href="as.data.frame.obr_tbl.html">as.data.frame(<i>&lt;obr_tbl&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Coerce an obr_tbl to a plain data.frame</dd>
+      </dl></div><div class="section level2">
+      <h2 id="cache-management">Cache management<a class="anchor" aria-label="anchor" href="#cache-management"></a></h2>
 
       <div class="section-desc"><p>Manage locally cached OBR data files.</p></div>
 

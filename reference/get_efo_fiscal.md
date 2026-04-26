@@ -1,13 +1,13 @@
 # Get EFO fiscal projections (net borrowing components)
 
 Downloads (and caches) the OBR *Economic and Fiscal Outlook* Detailed
-Forecast Tables — Aggregates file and returns the components of net
+Forecast Tables - Aggregates file and returns the components of net
 borrowing (Table 6.5) in tidy long format.
 
 ## Usage
 
 ``` r
-get_efo_fiscal(refresh = FALSE)
+get_efo_fiscal(refresh = FALSE, vintage = NULL)
 ```
 
 ## Arguments
@@ -17,9 +17,19 @@ get_efo_fiscal(refresh = FALSE)
   Logical. If `TRUE`, re-download even if a cached copy exists. Defaults
   to `FALSE`.
 
+- vintage:
+
+  Optional EFO vintage label such as `"October 2024"`. If supplied, the
+  function downloads the file for that specific EFO. If `NULL` (the
+  default), the function uses any vintage set via
+  [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md),
+  or falls back to the latest live EFO via the dynamic URL resolver. See
+  [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md)
+  for the full list of supported vintages.
+
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - fiscal_year:
 
@@ -36,8 +46,10 @@ A data frame with columns:
 ## Details
 
 Covers the five-year forecast horizon published at the most recent
-Budget (OBR, March 2026). Key series include current receipts, current
-expenditure, depreciation, net investment, and net borrowing (PSNB).
+fiscal event. Key series include current receipts, current expenditure,
+depreciation, net investment, and net borrowing (PSNB). The exact
+vintage is recorded in the returned object's provenance attribute and
+visible in the printed header.
 
 ## See also
 
@@ -54,6 +66,13 @@ efo <- get_efo_fiscal()
 #> ℹ Downloading efo_aggregates.xlsx from OBR...
 #> ✔ Saved to cache.
 efo[efo$series == "Net borrowing", ]
+#> # obr_tbl: 6 rows x 3 cols
+#> # Source:       OBR Economic and Fiscal Outlook, March 2026
+#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
+#> # Retrieved:    2026-04-26 08:06:38 UTC
+#> # File MD5:     43d7526594ab
+#> # Package:      obr 0.3.0
+#> 
 #>    fiscal_year        series  value_bn
 #> 43     2025-26 Net borrowing 132.73508
 #> 44     2026-27 Net borrowing 115.46142
@@ -61,6 +80,13 @@ efo[efo$series == "Net borrowing", ]
 #> 46     2028-29 Net borrowing  86.01563
 #> 47     2029-30 Net borrowing  63.40344
 #> 48     2030-31 Net borrowing  59.01991
+obr_provenance(efo)$vintage
+#> [1] "March 2026"
+
+# Pin to a specific EFO for reproducibility
+october_2024 <- get_efo_fiscal(vintage = "October 2024")
+#> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
+#> ✔ Saved to cache.
 options(op)
 # }
 ```

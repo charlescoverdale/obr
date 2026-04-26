@@ -20,7 +20,7 @@ get_incapacity_caseloads(refresh = FALSE)
 
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - year:
 
@@ -49,8 +49,14 @@ op <- options(obr.cache_dir = tempdir())
 cases <- get_incapacity_caseloads()
 #> ℹ Downloading welfare_trends.xlsx from OBR...
 #> ✔ Saved to cache.
-# Total claimants
 cases[cases$series == "Claimants", ]
+#> # obr_tbl: 16 rows x 3 cols
+#> # Source:       OBR Welfare Trends Report, October 2024
+#> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
+#> # Retrieved:    2026-04-26 08:08:36 UTC
+#> # File MD5:     c587017c08a1
+#> # Package:      obr 0.3.0
+#> 
 #>       year    series    value
 #> 1  2008-09 Claimants 2588.000
 #> 2  2009-10 Claimants 2350.000
@@ -62,12 +68,7 @@ cases[cases$series == "Claimants", ]
 #> 8  2015-16 Claimants 2012.076
 #> 9  2016-17 Claimants 2047.989
 #> 10 2017-18 Claimants 2032.168
-#> 11 2018-19 Claimants 2129.911
-#> 12 2019-20 Claimants 2257.000
-#> 13 2020-21 Claimants 2396.000
-#> 14 2021-22 Claimants 2544.000
-#> 15 2022-23 Claimants 2744.000
-#> 16 2023-24 Claimants 2930.000
+#> # ... with 6 more rows
 options(op)
 # }
 ```

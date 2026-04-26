@@ -19,7 +19,7 @@ get_public_finances(refresh = FALSE)
 
 ## Value
 
-A data frame with columns:
+An `obr_tbl` (a `data.frame` with attached provenance) with columns:
 
 - year:
 
@@ -32,6 +32,10 @@ A data frame with columns:
 - value:
 
   Value in £ billion (numeric)
+
+Use
+[`obr_provenance()`](https://charlescoverdale.github.io/obr/reference/obr_provenance.md)
+to extract source URL, vintage, and retrieval time.
 
 ## Details
 
@@ -53,32 +57,17 @@ Other public finances:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 pf <- get_public_finances()
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Warning: Could not resolve a current Public Finances Databank URL from 1 candidate.
+#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading public_finances_databank.xlsx from OBR...
+#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
+#> ✖ HTTP 504 Gateway Timeout.
 unique(pf$series)
-#>  [1] "Public sector current receipts"              
-#>  [2] "Total managed expenditure"                   
-#>  [3] "Public sector current expenditure"           
-#>  [4] "Public sector net investment"                
-#>  [5] "Depreciation"                                
-#>  [6] "Public sector gross investment"              
-#>  [7] "National account taxes"                      
-#>  [8] "Cyclically-adjusted current budget deficit"  
-#>  [9] "Public sector net borrowing"                 
-#> [10] "Current budget deficit"                      
-#> [11] "Primary balance"                             
-#> [12] "Cyclically-adjusted primary balance"         
-#> [13] "Cyclically-adjusted net borrowing"           
-#> [14] "Public sector net debt"                      
-#> [15] "Central government net cash requirement"     
-#> [16] "Public sector net cash requirement"          
-#> [17] "Central government debt interest, net of APF"
-#> [18] "Treaty deficit"                              
-#> [19] "Cyclically-adjusted Treaty deficit"          
-#> [20] "Treaty debt"                                 
-#> [21] "Nominal GDP (£ billion)"                     
-#> [22] "Nominal GDP, centred end-March (£ billion)"  
-#> [23] "Output gap (per cent of GDP)"                
-#> [24] "GDP Deflator (2019-20=100)"                  
+#> Error in pf$series: object of type 'closure' is not subsettable
+obr_provenance(pf)
+#> NULL
 options(op)
 # }
 ```

@@ -19,7 +19,7 @@ get_expenditure(refresh = FALSE)
 
 ## Value
 
-A data frame with columns:
+An `obr_tbl` with columns:
 
 - year:
 
@@ -44,15 +44,10 @@ Other public finances:
 op <- options(obr.cache_dir = tempdir())
 tme <- get_expenditure()
 #> ℹ Downloading public_finances_databank.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
+#> ✖ HTTP 504 Gateway Timeout.
 tail(tme)
-#>       year    tme_bn
-#> 75 2020-21 1164.5793
-#> 76 2021-22 1011.4941
-#> 77 2022-23  990.4851
-#> 78 2023-24 1027.3872
-#> 79 2024-25 1063.9669
-#> 80 2025-26 1106.0997
+#> Error: object 'tme' not found
 options(op)
 # }
 ```

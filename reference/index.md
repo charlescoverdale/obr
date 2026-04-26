@@ -23,6 +23,10 @@ Every OBR forecast since 2010 for key fiscal and economic variables.
   : List available forecast series
 - [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md)
   : Get OBR forecast history for a fiscal series
+- [`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
+  : Build a wide real-time panel of OBR forecasts
+- [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md)
+  : Get OBR forecast revisions
 
 ## Economic and Fiscal Outlook
 
@@ -53,7 +57,56 @@ Incapacity benefit spending and caseloads.
 - [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
   : Get long-run state pension spending projections
 
-## Cache Management
+## Policy Measures Database
+
+Every UK fiscal-event-scored tax measure since 1970 and spending measure
+since 2010.
+
+- [`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)
+  : Get OBR policy measures by fiscal event
+- [`policy_measures_summary()`](https://charlescoverdale.github.io/obr/reference/policy_measures_summary.md)
+  : Summarise policy measures by fiscal event
+
+## Fiscal rules
+
+Charter for Budget Responsibility rule definitions.
+
+- [`obr_fiscal_rules()`](https://charlescoverdale.github.io/obr/reference/obr_fiscal_rules.md)
+  : Get the current UK fiscal rules
+
+## Vintage layer
+
+Pin analyses to a specific OBR Economic and Fiscal Outlook for
+reproducibility.
+
+- [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md)
+  : List known OBR Economic and Fiscal Outlook vintages
+- [`obr_as_of()`](https://charlescoverdale.github.io/obr/reference/obr_as_of.md)
+  : Find the OBR publication that was current on a given date
+- [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md)
+  : Pin a session-wide OBR EFO vintage
+- [`obr_unpin()`](https://charlescoverdale.github.io/obr/reference/obr_unpin.md)
+  : Clear the pinned OBR EFO vintage
+- [`obr_pinned()`](https://charlescoverdale.github.io/obr/reference/obr_pinned.md)
+  : Show the currently pinned OBR EFO vintage
+
+## Provenance
+
+Inspect and manage the source metadata attached to every returned
+object.
+
+- [`obr_provenance()`](https://charlescoverdale.github.io/obr/reference/obr_provenance.md)
+  : Extract OBR provenance metadata
+- [`print(`*`<obr_tbl>`*`)`](https://charlescoverdale.github.io/obr/reference/print.obr_tbl.md)
+  : Print an obr_tbl
+- [`summary(`*`<obr_tbl>`*`)`](https://charlescoverdale.github.io/obr/reference/summary.obr_tbl.md)
+  : Summary of an obr_tbl
+- [`` `[`( ``*`<obr_tbl>`*`)`](https://charlescoverdale.github.io/obr/reference/sub-.obr_tbl.md)
+  : Subset an obr_tbl, preserving provenance
+- [`as.data.frame(`*`<obr_tbl>`*`)`](https://charlescoverdale.github.io/obr/reference/as.data.frame.obr_tbl.md)
+  : Coerce an obr_tbl to a plain data.frame
+
+## Cache management
 
 Manage locally cached OBR data files.
 

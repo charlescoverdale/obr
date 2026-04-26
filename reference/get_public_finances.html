@@ -11,7 +11,7 @@ and OBR projections through the current forecast horizon."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,12 @@ and OBR projections through the current forecast horizon."></head><body>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/vintages.html">Pinning to a specific OBR publication</a></li>
+    <li><a class="dropdown-item" href="../articles/policy-measures.html">Tracking fiscal policy measures since 1970</a></li>
+    <li><a class="dropdown-item" href="../articles/forecast-revisions.html">Anatomy of a forecast revision</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -59,7 +65,7 @@ Defaults to <code>FALSE</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with columns:</p><dl><dt>year</dt>
+    <p>An <code>obr_tbl</code> (a <code>data.frame</code> with attached provenance) with columns:</p><dl><dt>year</dt>
 <dd><p>Fiscal year (character, e.g. <code>"2024-25"</code>)</p></dd>
 
 <dt>series</dt>
@@ -69,7 +75,8 @@ Defaults to <code>FALSE</code>.</p></dd>
 <dd><p>Value in £ billion (numeric)</p></dd>
 
 
-</dl></div>
+</dl><p>Use <code><a href="obr_provenance.html">obr_provenance()</a></code> to extract source URL, vintage, and retrieval time.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Series include: Public sector net borrowing, Public sector net debt, Total
@@ -90,32 +97,17 @@ deflator, and more.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>obr.cache_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pf</span> <span class="op">&lt;-</span> <span class="fu">get_public_finances</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Could not resolve a current Public Finances Databank URL from 1 candidate.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Falling back to <span style="color: #0000BB; font-style: italic;">&lt;https://obr.uk/download/public-finances-databank/&gt;</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Returned data may be older than expected. Run with internet access, or pin a</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   vintage explicitly when that feature ships.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading <span style="color: #0000BB;">public_finances_databank.xlsx</span> from OBR...</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Failed to download <span style="color: #0000BB; font-style: italic;">&lt;https://obr.uk/download/public-finances-databank/&gt;</span>.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> HTTP 504 Gateway Timeout.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pf</span><span class="op">$</span><span class="va">series</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Public sector current receipts"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Total managed expenditure"                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Public sector current expenditure"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Public sector net investment"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Depreciation"                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Public sector gross investment"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "National account taxes"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyclically-adjusted current budget deficit"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Public sector net borrowing"                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Current budget deficit"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Primary balance"                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "Cyclically-adjusted primary balance"         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Cyclically-adjusted net borrowing"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "Public sector net debt"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Central government net cash requirement"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Public sector net cash requirement"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "Central government debt interest, net of APF"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Treaty deficit"                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Cyclically-adjusted Treaty deficit"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Treaty debt"                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "Nominal GDP (£ billion)"                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Nominal GDP, centred end-March (£ billion)"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "Output gap (per cent of GDP)"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [24] "GDP Deflator (2019-20=100)"                  </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in pf$series:</span> object of type 'closure' is not subsettable</span>
+<span class="r-in"><span><span class="fu"><a href="obr_provenance.html">obr_provenance</a></span><span class="op">(</span><span class="va">pf</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
