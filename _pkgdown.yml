@@ -5,12 +5,20 @@ template:
 
 navbar:
   structure:
-    left:  [intro, reference, news]
+    left:  [intro, reference, articles, news]
     right: [search, github]
   components:
     github:
       icon: fa-github
       href: https://github.com/charlescoverdale/obr
+
+articles:
+  - title: Vignettes
+    navbar: ~
+    contents:
+      - vintages
+      - policy-measures
+      - forecast-revisions
 
 reference:
   - title: Public Finances Databank
@@ -27,6 +35,8 @@ reference:
     contents:
       - list_forecast_series
       - get_forecasts
+      - obr_forecast_panel
+      - get_forecast_revisions
 
   - title: Economic and Fiscal Outlook
     desc: Five-year projections from the latest Budget.
@@ -47,7 +57,36 @@ reference:
     contents:
       - get_pension_projections
 
-  - title: Cache Management
+  - title: Policy Measures Database
+    desc: Every UK fiscal-event-scored tax measure since 1970 and spending measure since 2010.
+    contents:
+      - get_policy_measures
+      - policy_measures_summary
+
+  - title: Fiscal rules
+    desc: Charter for Budget Responsibility rule definitions.
+    contents:
+      - obr_fiscal_rules
+
+  - title: Vintage layer
+    desc: Pin analyses to a specific OBR Economic and Fiscal Outlook for reproducibility.
+    contents:
+      - obr_efo_vintages
+      - obr_as_of
+      - obr_pin
+      - obr_unpin
+      - obr_pinned
+
+  - title: Provenance
+    desc: Inspect and manage the source metadata attached to every returned object.
+    contents:
+      - obr_provenance
+      - print.obr_tbl
+      - summary.obr_tbl
+      - "`[.obr_tbl`"
+      - as.data.frame.obr_tbl
+
+  - title: Cache management
     desc: Manage locally cached OBR data files.
     contents:
       - clear_cache
