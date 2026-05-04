@@ -95,8 +95,11 @@ last validated in the cache.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>obr.cache_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">psnb</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_psnb.html">get_psnb</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading <span style="color: #0000BB;">public_finances_databank.xlsx</span> from OBR...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Saved to cache.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Could not resolve a current Public Finances Databank URL from 1 candidate.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Falling back to <span style="color: #0000BB; font-style: italic;">&lt;https://obr.uk/download/public-finances-databank/&gt;</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Returned data may be older than expected. Run with internet access, or pin a</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   vintage explicitly when that feature ships.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-in"><span><span class="fu">obr_provenance</span><span class="op">(</span><span class="va">psnb</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $publication</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PFD"</span>
@@ -108,7 +111,7 @@ last validated in the cache.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://obr.uk/download/public-finances-databank/"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $retrieved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-04-26 08:11:45 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-05-04 19:14:00 UTC"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file_md5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "77a07b6641ca8ef85449de08077a9b87"</span>

@@ -14,6 +14,7 @@ only.
 ## The vintage table
 
 ``` r
+
 library(obr)
 
 efos <- obr_efo_vintages()
@@ -46,6 +47,7 @@ refreshed at each release.
 ## Resolving an EFO by date
 
 ``` r
+
 obr_as_of("2024-12-15")
 #> [1] "October 2024"
 obr_as_of("2010-05-01") |> tryCatch(error = function(e) conditionMessage(e))
@@ -59,6 +61,7 @@ December 2024. The second errors because no EFO existed before June
 ## Pinning a session-wide vintage
 
 ``` r
+
 obr_pin("October 2024")
 #> ✔ Pinned EFO to "October 2024".
 obr_pinned()
@@ -78,6 +81,7 @@ clears the pin and returns to the dynamic resolver.
 These chunks require a network connection and are shown as code only.
 
 ``` r
+
 # Pull two vintages of the same fiscal table to compare forecast revisions
 oct24 <- get_efo_fiscal(vintage = "October 2024")
 mar26 <- get_efo_fiscal(vintage = "March 2026")
@@ -98,6 +102,7 @@ Every `obr_tbl` carries enough metadata for an OBR analyst to audit
 which publication produced any number.
 
 ``` r
+
 obr_provenance(get_efo_fiscal(vintage = "October 2024"))
 # $publication: "EFO"
 # $vintage:     "October 2024"
@@ -117,6 +122,7 @@ OBR vintage in one file, so it does not take a `vintage =` argument. To
 filter to a specific forecast date, subset the long-format result.
 
 ``` r
+
 fc  <- get_forecasts("PSNB")
 fc[fc$forecast_date == "October 2024", ]
 ```

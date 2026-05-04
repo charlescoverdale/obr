@@ -53,12 +53,26 @@ Other policy measures:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 pm <- get_policy_measures(type = "tax", since = "2024-25")
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Warning: Could not resolve a current Policy Measures Database URL from 16 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/policy-measures-database-march-2025/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading policy_measures_database.xlsx from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■■                        
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■             
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> ✔ Saved to cache.
 policy_measures_summary(pm)
 #> # obr_tbl: 593 rows x 4 cols
-#> # Source:       OBR Policy Measures Database
+#> # Source:       OBR Policy Measures Database, March 2025
 #> # URL:          https://obr.uk/download/policy-measures-database-march-2025/
-#> # Retrieved:    2026-04-26 08:10:05 UTC
+#> # Retrieved:    2026-05-04 19:15:09 UTC
 #> # File MD5:     a76d78e7a14d
 #> # Package:      obr 0.3.0
 #> # Note:         Summed across measures by event and fiscal year.

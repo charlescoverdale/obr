@@ -87,33 +87,33 @@
 <col width="33%">
 <col width="33%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Dataset</th>
 <th>What it contains</th>
 <th>Frequency</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><a href="https://obr.uk/public-finances-databank-2019-20/" class="external-link">Public Finances Databank</a></td>
 <td>Outturn data on PSNB, PSND, receipts, and expenditure back to 1946-47</td>
 <td>Monthly</td>
 </tr>
-<tr class="even">
+<tr>
 <td><a href="https://obr.uk/data/" class="external-link">Historical Official Forecasts Database</a></td>
 <td>Every forecast the OBR (and pre-OBR Treasury) has published for key fiscal and economic variables since 1970</td>
 <td>Each fiscal event</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><a href="https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/" class="external-link">Economic and Fiscal Outlook</a></td>
 <td>The flagship publication at each Budget - detailed projections across 5 years</td>
 <td>Each Budget / Autumn Statement</td>
 </tr>
-<tr class="even">
+<tr>
 <td><a href="https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/" class="external-link">Fiscal Sustainability Report</a></td>
 <td>Long-run projections over 50 years, covering ageing, health, and debt dynamics</td>
 <td>Annual</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><a href="https://obr.uk/wtr/welfare-trends-report-october-2024/" class="external-link">Welfare Trends Report</a></td>
 <td>Spending trends across the benefits system</td>
 <td>Annual</td>
@@ -171,28 +171,28 @@
 <h3 id="public-finances-databank">Public Finances Databank<a class="anchor" aria-label="anchor" href="#public-finances-databank"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_psnb.html">get_psnb()</a></code></td>
 <td>Annual Public Sector Net Borrowing in £bn</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/get_psnd.html">get_psnd()</a></code></td>
 <td>Annual Public Sector Net Debt in £bn</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_expenditure.html">get_expenditure()</a></code></td>
 <td>Annual Total Managed Expenditure in £bn</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/get_receipts.html">get_receipts()</a></code></td>
 <td>Tax receipts broken down by type, in £bn</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_public_finances.html">get_public_finances()</a></code></td>
 <td>All aggregate series in tidy long format</td>
 </tr>
@@ -207,24 +207,24 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/list_forecast_series.html">list_forecast_series()</a></code></td>
 <td>Data frame of available series (no download needed)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_forecasts(series)</code></td>
 <td>Every OBR forecast for a given series, in tidy long format</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>obr_forecast_panel(series)</code></td>
 <td>Wide real-time panel: rows = forecast vintages, columns = fiscal years</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_forecast_revisions(unit)</code></td>
 <td>EFO-to-EFO PSNB revisions decomposed into policy, classifications, and underlying components</td>
 </tr>
@@ -239,21 +239,21 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_efo_fiscal.html">get_efo_fiscal()</a></code></td>
 <td>Five-year net borrowing component projections from the latest Budget (£bn, annual)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_efo_economy(measure)</code></td>
 <td>Quarterly economic projections: <code>"inflation"</code>, <code>"labour"</code>, or <code>"output_gap"</code>
 </td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/list_efo_economy_measures.html">list_efo_economy_measures()</a></code></td>
 <td>Available economy measures (no download needed)</td>
 </tr>
@@ -268,20 +268,20 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_welfare_spending.html">get_welfare_spending()</a></code></td>
 <td>Working-age welfare spending split by incapacity/non-incapacity (% GDP, from 1978-79)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/get_incapacity_spending.html">get_incapacity_spending()</a></code></td>
 <td>Incapacity benefit spending by benefit type (ESA, IB, etc.) as % GDP</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_incapacity_caseloads.html">get_incapacity_caseloads()</a></code></td>
 <td>Combined incapacity caseloads and prevalence since 2008-09</td>
 </tr>
@@ -296,11 +296,11 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
-<tbody><tr class="odd">
+<tbody><tr>
 <td><code><a href="reference/get_pension_projections.html">get_pension_projections()</a></code></td>
 <td>50-year state pension spending projections (% GDP) under demographic and triple-lock scenarios</td>
 </tr></tbody>
@@ -314,16 +314,16 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/get_policy_measures.html">get_policy_measures()</a></code></td>
 <td>Every tax (since 1970) and spending (since 2010) measure scored at a UK fiscal event, with Exchequer effect by fiscal year in GBP million</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/policy_measures_summary.html">policy_measures_summary()</a></code></td>
 <td>Net Exchequer effect aggregated by fiscal event and fiscal year</td>
 </tr>
@@ -338,11 +338,11 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
-<tbody><tr class="odd">
+<tbody><tr>
 <td><code><a href="reference/obr_fiscal_rules.html">obr_fiscal_rules()</a></code></td>
 <td>The three Charter for Budget Responsibility rules (stability, investment, welfare cap), with the OBR’s last published headroom against each</td>
 </tr></tbody>
@@ -352,11 +352,11 @@
 <h3 id="cache-management">Cache management<a class="anchor" aria-label="anchor" href="#cache-management"></a>
 </h3>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>What it does</th>
 </tr></thead>
-<tbody><tr class="odd">
+<tbody><tr>
 <td><code><a href="reference/clear_cache.html">clear_cache()</a></code></td>
 <td>Deletes all locally cached OBR files</td>
 </tr></tbody>
@@ -371,38 +371,38 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>What it does</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>obr_provenance(x)</code></td>
 <td>Extracts the source URL, vintage, retrieval time, and file fingerprint attached to any returned <code>obr_tbl</code>
 </td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>summary(x)</code></td>
 <td>Prints the full provenance card alongside the structural summary</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/obr_efo_vintages.html">obr_efo_vintages()</a></code></td>
 <td>Lists every EFO published since June 2010, with publication dates and URL slugs</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>obr_as_of(date)</code></td>
 <td>Returns the EFO that was current on a given calendar date</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>obr_pin(vintage)</code></td>
 <td>Sets a session-wide EFO vintage; <code>get_efo_*</code> then defaults to that vintage</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/obr_unpin.html">obr_unpin()</a></code></td>
 <td>Clears any pin set by <code><a href="reference/obr_pin.html">obr_pin()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/obr_pinned.html">obr_pinned()</a></code></td>
 <td>Returns the currently pinned vintage, or <code>NULL</code>
 </td>
@@ -614,106 +614,55 @@
 <div class="section level2">
 <h2 id="related-packages">Related packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>
 </h2>
-<p>This package is part of a suite of R packages for economic, financial, and policy data. They share a consistent interface (named functions, tidy data frames, local caching) and are designed to work together.</p>
-<p><strong>Data access:</strong></p>
 <table class="table">
 <colgroup>
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Package</th>
-<th>Source</th>
+<th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><a href="https://github.com/charlescoverdale/ons" class="external-link"><code>ons</code></a></td>
-<td>UK Office for National Statistics</td>
+<td>UK Office for National Statistics data</td>
 </tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/boe" class="external-link"><code>boe</code></a></td>
-<td>Bank of England</td>
-</tr>
-<tr class="odd">
+<tr>
 <td><a href="https://github.com/charlescoverdale/hmrc" class="external-link"><code>hmrc</code></a></td>
-<td>HM Revenue &amp; Customs</td>
+<td>HM Revenue &amp; Customs tax data</td>
 </tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/ukhousing" class="external-link"><code>ukhousing</code></a></td>
-<td>UK Land Registry, EPC, Planning</td>
+<tr>
+<td><a href="https://github.com/charlescoverdale/boe" class="external-link"><code>boe</code></a></td>
+<td>Bank of England data</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><a href="https://github.com/charlescoverdale/fred" class="external-link"><code>fred</code></a></td>
-<td>US Federal Reserve (FRED)</td>
+<td>US Federal Reserve (FRED) data</td>
 </tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/readecb" class="external-link"><code>readecb</code></a></td>
-<td>European Central Bank</td>
-</tr>
-<tr class="odd">
-<td><a href="https://github.com/charlescoverdale/readoecd" class="external-link"><code>readoecd</code></a></td>
-<td>OECD</td>
-</tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/readnoaa" class="external-link"><code>readnoaa</code></a></td>
-<td>NOAA Climate Data</td>
-</tr>
-<tr class="odd">
-<td><a href="https://github.com/charlescoverdale/readaec" class="external-link"><code>readaec</code></a></td>
-<td>Australian Electoral Commission</td>
-</tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/comtrade" class="external-link"><code>comtrade</code></a></td>
-<td>UN Comtrade</td>
-</tr>
-<tr class="odd">
-<td><a href="https://github.com/charlescoverdale/carbondata" class="external-link"><code>carbondata</code></a></td>
-<td>Carbon markets (EU ETS, UK ETS, voluntary registries)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Analytical toolkits:</strong></p>
-<table class="table">
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr class="header">
-<th>Package</th>
-<th>Purpose</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://github.com/charlescoverdale/inflateR" class="external-link"><code>inflateR</code></a></td>
-<td>Inflation adjustment for price series</td>
-</tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/inflationkit" class="external-link"><code>inflationkit</code></a></td>
-<td>Inflation analysis (decomposition, persistence, Phillips curve)</td>
-</tr>
-<tr class="odd">
-<td><a href="https://github.com/charlescoverdale/yieldcurves" class="external-link"><code>yieldcurves</code></a></td>
-<td>Yield curve fitting (Nelson-Siegel, Svensson)</td>
-</tr>
-<tr class="even">
+<tr>
 <td><a href="https://github.com/charlescoverdale/debtkit" class="external-link"><code>debtkit</code></a></td>
 <td>Debt sustainability analysis</td>
 </tr>
-<tr class="odd">
-<td><a href="https://github.com/charlescoverdale/nowcast" class="external-link"><code>nowcast</code></a></td>
-<td>Economic nowcasting</td>
+<tr>
+<td><a href="https://github.com/charlescoverdale/yieldcurves" class="external-link"><code>yieldcurves</code></a></td>
+<td>Yield curve fitting (Nelson-Siegel, Svensson)</td>
 </tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/predictset" class="external-link"><code>predictset</code></a></td>
-<td>Conformal prediction</td>
+<tr>
+<td><a href="https://github.com/charlescoverdale/inflateR" class="external-link"><code>inflateR</code></a></td>
+<td>Inflation adjustment for UK price series</td>
 </tr>
-<tr class="odd">
-<td><a href="https://github.com/charlescoverdale/climatekit" class="external-link"><code>climatekit</code></a></td>
-<td>Climate indices</td>
+<tr>
+<td><a href="https://github.com/charlescoverdale/inflationkit" class="external-link"><code>inflationkit</code></a></td>
+<td>Inflation analysis</td>
 </tr>
-<tr class="even">
-<td><a href="https://github.com/charlescoverdale/inequality" class="external-link"><code>inequality</code></a></td>
-<td>Inequality and poverty measurement</td>
+<tr>
+<td><a href="https://github.com/charlescoverdale/greenbook" class="external-link"><code>greenbook</code></a></td>
+<td>HM Treasury Green Book CBA primitives</td>
+</tr>
+<tr>
+<td><a href="https://github.com/charlescoverdale/magentabook" class="external-link"><code>magentabook</code></a></td>
+<td>HM Treasury Magenta Book evaluation primitives</td>
 </tr>
 </tbody>
 </table>

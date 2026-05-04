@@ -56,8 +56,11 @@ attached. Fields:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 psnb <- get_psnb()
-#> ℹ Downloading public_finances_databank.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Warning: Could not resolve a current Public Finances Databank URL from 1 candidate.
+#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 obr_provenance(psnb)
 #> $publication
 #> [1] "PFD"
@@ -69,7 +72,7 @@ obr_provenance(psnb)
 #> [1] "https://obr.uk/download/public-finances-databank/"
 #> 
 #> $retrieved
-#> [1] "2026-04-26 08:11:45 UTC"
+#> [1] "2026-05-04 19:14:00 UTC"
 #> 
 #> $file_md5
 #> [1] "77a07b6641ca8ef85449de08077a9b87"

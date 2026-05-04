@@ -69,7 +69,7 @@ get_forecasts("PSNB")
 #> # obr_tbl: 553 rows x 4 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-04-26 08:07:32 UTC
+#> # Retrieved:    2026-05-04 19:14:07 UTC
 #> # File MD5:     4312a0cf5075
 #> # Package:      obr 0.3.0
 #> 
@@ -92,7 +92,7 @@ psnb[psnb$fiscal_year == "2024-25", ]
 #> # obr_tbl: 13 rows x 4 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-04-26 08:07:32 UTC
+#> # Retrieved:    2026-05-04 19:14:07 UTC
 #> # File MD5:     4312a0cf5075
 #> # Package:      obr 0.3.0
 #> 

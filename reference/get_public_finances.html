@@ -101,13 +101,54 @@ deflator, and more.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Falling back to <span style="color: #0000BB; font-style: italic;">&lt;https://obr.uk/download/public-finances-databank/&gt;</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Returned data may be older than expected. Run with internet access, or pin a</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   vintage explicitly when that feature ships.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading <span style="color: #0000BB;">public_finances_databank.xlsx</span> from OBR...</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Failed to download <span style="color: #0000BB; font-style: italic;">&lt;https://obr.uk/download/public-finances-databank/&gt;</span>.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> HTTP 504 Gateway Timeout.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pf</span><span class="op">$</span><span class="va">series</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in pf$series:</span> object of type 'closure' is not subsettable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Public sector current receipts"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Total managed expenditure"                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Public sector current expenditure"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Public sector net investment"                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Depreciation"                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Public sector gross investment"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "National account taxes"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyclically-adjusted current budget deficit"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Public sector net borrowing"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Current budget deficit"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Primary balance"                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "Cyclically-adjusted primary balance"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Cyclically-adjusted net borrowing"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "Public sector net debt"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Central government net cash requirement"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Public sector net cash requirement"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "Central government debt interest, net of APF"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "Treaty deficit"                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Cyclically-adjusted Treaty deficit"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Treaty debt"                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "Nominal GDP (£ billion)"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Nominal GDP, centred end-March (£ billion)"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "Output gap (per cent of GDP)"                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [24] "GDP Deflator (2019-20=100)"                  </span>
 <span class="r-in"><span><span class="fu"><a href="obr_provenance.html">obr_provenance</a></span><span class="op">(</span><span class="va">pf</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $publication</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PFD"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $vintage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $source_url</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://obr.uk/download/public-finances-databank/"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $retrieved</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-05-04 19:14:00 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $file_md5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "77a07b6641ca8ef85449de08077a9b87"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $package_version</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0.3.0"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $notes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

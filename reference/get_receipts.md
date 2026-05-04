@@ -51,11 +51,27 @@ receipts <- get_receipts()
 #> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
-#> ℹ Downloading public_finances_databank.xlsx from OBR...
-#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
-#> ✖ HTTP 504 Gateway Timeout.
+#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
-#> Error: object 'receipts' not found
+#> # obr_tbl: 81 rows x 3 cols
+#> # Source:       OBR Public Finances Databank
+#> # URL:          https://obr.uk/download/public-finances-databank/
+#> # Retrieved:    2026-05-04 19:14:00 UTC
+#> # File MD5:     77a07b6641ca
+#> # Package:      obr 0.3.0
+#> 
+#>        year                             series   value
+#> 379 1999-00 Pay as your earn (PAYE) income tax  80.320
+#> 380 2000-01 Pay as your earn (PAYE) income tax  89.778
+#> 381 2001-02 Pay as your earn (PAYE) income tax  92.128
+#> 382 2002-03 Pay as your earn (PAYE) income tax  94.681
+#> 383 2003-04 Pay as your earn (PAYE) income tax 100.323
+#> 384 2004-05 Pay as your earn (PAYE) income tax 107.546
+#> 385 2005-06 Pay as your earn (PAYE) income tax 114.908
+#> 386 2006-07 Pay as your earn (PAYE) income tax 123.424
+#> 387 2007-08 Pay as your earn (PAYE) income tax 131.866
+#> 388 2008-09 Pay as your earn (PAYE) income tax 126.418
+#> # ... with 71 more rows
 options(op)
 # }
 ```

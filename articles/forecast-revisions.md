@@ -21,6 +21,7 @@ The chunks that download data are shown as code only.
 ## The decomposition
 
 ``` r
+
 library(obr)
 
 rev <- get_forecast_revisions(unit = "gbp_bn")
@@ -45,6 +46,7 @@ rounding). The `of which:` rows further decompose Policy and Underlying.
 For the standard “what changed?” chart, filter to top-level components.
 
 ``` r
+
 top <- rev[rev$component %in% c(
   "Total", "Policy",
   "Classifications and one-offs", "Underlying"
@@ -65,6 +67,7 @@ of GDP. This is the right scaling for comparing revisions across fiscal
 events with materially different nominal-GDP levels.
 
 ``` r
+
 rev_pct <- get_forecast_revisions(unit = "pct_gdp")
 ```
 
@@ -77,6 +80,7 @@ pivots the Historical Forecasts Database from long to wide: rows are
 forecast vintages (chronologically ordered), columns are fiscal years.
 
 ``` r
+
 panel <- obr_forecast_panel("PSNB")
 # Every PSNB forecast for 2027-28
 panel[, c("forecast_date", "2027-28")]
@@ -90,6 +94,7 @@ forecast-error decomposition.
 ## Worked example: PSNB 2024-25 across the full vintage history
 
 ``` r
+
 panel <- obr_forecast_panel("PSNB")
 
 # Forecast value for FY 2024-25 across every vintage
@@ -111,6 +116,7 @@ For a paper or report, cite the vintage and MD5 of the underlying file
 so readers can reproduce.
 
 ``` r
+
 prov <- obr_provenance(rev)
 sprintf("OBR Forecast Revisions Database, vintage %s. File MD5: %s. Retrieved %s.",
         prov$vintage,

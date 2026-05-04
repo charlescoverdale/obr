@@ -16,6 +16,7 @@ offline preview, run any chunk in an R session with internet access.
 ## Pulling the database
 
 ``` r
+
 library(obr)
 
 pmd <- get_policy_measures()      # tax + spending, all years
@@ -32,6 +33,7 @@ spending-increasing for spending measures.
 subset a 100k-row data frame manually.
 
 ``` r
+
 # Every tax measure scored at the October 2024 Budget,
 # ordered by 2025-26 effect
 oct24 <- get_policy_measures(type = "tax", since = "2025-26")
@@ -47,6 +49,7 @@ head(oct24[, c("measure", "head", "value_mn")])
 measure description and the Treasury head.
 
 ``` r
+
 # Every alcohol-duty measure since 2010
 alc <- get_policy_measures(type = "tax", search = "alcohol", since = "2010-11")
 unique(alc$event)
@@ -63,6 +66,7 @@ collapses the long format to net Exchequer effect by event and fiscal
 year. This is what fits in an IFS Green Budget chart.
 
 ``` r
+
 pm  <- get_policy_measures(type = "tax", since = "2024-25")
 agg <- policy_measures_summary(pm)
 agg[agg$event == "Budget October 2024", ]
@@ -72,6 +76,7 @@ Provenance is preserved through aggregation: the returned `obr_tbl`
 still records which PMD vintage produced the numbers.
 
 ``` r
+
 obr_provenance(agg)$vintage
 ```
 
@@ -81,6 +86,7 @@ For attribution work (“which Budget did most of the lifting?”),
 aggregate by event for a fixed target year.
 
 ``` r
+
 pm   <- get_policy_measures(type = "tax")
 parl <- pm[pm$fiscal_year == "2027-28" &
            grepl("(October 2024|2025|2026)", pm$event), ]

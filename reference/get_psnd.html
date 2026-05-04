@@ -88,11 +88,22 @@ Defaults to <code>FALSE</code>.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Falling back to <span style="color: #0000BB; font-style: italic;">&lt;https://obr.uk/download/public-finances-databank/&gt;</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Returned data may be older than expected. Run with internet access, or pin a</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   vintage explicitly when that feature ships.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading <span style="color: #0000BB;">public_finances_databank.xlsx</span> from OBR...</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Failed to download <span style="color: #0000BB; font-style: italic;">&lt;https://obr.uk/download/public-finances-databank/&gt;</span>.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> HTTP 504 Gateway Timeout.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">psnd</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'psnd' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # obr_tbl: 6 rows x 2 cols</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Source:       OBR Public Finances Databank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # URL:          https://obr.uk/download/public-finances-databank/</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Retrieved:    2026-05-04 19:14:00 UTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # File MD5:     77a07b6641ca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Package:      obr 0.3.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       year  psnd_bn</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47 2020-21 2273.854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48 2021-22 2478.406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49 2022-23 2602.171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50 2023-24 2720.901</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51 2024-25 2714.067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52 2025-26 2816.625</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

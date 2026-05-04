@@ -46,11 +46,22 @@ psnd <- get_psnd()
 #> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
-#> ℹ Downloading public_finances_databank.xlsx from OBR...
-#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
-#> ✖ HTTP 504 Gateway Timeout.
+#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 tail(psnd)
-#> Error: object 'psnd' not found
+#> # obr_tbl: 6 rows x 2 cols
+#> # Source:       OBR Public Finances Databank
+#> # URL:          https://obr.uk/download/public-finances-databank/
+#> # Retrieved:    2026-05-04 19:14:00 UTC
+#> # File MD5:     77a07b6641ca
+#> # Package:      obr 0.3.0
+#> 
+#>       year  psnd_bn
+#> 47 2020-21 2273.854
+#> 48 2021-22 2478.406
+#> 49 2022-23 2602.171
+#> 50 2023-24 2720.901
+#> 51 2024-25 2714.067
+#> 52 2025-26 2816.625
 options(op)
 # }
 ```

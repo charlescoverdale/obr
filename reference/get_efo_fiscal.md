@@ -69,7 +69,7 @@ efo[efo$series == "Net borrowing", ]
 #> # obr_tbl: 6 rows x 3 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-04-26 08:06:38 UTC
+#> # Retrieved:    2026-05-04 19:13:59 UTC
 #> # File MD5:     43d7526594ab
 #> # Package:      obr 0.3.0
 #> 

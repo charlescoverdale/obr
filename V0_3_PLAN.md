@@ -29,18 +29,18 @@ Northcott something OBR press staff would actually use on Budget day.
 
 ## 2. Critical issues (must fix before OBR engagement)
 
-| \#  | <File:line>                                                  | Severity      | Problem                                                                                                                                                                                       | Fix                                                                                                                                                                                                                                                 |
-|-----|--------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1   | R/forecasts.R:2                                              | CRITICAL      | `FORECASTS_URL` hardcoded to “march-2025” but March 2026 EFO has shipped. [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md) returns stale vintage today. | Use the existing dynamic resolver pattern (mirror `efo_url_candidates()`); fall back only with explicit warning.                                                                                                                                    |
-| 2   | R/efo.R:9-11; R/welfare.R:7-9; R/fiscal_sustainability.R:6-9 | CRITICAL      | `obr_resolve_url()` returns NULL on failure; functions silently fall through to a stale fallback URL. User has no way to know they got 2024 data.                                             | Replace silent `if (is.null(url)) url <- FALLBACK` with [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html) naming the fallback and the failed candidates. Better: raise `cli_abort()` and require explicit `vintage = "fallback"`. |
-| 3   | All data-returning functions                                 | CRITICAL      | No provenance on returned data. Cannot tell whether a frame came from March 2025 or March 2026 EFO. Blocks all institutional use.                                                             | Wrap returns in an `obr_tbl` S3 class with attributes: `vintage`, `source_url`, `retrieved`, `obr_publication`, `package_version`, `sha256`. Print method shows provenance header. (Same pattern as `boe_tbl` and `fred_tbl`.)                      |
-| 4   | R/forecasts.R:10-20                                          | HIGH          | Sheet-name lookup uses literal Pound symbol (`"\u00a3PSNB"`). Brittle to OBR encoding changes.                                                                                                | Add a tolerant resolver: try the literal sheet name, then a regex `^.PSNB$` fallback, then a name-based search of [`readxl::excel_sheets()`](https://readxl.tidyverse.org/reference/excel_sheets.html).                                             |
-| 5   | R/public_finances.R:49                                       | HIGH          | Footnote-stripping regex `gsub("[0-9]+$", "", series_names)` will corrupt any series legitimately ending in a digit.                                                                          | Strip only superscript-style trailing digits when the *original* string contains a footnote marker, or maintain a hardcoded ignore-list of valid trailing digits.                                                                                   |
-| 6   | R/efo.R:106-120                                              | HIGH          | Output-gap parser hardcodes `raw[, 3]`. Silently returns NAs if OBR moves the column.                                                                                                         | Resolve column positionally by header text (“Output gap (per cent of GDP)”) rather than fixed index.                                                                                                                                                |
-| 7   | R/efo.R:151,186                                              | MEDIUM (CRAN) | Em-dashes (`—`) in roxygen `@title` lines. CRAN flags non-ASCII in Rd.                                                                                                                        | Replace with hyphens.                                                                                                                                                                                                                               |
-| 8   | R/efo.R:220; R/forecasts.R:94                                | MEDIUM (CRAN) | Manual `if (!x %in% valid)` validation instead of [`match.arg()`](https://rdrr.io/r/base/match.arg.html).                                                                                     | Refactor to [`match.arg()`](https://rdrr.io/r/base/match.arg.html) pattern.                                                                                                                                                                         |
-| 9   | R/fiscal_sustainability.R:22-23                              | MEDIUM        | Section detection by exact string match (`"Demographic scenarios"`, `"Triple lock scenarios"`); silent NULL on rename.                                                                        | Use `grepl("[Dd]emographic", ...)` style fuzzy match with explicit warning if no sections found.                                                                                                                                                    |
-| 10  | inst/CITATION:6                                              | LOW           | Citation declares “R package version 0.2.2”; actual is 0.2.5.                                                                                                                                 | Bump and pin via `meta$Version` from DESCRIPTION.                                                                                                                                                                                                   |
+| \# | <File:line> | Severity | Problem | Fix |
+|----|----|----|----|----|
+| 1 | R/forecasts.R:2 | CRITICAL | `FORECASTS_URL` hardcoded to “march-2025” but March 2026 EFO has shipped. [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md) returns stale vintage today. | Use the existing dynamic resolver pattern (mirror `efo_url_candidates()`); fall back only with explicit warning. |
+| 2 | R/efo.R:9-11; R/welfare.R:7-9; R/fiscal_sustainability.R:6-9 | CRITICAL | `obr_resolve_url()` returns NULL on failure; functions silently fall through to a stale fallback URL. User has no way to know they got 2024 data. | Replace silent `if (is.null(url)) url <- FALLBACK` with [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html) naming the fallback and the failed candidates. Better: raise `cli_abort()` and require explicit `vintage = "fallback"`. |
+| 3 | All data-returning functions | CRITICAL | No provenance on returned data. Cannot tell whether a frame came from March 2025 or March 2026 EFO. Blocks all institutional use. | Wrap returns in an `obr_tbl` S3 class with attributes: `vintage`, `source_url`, `retrieved`, `obr_publication`, `package_version`, `sha256`. Print method shows provenance header. (Same pattern as `boe_tbl` and `fred_tbl`.) |
+| 4 | R/forecasts.R:10-20 | HIGH | Sheet-name lookup uses literal Pound symbol (`"\u00a3PSNB"`). Brittle to OBR encoding changes. | Add a tolerant resolver: try the literal sheet name, then a regex `^.PSNB$` fallback, then a name-based search of [`readxl::excel_sheets()`](https://readxl.tidyverse.org/reference/excel_sheets.html). |
+| 5 | R/public_finances.R:49 | HIGH | Footnote-stripping regex `gsub("[0-9]+$", "", series_names)` will corrupt any series legitimately ending in a digit. | Strip only superscript-style trailing digits when the *original* string contains a footnote marker, or maintain a hardcoded ignore-list of valid trailing digits. |
+| 6 | R/efo.R:106-120 | HIGH | Output-gap parser hardcodes `raw[, 3]`. Silently returns NAs if OBR moves the column. | Resolve column positionally by header text (“Output gap (per cent of GDP)”) rather than fixed index. |
+| 7 | R/efo.R:151,186 | MEDIUM (CRAN) | Em-dashes (`—`) in roxygen `@title` lines. CRAN flags non-ASCII in Rd. | Replace with hyphens. |
+| 8 | R/efo.R:220; R/forecasts.R:94 | MEDIUM (CRAN) | Manual `if (!x %in% valid)` validation instead of [`match.arg()`](https://rdrr.io/r/base/match.arg.html). | Refactor to [`match.arg()`](https://rdrr.io/r/base/match.arg.html) pattern. |
+| 9 | R/fiscal_sustainability.R:22-23 | MEDIUM | Section detection by exact string match (`"Demographic scenarios"`, `"Triple lock scenarios"`); silent NULL on rename. | Use `grepl("[Dd]emographic", ...)` style fuzzy match with explicit warning if no sections found. |
+| 10 | inst/CITATION:6 | LOW | Citation declares “R package version 0.2.2”; actual is 0.2.5. | Bump and pin via `meta$Version` from DESCRIPTION. |
 
 A passing `R CMD check --as-cran` is not the bar. The bar is whether an
 OBR analyst can audit which publication produced a number six months
@@ -52,30 +52,30 @@ later. Items 1, 2, and 3 are non-negotiable.
 
 ### 3a. Audience segments
 
-| Segment                                             | UK size       | What they need                                              | Stickiness                     |
-|-----------------------------------------------------|---------------|-------------------------------------------------------------|--------------------------------|
-| OBR + GAD + HMT analysts                            | ~500          | Audit-trail provenance, vintage pinning, Excel parity       | Very high                      |
-| IFS / Resolution Foundation / NIESR / IFG           | ~80           | Budget-day chart pipelines, scorecards, headroom math       | High                           |
-| Academic forecast-evaluation researchers            | ~150 globally | Vintage matrices, real-time panels, forecast errors         | Citation-driving               |
-| FT / Guardian / Bloomberg / Reuters journos         | ~40           | Tidy frames on Budget day in 30 minutes                     | Burst, high visibility         |
-| Sell-side rates desks (gilts, macro funds)          | ~300          | Headroom monitor, fiscal-rule live state, vintage forecasts | Medium (Bloomberg substitutes) |
-| Microsim shops (PolicyEngine, OpenFisca-UK, TAXBEN) | ~20 dev-shops | Programmatic uprating tables                                | Very high (embedded dep)       |
-| PhD / postgrad UK macro                             | ~200          | Vignettes, textbook integration                             | Long-tail                      |
+| Segment | UK size | What they need | Stickiness |
+|----|----|----|----|
+| OBR + GAD + HMT analysts | ~500 | Audit-trail provenance, vintage pinning, Excel parity | Very high |
+| IFS / Resolution Foundation / NIESR / IFG | ~80 | Budget-day chart pipelines, scorecards, headroom math | High |
+| Academic forecast-evaluation researchers | ~150 globally | Vintage matrices, real-time panels, forecast errors | Citation-driving |
+| FT / Guardian / Bloomberg / Reuters journos | ~40 | Tidy frames on Budget day in 30 minutes | Burst, high visibility |
+| Sell-side rates desks (gilts, macro funds) | ~300 | Headroom monitor, fiscal-rule live state, vintage forecasts | Medium (Bloomberg substitutes) |
+| Microsim shops (PolicyEngine, OpenFisca-UK, TAXBEN) | ~20 dev-shops | Programmatic uprating tables | Very high (embedded dep) |
+| PhD / postgrad UK macro | ~200 | Vignettes, textbook integration | Long-tail |
 
 ### 3b. Demand × feature heatmap (★ = unit demand; max ★★★ per cell)
 
-| Feature                                                                                               | OBR/GAD | Think tanks | Academics | Journos | Sell-side | Microsim | Total  |
-|-------------------------------------------------------------------------------------------------------|---------|-------------|-----------|---------|-----------|----------|--------|
-| [`obr_as_of()`](https://charlescoverdale.github.io/obr/reference/obr_as_of.md) + `obr_tbl` provenance | ★★★     | ★★          | ★★★       | ★       | ★★★       | ★★★      | **15** |
-| Fiscal rules + headroom calculator                                                                    | ★★★     | ★★★         | ★         | ★★★     | ★★★       | –        | **13** |
-| Policy Measures Database wrapper                                                                      | ★★★     | ★★★         | ★         | ★★★     | ★         | ★★       | **13** |
-| Forecast Revisions Database                                                                           | ★★      | ★★★         | ★★        | ★★★     | ★★        | ★        | **13** |
-| Ready Reckoners (sensitivities)                                                                       | ★★★     | ★★★         | ★         | ★★      | ★         | ★★       | **12** |
-| Forecast error helpers                                                                                | ★       | ★★          | ★★★       | ★       | ★★        | –        | 9      |
-| Budget-day auto-update                                                                                | ★       | ★★★         | –         | ★★★     | ★★        | –        | 9      |
-| FSR full coverage (health, care)                                                                      | ★★      | ★★          | ★★        | ★       | ★         | ★        | 9      |
-| Devolved tax forecasts                                                                                | ★★      | ★           | –         | ★       | –         | ★        | 5      |
-| Historical PFD (300 years)                                                                            | ★       | ★           | ★★        | –       | –         | –        | 4      |
+| Feature | OBR/GAD | Think tanks | Academics | Journos | Sell-side | Microsim | Total |
+|----|----|----|----|----|----|----|----|
+| [`obr_as_of()`](https://charlescoverdale.github.io/obr/reference/obr_as_of.md) + `obr_tbl` provenance | ★★★ | ★★ | ★★★ | ★ | ★★★ | ★★★ | **15** |
+| Fiscal rules + headroom calculator | ★★★ | ★★★ | ★ | ★★★ | ★★★ | – | **13** |
+| Policy Measures Database wrapper | ★★★ | ★★★ | ★ | ★★★ | ★ | ★★ | **13** |
+| Forecast Revisions Database | ★★ | ★★★ | ★★ | ★★★ | ★★ | ★ | **13** |
+| Ready Reckoners (sensitivities) | ★★★ | ★★★ | ★ | ★★ | ★ | ★★ | **12** |
+| Forecast error helpers | ★ | ★★ | ★★★ | ★ | ★★ | – | 9 |
+| Budget-day auto-update | ★ | ★★★ | – | ★★★ | ★★ | – | 9 |
+| FSR full coverage (health, care) | ★★ | ★★ | ★★ | ★ | ★ | ★ | 9 |
+| Devolved tax forecasts | ★★ | ★ | – | ★ | – | ★ | 5 |
+| Historical PFD (300 years) | ★ | ★ | ★★ | – | – | – | 4 |
 
 Top five carry across at least four segments. Bottom three are deep but
 narrow: park for v0.4.
@@ -91,6 +91,7 @@ remains backwards-compatible. Every returned frame is `obr_tbl`-classed.
 ### 4.1 `obr_tbl` provenance class (foundation)
 
 ``` r
+
 # Internal constructor
 new_obr_tbl(
   data,
@@ -123,6 +124,7 @@ All existing 15 exports refit to return `obr_tbl`. No public API change.
 ### 4.2 Vintage-aware queries
 
 ``` r
+
 obr_efo_vintages()                          # df of all EFOs since June 2010 with date, slug, status
 obr_as_of(date, publication = "EFO")        # the publication current on `date`
 obr_pin(vintage = "October 2024 EFO")       # session-scoped vintage; affects all subsequent calls
@@ -136,6 +138,7 @@ rows, June 2010 to March 2026). Updated on each new EFO.
 ### 4.3 Fiscal rules + headroom calculator
 
 ``` r
+
 obr_fiscal_rules(vintage = NULL)            # rule definitions for the active charter
 obr_headroom(rule = c("stability", "investment", "welfare"), vintage = NULL)
 obr_rule_status(vintage = NULL)             # pass / fail / margin per rule
@@ -156,6 +159,7 @@ Responsibility Autumn 2024 + Autumn 2025 update. Cite both in
 ### 4.4 Policy Measures Database
 
 ``` r
+
 get_policy_measures(vintage = "March 2026", search = NULL, since = NULL)
 policy_measures_summary(vintage)            # net Exchequer effect by year, fiscal event, department
 policy_measures_compare(v1, v2)             # what's new / dropped / repriced between two vintages
@@ -167,6 +171,7 @@ successors. ~10,000 rows from 1970. First and only programmatic access.
 ### 4.5 Forecast Revisions Database
 
 ``` r
+
 get_forecast_revisions(series = "PSNB", from_vintage, to_vintage)
 decompose_revisions(series, vintage)        # economic determinants vs policy vs classification
 ```
@@ -178,6 +183,7 @@ naturally with
 ### 4.6 Forecast error helpers
 
 ``` r
+
 obr_forecast_error(series, h = 1:5, by = c("vintage", "horizon"))
 obr_forecast_panel(series)                  # real-time panel: rows = vintages, cols = target dates
 obr_forecast_accuracy(series, h)            # MAE, RMSE, bias, theil_u
@@ -191,6 +197,7 @@ understand the other.
 ### 4.7 Ready Reckoners
 
 ``` r
+
 get_ready_reckoners(vintage = NULL)         # tax/spend sensitivities ("1p on basic rate = GBP X")
 ```
 
@@ -201,6 +208,7 @@ Lookup, no compute.
 ### 4.8 Budget-day automation
 
 ``` r
+
 obr_check_for_updates(quiet = FALSE)        # compares cached vintages to obr.uk/data/ index
 ```
 
@@ -223,12 +231,12 @@ Budget-day dashboards.
 
 Four two-week sprints. Total ~8 weeks part-time, faster if compressed.
 
-| Sprint        | Focus                          | Deliverable                                                                                                                                                                                                                                                                                                                   |
-|---------------|--------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| S1 (week 1-2) | Audit fixes + provenance class | Items 1-10 in section 2; `obr_tbl` constructor + print method; all 15 existing exports refitted; tests for provenance attributes; CRAN re-submit ready                                                                                                                                                                        |
-| S2 (week 3-4) | Vintage layer                  | [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md), [`obr_as_of()`](https://charlescoverdale.github.io/obr/reference/obr_as_of.md), [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md); vintage CSV seed; vignette: “Pinning to a specific OBR publication” |
-| S3 (week 5-6) | Politics layer                 | Fiscal rules + headroom + Policy Measures Database; vignette: “Reproducing an IFS Green Budget headroom chart”                                                                                                                                                                                                                |
-| S4 (week 7-8) | Academics layer                | Forecast Revisions Database + Forecast error helpers; vignette: “Replicating a FER forecast-error decomposition”                                                                                                                                                                                                              |
+| Sprint | Focus | Deliverable |
+|----|----|----|
+| S1 (week 1-2) | Audit fixes + provenance class | Items 1-10 in section 2; `obr_tbl` constructor + print method; all 15 existing exports refitted; tests for provenance attributes; CRAN re-submit ready |
+| S2 (week 3-4) | Vintage layer | [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md), [`obr_as_of()`](https://charlescoverdale.github.io/obr/reference/obr_as_of.md), [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md); vintage CSV seed; vignette: “Pinning to a specific OBR publication” |
+| S3 (week 5-6) | Politics layer | Fiscal rules + headroom + Policy Measures Database; vignette: “Reproducing an IFS Green Budget headroom chart” |
+| S4 (week 7-8) | Academics layer | Forecast Revisions Database + Forecast error helpers; vignette: “Replicating a FER forecast-error decomposition” |
 
 Each sprint ends with a CRAN-ready release (0.3.0-alpha through 0.3.0).
 0.3.0 ships at end of S4. Items in 4.9 fold into 0.4.0.
@@ -274,16 +282,16 @@ gap, not a feature gap. Three levers:
 
 ### 6a. Outreach list (post v0.3 ship)
 
-| Target                                            | Channel                                              | Pitch                                                                                                                        |
-|---------------------------------------------------|------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
-| Ben Northcott (OBR)                               | Reply to current email thread                        | Demo: vintage-pinning + headroom calculator on March 2026 EFO. Offer to align variable naming with internal OBR conventions. |
-| Carl Emmerson, Bee Boileau, Isabel Stockton (IFS) | Direct email                                         | “I built the package that reproduces your Green Budget public-finances chapter in 30 lines of R.” Show the worked example.   |
-| James Smith, Cara Pacitti (Resolution Foundation) | Direct email                                         | Same pitch, RF angle.                                                                                                        |
-| OBR data page maintainer                          | Email via OBR contact                                | Request listing as a third-party tool on `obr.uk/data/`.                                                                     |
-| GES analytical community                          | GES Slack / R user community + a short LinkedIn post | “If you build fiscal impact assessments, here’s the R package.”                                                              |
-| FT / Guardian data desk                           | Direct email week before Spring Budget 2027          | “30-second tidy access to OBR forecast tables on Budget day.”                                                                |
-| PolicyEngine UK                                   | GitHub issue on policyengine-uk                      | Offer `obr` as a dep replacement for hand-coded uprating tables.                                                             |
-| DBnomics                                          | Direct email to providers team                       | Offer to seed full OBR feed.                                                                                                 |
+| Target | Channel | Pitch |
+|----|----|----|
+| Ben Northcott (OBR) | Reply to current email thread | Demo: vintage-pinning + headroom calculator on March 2026 EFO. Offer to align variable naming with internal OBR conventions. |
+| Carl Emmerson, Bee Boileau, Isabel Stockton (IFS) | Direct email | “I built the package that reproduces your Green Budget public-finances chapter in 30 lines of R.” Show the worked example. |
+| James Smith, Cara Pacitti (Resolution Foundation) | Direct email | Same pitch, RF angle. |
+| OBR data page maintainer | Email via OBR contact | Request listing as a third-party tool on `obr.uk/data/`. |
+| GES analytical community | GES Slack / R user community + a short LinkedIn post | “If you build fiscal impact assessments, here’s the R package.” |
+| FT / Guardian data desk | Direct email week before Spring Budget 2027 | “30-second tidy access to OBR forecast tables on Budget day.” |
+| PolicyEngine UK | GitHub issue on policyengine-uk | Offer `obr` as a dep replacement for hand-coded uprating tables. |
+| DBnomics | Direct email to providers team | Offer to seed full OBR feed. |
 
 ### 6b. Reply to Miles + Northcott
 

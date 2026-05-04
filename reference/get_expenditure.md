@@ -44,10 +44,22 @@ Other public finances:
 op <- options(obr.cache_dir = tempdir())
 tme <- get_expenditure()
 #> ℹ Downloading public_finances_databank.xlsx from OBR...
-#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
-#> ✖ HTTP 504 Gateway Timeout.
+#> ✔ Saved to cache.
 tail(tme)
-#> Error: object 'tme' not found
+#> # obr_tbl: 6 rows x 2 cols
+#> # Source:       OBR Public Finances Databank
+#> # URL:          https://obr.uk/download/public-finances-databank/
+#> # Retrieved:    2026-05-04 19:14:00 UTC
+#> # File MD5:     77a07b6641ca
+#> # Package:      obr 0.3.0
+#> 
+#>       year    tme_bn
+#> 75 2020-21 1164.5793
+#> 76 2021-22 1011.4941
+#> 77 2022-23  990.4851
+#> 78 2023-24 1027.3872
+#> 79 2024-25 1063.9669
+#> 80 2025-26 1106.0997
 options(op)
 # }
 ```

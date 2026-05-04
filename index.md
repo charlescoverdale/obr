@@ -39,6 +39,7 @@ optimistic.
 ## Installation
 
 ``` r
+
 install.packages("obr")
 
 # Or install the development version from GitHub
@@ -50,13 +51,13 @@ devtools::install_github("charlescoverdale/obr")
 
 ## Key OBR datasets
 
-| Dataset                                                                                       | What it contains                                                                                             | Frequency                      |
-|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|--------------------------------|
-| [Public Finances Databank](https://obr.uk/public-finances-databank-2019-20/)                  | Outturn data on PSNB, PSND, receipts, and expenditure back to 1946-47                                        | Monthly                        |
-| [Historical Official Forecasts Database](https://obr.uk/data/)                                | Every forecast the OBR (and pre-OBR Treasury) has published for key fiscal and economic variables since 1970 | Each fiscal event              |
-| [Economic and Fiscal Outlook](https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/)     | The flagship publication at each Budget - detailed projections across 5 years                                | Each Budget / Autumn Statement |
-| [Fiscal Sustainability Report](https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics                               | Annual                         |
-| [Welfare Trends Report](https://obr.uk/wtr/welfare-trends-report-october-2024/)               | Spending trends across the benefits system                                                                   | Annual                         |
+| Dataset | What it contains | Frequency |
+|----|----|----|
+| [Public Finances Databank](https://obr.uk/public-finances-databank-2019-20/) | Outturn data on PSNB, PSND, receipts, and expenditure back to 1946-47 | Monthly |
+| [Historical Official Forecasts Database](https://obr.uk/data/) | Every forecast the OBR (and pre-OBR Treasury) has published for key fiscal and economic variables since 1970 | Each fiscal event |
+| [Economic and Fiscal Outlook](https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/) | The flagship publication at each Budget - detailed projections across 5 years | Each Budget / Autumn Statement |
+| [Fiscal Sustainability Report](https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics | Annual |
+| [Welfare Trends Report](https://obr.uk/wtr/welfare-trends-report-october-2024/) | Spending trends across the benefits system | Annual |
 
 This package covers all five datasets listed above.
 
@@ -81,6 +82,7 @@ returns a clean, tidy data frame. Data is cached locally so subsequent
 calls are instant.
 
 ``` r
+
 # Without this package
 path <- "~/Downloads/Public_finances_databank_March_2025.xlsx"
 raw  <- readxl::read_excel(path, sheet = "Aggregates (£bn)", col_names = FALSE)
@@ -103,6 +105,7 @@ fingerprint of the underlying spreadsheet. The provenance prints
 automatically as a header above the data.
 
 ``` r
+
 library(obr)
 get_efo_fiscal()
 #> # obr_tbl: <rows> x <cols>
@@ -126,6 +129,7 @@ means an analysis pinned against an `obr_tbl` always carries the audit
 trail of which OBR publication produced the numbers.
 
 ``` r
+
 psnb <- get_psnb()
 obr_provenance(psnb)
 # Returns a list with: publication, vintage, source_url,
@@ -138,62 +142,62 @@ obr_provenance(psnb)
 
 ### Public Finances Databank
 
-| Function                                                                                           | Returns                                   |
-|----------------------------------------------------------------------------------------------------|-------------------------------------------|
-| [`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md)                       | Annual Public Sector Net Borrowing in £bn |
-| [`get_psnd()`](https://charlescoverdale.github.io/obr/reference/get_psnd.md)                       | Annual Public Sector Net Debt in £bn      |
-| [`get_expenditure()`](https://charlescoverdale.github.io/obr/reference/get_expenditure.md)         | Annual Total Managed Expenditure in £bn   |
-| [`get_receipts()`](https://charlescoverdale.github.io/obr/reference/get_receipts.md)               | Tax receipts broken down by type, in £bn  |
-| [`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md) | All aggregate series in tidy long format  |
+| Function | Returns |
+|----|----|
+| [`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md) | Annual Public Sector Net Borrowing in £bn |
+| [`get_psnd()`](https://charlescoverdale.github.io/obr/reference/get_psnd.md) | Annual Public Sector Net Debt in £bn |
+| [`get_expenditure()`](https://charlescoverdale.github.io/obr/reference/get_expenditure.md) | Annual Total Managed Expenditure in £bn |
+| [`get_receipts()`](https://charlescoverdale.github.io/obr/reference/get_receipts.md) | Tax receipts broken down by type, in £bn |
+| [`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md) | All aggregate series in tidy long format |
 
 ### Historical Forecasts Database
 
-| Function                                                                                             | Returns                                                                                      |
-|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| [`list_forecast_series()`](https://charlescoverdale.github.io/obr/reference/list_forecast_series.md) | Data frame of available series (no download needed)                                          |
-| `get_forecasts(series)`                                                                              | Every OBR forecast for a given series, in tidy long format                                   |
-| `obr_forecast_panel(series)`                                                                         | Wide real-time panel: rows = forecast vintages, columns = fiscal years                       |
-| `get_forecast_revisions(unit)`                                                                       | EFO-to-EFO PSNB revisions decomposed into policy, classifications, and underlying components |
+| Function | Returns |
+|----|----|
+| [`list_forecast_series()`](https://charlescoverdale.github.io/obr/reference/list_forecast_series.md) | Data frame of available series (no download needed) |
+| `get_forecasts(series)` | Every OBR forecast for a given series, in tidy long format |
+| `obr_forecast_panel(series)` | Wide real-time panel: rows = forecast vintages, columns = fiscal years |
+| `get_forecast_revisions(unit)` | EFO-to-EFO PSNB revisions decomposed into policy, classifications, and underlying components |
 
 ### Economic and Fiscal Outlook (EFO)
 
-| Function                                                                                                       | Returns                                                                            |
-|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)                       | Five-year net borrowing component projections from the latest Budget (£bn, annual) |
-| `get_efo_economy(measure)`                                                                                     | Quarterly economic projections: `"inflation"`, `"labour"`, or `"output_gap"`       |
-| [`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md) | Available economy measures (no download needed)                                    |
+| Function | Returns |
+|----|----|
+| [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md) | Five-year net borrowing component projections from the latest Budget (£bn, annual) |
+| `get_efo_economy(measure)` | Quarterly economic projections: `"inflation"`, `"labour"`, or `"output_gap"` |
+| [`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md) | Available economy measures (no download needed) |
 
 ### Welfare Trends Report (WTR)
 
-| Function                                                                                                     | Returns                                                                               |
-|--------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| [`get_welfare_spending()`](https://charlescoverdale.github.io/obr/reference/get_welfare_spending.md)         | Working-age welfare spending split by incapacity/non-incapacity (% GDP, from 1978-79) |
-| [`get_incapacity_spending()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_spending.md)   | Incapacity benefit spending by benefit type (ESA, IB, etc.) as % GDP                  |
-| [`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.md) | Combined incapacity caseloads and prevalence since 2008-09                            |
+| Function | Returns |
+|----|----|
+| [`get_welfare_spending()`](https://charlescoverdale.github.io/obr/reference/get_welfare_spending.md) | Working-age welfare spending split by incapacity/non-incapacity (% GDP, from 1978-79) |
+| [`get_incapacity_spending()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_spending.md) | Incapacity benefit spending by benefit type (ESA, IB, etc.) as % GDP |
+| [`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.md) | Combined incapacity caseloads and prevalence since 2008-09 |
 
 ### Fiscal Risks and Sustainability Report (FSR)
 
-| Function                                                                                                   | Returns                                                                                        |
-|------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| Function | Returns |
+|----|----|
 | [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md) | 50-year state pension spending projections (% GDP) under demographic and triple-lock scenarios |
 
 ### Policy Measures Database (PMD)
 
-| Function                                                                                                   | Returns                                                                                                                                   |
-|------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| [`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)         | Every tax (since 1970) and spending (since 2010) measure scored at a UK fiscal event, with Exchequer effect by fiscal year in GBP million |
-| [`policy_measures_summary()`](https://charlescoverdale.github.io/obr/reference/policy_measures_summary.md) | Net Exchequer effect aggregated by fiscal event and fiscal year                                                                           |
+| Function | Returns |
+|----|----|
+| [`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md) | Every tax (since 1970) and spending (since 2010) measure scored at a UK fiscal event, with Exchequer effect by fiscal year in GBP million |
+| [`policy_measures_summary()`](https://charlescoverdale.github.io/obr/reference/policy_measures_summary.md) | Net Exchequer effect aggregated by fiscal event and fiscal year |
 
 ### Fiscal rules
 
-| Function                                                                                     | Returns                                                                                                                                     |
-|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| Function | Returns |
+|----|----|
 | [`obr_fiscal_rules()`](https://charlescoverdale.github.io/obr/reference/obr_fiscal_rules.md) | The three Charter for Budget Responsibility rules (stability, investment, welfare cap), with the OBR’s last published headroom against each |
 
 ### Cache management
 
-| Function                                                                           | What it does                         |
-|------------------------------------------------------------------------------------|--------------------------------------|
+| Function | What it does |
+|----|----|
 | [`clear_cache()`](https://charlescoverdale.github.io/obr/reference/clear_cache.md) | Deletes all locally cached OBR files |
 
 All download functions accept `refresh = TRUE` to force a fresh download
@@ -201,15 +205,15 @@ from the OBR website.
 
 ### Provenance and vintage control
 
-| Function                                                                                     | What it does                                                                                              |
-|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| `obr_provenance(x)`                                                                          | Extracts the source URL, vintage, retrieval time, and file fingerprint attached to any returned `obr_tbl` |
-| `summary(x)`                                                                                 | Prints the full provenance card alongside the structural summary                                          |
-| [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md) | Lists every EFO published since June 2010, with publication dates and URL slugs                           |
-| `obr_as_of(date)`                                                                            | Returns the EFO that was current on a given calendar date                                                 |
-| `obr_pin(vintage)`                                                                           | Sets a session-wide EFO vintage; `get_efo_*` then defaults to that vintage                                |
-| [`obr_unpin()`](https://charlescoverdale.github.io/obr/reference/obr_unpin.md)               | Clears any pin set by [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md)          |
-| [`obr_pinned()`](https://charlescoverdale.github.io/obr/reference/obr_pinned.md)             | Returns the currently pinned vintage, or `NULL`                                                           |
+| Function | What it does |
+|----|----|
+| `obr_provenance(x)` | Extracts the source URL, vintage, retrieval time, and file fingerprint attached to any returned `obr_tbl` |
+| `summary(x)` | Prints the full provenance card alongside the structural summary |
+| [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md) | Lists every EFO published since June 2010, with publication dates and URL slugs |
+| `obr_as_of(date)` | Returns the EFO that was current on a given calendar date |
+| `obr_pin(vintage)` | Sets a session-wide EFO vintage; `get_efo_*` then defaults to that vintage |
+| [`obr_unpin()`](https://charlescoverdale.github.io/obr/reference/obr_unpin.md) | Clears any pin set by [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md) |
+| [`obr_pinned()`](https://charlescoverdale.github.io/obr/reference/obr_pinned.md) | Returns the currently pinned vintage, or `NULL` |
 
 ------------------------------------------------------------------------
 
@@ -218,6 +222,7 @@ from the OBR website.
 ### 1. How much did COVID cost the UK?
 
 ``` r
+
 library(obr)
 
 psnb <- get_psnb()
@@ -242,6 +247,7 @@ November 2025, that estimate had risen to **£149bn** - four times the
 original figure.
 
 ``` r
+
 psnb_fc <- get_forecasts("PSNB")
 fc_2425 <- psnb_fc[psnb_fc$fiscal_year == "2024-25", c("forecast_date", "value")]
 fc_2425
@@ -267,6 +273,7 @@ fiscal plans have evolved.
 ### 3. Has the UK ever run a surplus - and how likely is it to again?
 
 ``` r
+
 psnb <- get_psnb()
 
 # Years with a surplus (negative PSNB = receipts exceed spending)
@@ -294,6 +301,7 @@ surpluses.
 ### 4. Where does government revenue come from?
 
 ``` r
+
 receipts <- get_receipts()
 
 # Top tax sources in 2023-24
@@ -321,6 +329,7 @@ pulls more earners into higher bands.
 ### 5. What does the March 2026 Budget forecast for borrowing?
 
 ``` r
+
 efo <- get_efo_fiscal()
 efo[efo$series == "Net borrowing", ]
 #>   fiscal_year        series value_bn
@@ -345,6 +354,7 @@ return materially different numbers. The vintage layer pins to a
 specific EFO so the analysis is reproducible.
 
 ``` r
+
 # What did the OBR forecast for 2027-28 borrowing in October 2024 vs March 2026?
 oct_2024 <- get_efo_fiscal(vintage = "October 2024")
 mar_2026 <- get_efo_fiscal(vintage = "March 2026")
@@ -368,6 +378,7 @@ obr_as_of("2024-12-15")
 ### 6. Is the UK’s incapacity benefits bill rising?
 
 ``` r
+
 welfare <- get_welfare_spending()
 # Working-age incapacity spending, last 10 years
 ic <- welfare[welfare$series == "Working-age incapacity benefits spending" &
@@ -397,6 +408,7 @@ pandemic - a key driver of welfare reform debate in 2025.
 ### 7a. Every tax measure in a Budget
 
 ``` r
+
 # All tax measures scored from 2025-26 onwards
 pmd <- get_policy_measures(type = "tax", since = "2025-26")
 
@@ -412,12 +424,14 @@ for tax, 2010 onwards for spending. Combine `search =` and `since =` to
 pull a thematic time series, e.g. all alcohol-duty measures since 2010.
 
 ``` r
+
 get_policy_measures(type = "tax", search = "alcohol", since = "2010-11")
 ```
 
 ### 7b. What does the OBR say about the fiscal rules?
 
 ``` r
+
 obr_fiscal_rules()
 ```
 
@@ -432,6 +446,7 @@ or consult the EFO press release for the relevant vintage.
 ### 7. What happens to the state pension bill as the UK ages?
 
 ``` r
+
 proj <- get_pension_projections()
 
 # Central demographic projection: pension spending rises from 5% to 7.7% of GDP
@@ -463,38 +478,18 @@ triple-lock uprating assumptions.
 
 ## Related packages
 
-This package is part of a suite of R packages for economic, financial,
-and policy data. They share a consistent interface (named functions,
-tidy data frames, local caching) and are designed to work together.
-
-**Data access:**
-
-| Package                                                        | Source                                                |
-|----------------------------------------------------------------|-------------------------------------------------------|
-| [`ons`](https://github.com/charlescoverdale/ons)               | UK Office for National Statistics                     |
-| [`boe`](https://github.com/charlescoverdale/boe)               | Bank of England                                       |
-| [`hmrc`](https://github.com/charlescoverdale/hmrc)             | HM Revenue & Customs                                  |
-| [`ukhousing`](https://github.com/charlescoverdale/ukhousing)   | UK Land Registry, EPC, Planning                       |
-| [`fred`](https://github.com/charlescoverdale/fred)             | US Federal Reserve (FRED)                             |
-| [`readecb`](https://github.com/charlescoverdale/readecb)       | European Central Bank                                 |
-| [`readoecd`](https://github.com/charlescoverdale/readoecd)     | OECD                                                  |
-| [`readnoaa`](https://github.com/charlescoverdale/readnoaa)     | NOAA Climate Data                                     |
-| [`readaec`](https://github.com/charlescoverdale/readaec)       | Australian Electoral Commission                       |
-| [`comtrade`](https://github.com/charlescoverdale/comtrade)     | UN Comtrade                                           |
-| [`carbondata`](https://github.com/charlescoverdale/carbondata) | Carbon markets (EU ETS, UK ETS, voluntary registries) |
-
-**Analytical toolkits:**
-
-| Package                                                            | Purpose                                                         |
-|--------------------------------------------------------------------|-----------------------------------------------------------------|
-| [`inflateR`](https://github.com/charlescoverdale/inflateR)         | Inflation adjustment for price series                           |
-| [`inflationkit`](https://github.com/charlescoverdale/inflationkit) | Inflation analysis (decomposition, persistence, Phillips curve) |
-| [`yieldcurves`](https://github.com/charlescoverdale/yieldcurves)   | Yield curve fitting (Nelson-Siegel, Svensson)                   |
-| [`debtkit`](https://github.com/charlescoverdale/debtkit)           | Debt sustainability analysis                                    |
-| [`nowcast`](https://github.com/charlescoverdale/nowcast)           | Economic nowcasting                                             |
-| [`predictset`](https://github.com/charlescoverdale/predictset)     | Conformal prediction                                            |
-| [`climatekit`](https://github.com/charlescoverdale/climatekit)     | Climate indices                                                 |
-| [`inequality`](https://github.com/charlescoverdale/inequality)     | Inequality and poverty measurement                              |
+| Package | Description |
+|----|----|
+| [`ons`](https://github.com/charlescoverdale/ons) | UK Office for National Statistics data |
+| [`hmrc`](https://github.com/charlescoverdale/hmrc) | HM Revenue & Customs tax data |
+| [`boe`](https://github.com/charlescoverdale/boe) | Bank of England data |
+| [`fred`](https://github.com/charlescoverdale/fred) | US Federal Reserve (FRED) data |
+| [`debtkit`](https://github.com/charlescoverdale/debtkit) | Debt sustainability analysis |
+| [`yieldcurves`](https://github.com/charlescoverdale/yieldcurves) | Yield curve fitting (Nelson-Siegel, Svensson) |
+| [`inflateR`](https://github.com/charlescoverdale/inflateR) | Inflation adjustment for UK price series |
+| [`inflationkit`](https://github.com/charlescoverdale/inflationkit) | Inflation analysis |
+| [`greenbook`](https://github.com/charlescoverdale/greenbook) | HM Treasury Green Book CBA primitives |
+| [`magentabook`](https://github.com/charlescoverdale/magentabook) | HM Treasury Magenta Book evaluation primitives |
 
 ------------------------------------------------------------------------
 

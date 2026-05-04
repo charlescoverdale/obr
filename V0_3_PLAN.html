@@ -48,59 +48,59 @@
 <hr></div>
 <div class="section level2">
 <h2 id="id_2-critical-issues-must-fix-before-obr-engagement">2. Critical issues (must fix before OBR engagement)<a class="anchor" aria-label="anchor" href="#id_2-critical-issues-must-fix-before-obr-engagement"></a></h2>
-<table class="table"><colgroup><col width="20%"><col width="20%"><col width="20%"><col width="20%"><col width="20%"></colgroup><thead><tr class="header"><th>#</th>
+<table class="table"><colgroup><col width="20%"><col width="20%"><col width="20%"><col width="20%"><col width="20%"></colgroup><thead><tr><th>#</th>
 <th><a href="File:line" class="uri">File:line</a></th>
 <th>Severity</th>
 <th>Problem</th>
 <th>Fix</th>
-</tr></thead><tbody><tr class="odd"><td>1</td>
+</tr></thead><tbody><tr><td>1</td>
 <td>R/forecasts.R:2</td>
 <td>CRITICAL</td>
 <td>
 <code>FORECASTS_URL</code> hardcoded to “march-2025” but March 2026 EFO has shipped. <code><a href="reference/get_forecasts.html">get_forecasts()</a></code> returns stale vintage today.</td>
 <td>Use the existing dynamic resolver pattern (mirror <code>efo_url_candidates()</code>); fall back only with explicit warning.</td>
-</tr><tr class="even"><td>2</td>
+</tr><tr><td>2</td>
 <td>R/efo.R:9-11; R/welfare.R:7-9; R/fiscal_sustainability.R:6-9</td>
 <td>CRITICAL</td>
 <td>
 <code>obr_resolve_url()</code> returns NULL on failure; functions silently fall through to a stale fallback URL. User has no way to know they got 2024 data.</td>
 <td>Replace silent <code>if (is.null(url)) url &lt;- FALLBACK</code> with <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> naming the fallback and the failed candidates. Better: raise <code>cli_abort()</code> and require explicit <code>vintage = "fallback"</code>.</td>
-</tr><tr class="odd"><td>3</td>
+</tr><tr><td>3</td>
 <td>All data-returning functions</td>
 <td>CRITICAL</td>
 <td>No provenance on returned data. Cannot tell whether a frame came from March 2025 or March 2026 EFO. Blocks all institutional use.</td>
 <td>Wrap returns in an <code>obr_tbl</code> S3 class with attributes: <code>vintage</code>, <code>source_url</code>, <code>retrieved</code>, <code>obr_publication</code>, <code>package_version</code>, <code>sha256</code>. Print method shows provenance header. (Same pattern as <code>boe_tbl</code> and <code>fred_tbl</code>.)</td>
-</tr><tr class="even"><td>4</td>
+</tr><tr><td>4</td>
 <td>R/forecasts.R:10-20</td>
 <td>HIGH</td>
 <td>Sheet-name lookup uses literal Pound symbol (<code>"\u00a3PSNB"</code>). Brittle to OBR encoding changes.</td>
 <td>Add a tolerant resolver: try the literal sheet name, then a regex <code>^.PSNB$</code> fallback, then a name-based search of <code><a href="https://readxl.tidyverse.org/reference/excel_sheets.html" class="external-link">readxl::excel_sheets()</a></code>.</td>
-</tr><tr class="odd"><td>5</td>
+</tr><tr><td>5</td>
 <td>R/public_finances.R:49</td>
 <td>HIGH</td>
 <td>Footnote-stripping regex <code>gsub("[0-9]+$", "", series_names)</code> will corrupt any series legitimately ending in a digit.</td>
 <td>Strip only superscript-style trailing digits when the <em>original</em> string contains a footnote marker, or maintain a hardcoded ignore-list of valid trailing digits.</td>
-</tr><tr class="even"><td>6</td>
+</tr><tr><td>6</td>
 <td>R/efo.R:106-120</td>
 <td>HIGH</td>
 <td>Output-gap parser hardcodes <code>raw[, 3]</code>. Silently returns NAs if OBR moves the column.</td>
 <td>Resolve column positionally by header text (“Output gap (per cent of GDP)”) rather than fixed index.</td>
-</tr><tr class="odd"><td>7</td>
+</tr><tr><td>7</td>
 <td>R/efo.R:151,186</td>
 <td>MEDIUM (CRAN)</td>
 <td>Em-dashes (<code>—</code>) in roxygen <code>@title</code> lines. CRAN flags non-ASCII in Rd.</td>
 <td>Replace with hyphens.</td>
-</tr><tr class="even"><td>8</td>
+</tr><tr><td>8</td>
 <td>R/efo.R:220; R/forecasts.R:94</td>
 <td>MEDIUM (CRAN)</td>
 <td>Manual <code>if (!x %in% valid)</code> validation instead of <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code>.</td>
 <td>Refactor to <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code> pattern.</td>
-</tr><tr class="odd"><td>9</td>
+</tr><tr><td>9</td>
 <td>R/fiscal_sustainability.R:22-23</td>
 <td>MEDIUM</td>
 <td>Section detection by exact string match (<code>"Demographic scenarios"</code>, <code>"Triple lock scenarios"</code>); silent NULL on rename.</td>
 <td>Use <code>grepl("[Dd]emographic", ...)</code> style fuzzy match with explicit warning if no sections found.</td>
-</tr><tr class="even"><td>10</td>
+</tr><tr><td>10</td>
 <td>inst/CITATION:6</td>
 <td>LOW</td>
 <td>Citation declares “R package version 0.2.2”; actual is 0.2.5.</td>
@@ -111,42 +111,42 @@
 <h2 id="id_3-demand-for-obr-data">3. Demand for OBR data<a class="anchor" aria-label="anchor" href="#id_3-demand-for-obr-data"></a></h2>
 <div class="section level3">
 <h3 id="id_3a-audience-segments">3a. Audience segments<a class="anchor" aria-label="anchor" href="#id_3a-audience-segments"></a></h3>
-<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr class="header"><th>Segment</th>
+<table class="table"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><thead><tr><th>Segment</th>
 <th>UK size</th>
 <th>What they need</th>
 <th>Stickiness</th>
-</tr></thead><tbody><tr class="odd"><td>OBR + GAD + HMT analysts</td>
+</tr></thead><tbody><tr><td>OBR + GAD + HMT analysts</td>
 <td>~500</td>
 <td>Audit-trail provenance, vintage pinning, Excel parity</td>
 <td>Very high</td>
-</tr><tr class="even"><td>IFS / Resolution Foundation / NIESR / IFG</td>
+</tr><tr><td>IFS / Resolution Foundation / NIESR / IFG</td>
 <td>~80</td>
 <td>Budget-day chart pipelines, scorecards, headroom math</td>
 <td>High</td>
-</tr><tr class="odd"><td>Academic forecast-evaluation researchers</td>
+</tr><tr><td>Academic forecast-evaluation researchers</td>
 <td>~150 globally</td>
 <td>Vintage matrices, real-time panels, forecast errors</td>
 <td>Citation-driving</td>
-</tr><tr class="even"><td>FT / Guardian / Bloomberg / Reuters journos</td>
+</tr><tr><td>FT / Guardian / Bloomberg / Reuters journos</td>
 <td>~40</td>
 <td>Tidy frames on Budget day in 30 minutes</td>
 <td>Burst, high visibility</td>
-</tr><tr class="odd"><td>Sell-side rates desks (gilts, macro funds)</td>
+</tr><tr><td>Sell-side rates desks (gilts, macro funds)</td>
 <td>~300</td>
 <td>Headroom monitor, fiscal-rule live state, vintage forecasts</td>
 <td>Medium (Bloomberg substitutes)</td>
-</tr><tr class="even"><td>Microsim shops (PolicyEngine, OpenFisca-UK, TAXBEN)</td>
+</tr><tr><td>Microsim shops (PolicyEngine, OpenFisca-UK, TAXBEN)</td>
 <td>~20 dev-shops</td>
 <td>Programmatic uprating tables</td>
 <td>Very high (embedded dep)</td>
-</tr><tr class="odd"><td>PhD / postgrad UK macro</td>
+</tr><tr><td>PhD / postgrad UK macro</td>
 <td>~200</td>
 <td>Vignettes, textbook integration</td>
 <td>Long-tail</td>
 </tr></tbody></table></div>
 <div class="section level3">
 <h3 id="id_3b-demand--feature-heatmap---unit-demand-max--per-cell">3b. Demand × feature heatmap (★ = unit demand; max ★★★ per cell)<a class="anchor" aria-label="anchor" href="#id_3b-demand--feature-heatmap---unit-demand-max--per-cell"></a></h3>
-<table class="table"><colgroup><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"></colgroup><thead><tr class="header"><th>Feature</th>
+<table class="table"><colgroup><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"><col width="12%"></colgroup><thead><tr><th>Feature</th>
 <th>OBR/GAD</th>
 <th>Think tanks</th>
 <th>Academics</th>
@@ -154,7 +154,7 @@
 <th>Sell-side</th>
 <th>Microsim</th>
 <th>Total</th>
-</tr></thead><tbody><tr class="odd"><td>
+</tr></thead><tbody><tr><td>
 <code><a href="reference/obr_as_of.html">obr_as_of()</a></code> + <code>obr_tbl</code> provenance</td>
 <td>★★★</td>
 <td>★★</td>
@@ -163,7 +163,7 @@
 <td>★★★</td>
 <td>★★★</td>
 <td><strong>15</strong></td>
-</tr><tr class="even"><td>Fiscal rules + headroom calculator</td>
+</tr><tr><td>Fiscal rules + headroom calculator</td>
 <td>★★★</td>
 <td>★★★</td>
 <td>★</td>
@@ -171,7 +171,7 @@
 <td>★★★</td>
 <td>–</td>
 <td><strong>13</strong></td>
-</tr><tr class="odd"><td>Policy Measures Database wrapper</td>
+</tr><tr><td>Policy Measures Database wrapper</td>
 <td>★★★</td>
 <td>★★★</td>
 <td>★</td>
@@ -179,7 +179,7 @@
 <td>★</td>
 <td>★★</td>
 <td><strong>13</strong></td>
-</tr><tr class="even"><td>Forecast Revisions Database</td>
+</tr><tr><td>Forecast Revisions Database</td>
 <td>★★</td>
 <td>★★★</td>
 <td>★★</td>
@@ -187,7 +187,7 @@
 <td>★★</td>
 <td>★</td>
 <td><strong>13</strong></td>
-</tr><tr class="odd"><td>Ready Reckoners (sensitivities)</td>
+</tr><tr><td>Ready Reckoners (sensitivities)</td>
 <td>★★★</td>
 <td>★★★</td>
 <td>★</td>
@@ -195,7 +195,7 @@
 <td>★</td>
 <td>★★</td>
 <td><strong>12</strong></td>
-</tr><tr class="even"><td>Forecast error helpers</td>
+</tr><tr><td>Forecast error helpers</td>
 <td>★</td>
 <td>★★</td>
 <td>★★★</td>
@@ -203,7 +203,7 @@
 <td>★★</td>
 <td>–</td>
 <td>9</td>
-</tr><tr class="odd"><td>Budget-day auto-update</td>
+</tr><tr><td>Budget-day auto-update</td>
 <td>★</td>
 <td>★★★</td>
 <td>–</td>
@@ -211,7 +211,7 @@
 <td>★★</td>
 <td>–</td>
 <td>9</td>
-</tr><tr class="even"><td>FSR full coverage (health, care)</td>
+</tr><tr><td>FSR full coverage (health, care)</td>
 <td>★★</td>
 <td>★★</td>
 <td>★★</td>
@@ -219,7 +219,7 @@
 <td>★</td>
 <td>★</td>
 <td>9</td>
-</tr><tr class="odd"><td>Devolved tax forecasts</td>
+</tr><tr><td>Devolved tax forecasts</td>
 <td>★★</td>
 <td>★</td>
 <td>–</td>
@@ -227,7 +227,7 @@
 <td>–</td>
 <td>★</td>
 <td>5</td>
-</tr><tr class="even"><td>Historical PFD (300 years)</td>
+</tr><tr><td>Historical PFD (300 years)</td>
 <td>★</td>
 <td>★</td>
 <td>★★</td>
@@ -337,20 +337,20 @@
 <div class="section level2">
 <h2 id="id_5-build-sequence">5. Build sequence<a class="anchor" aria-label="anchor" href="#id_5-build-sequence"></a></h2>
 <p>Four two-week sprints. Total ~8 weeks part-time, faster if compressed.</p>
-<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr class="header"><th>Sprint</th>
+<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr><th>Sprint</th>
 <th>Focus</th>
 <th>Deliverable</th>
-</tr></thead><tbody><tr class="odd"><td>S1 (week 1-2)</td>
+</tr></thead><tbody><tr><td>S1 (week 1-2)</td>
 <td>Audit fixes + provenance class</td>
 <td>Items 1-10 in section 2; <code>obr_tbl</code> constructor + print method; all 15 existing exports refitted; tests for provenance attributes; CRAN re-submit ready</td>
-</tr><tr class="even"><td>S2 (week 3-4)</td>
+</tr><tr><td>S2 (week 3-4)</td>
 <td>Vintage layer</td>
 <td>
 <code><a href="reference/obr_efo_vintages.html">obr_efo_vintages()</a></code>, <code><a href="reference/obr_as_of.html">obr_as_of()</a></code>, <code><a href="reference/obr_pin.html">obr_pin()</a></code>; vintage CSV seed; vignette: “Pinning to a specific OBR publication”</td>
-</tr><tr class="odd"><td>S3 (week 5-6)</td>
+</tr><tr><td>S3 (week 5-6)</td>
 <td>Politics layer</td>
 <td>Fiscal rules + headroom + Policy Measures Database; vignette: “Reproducing an IFS Green Budget headroom chart”</td>
-</tr><tr class="even"><td>S4 (week 7-8)</td>
+</tr><tr><td>S4 (week 7-8)</td>
 <td>Academics layer</td>
 <td>Forecast Revisions Database + Forecast error helpers; vignette: “Replicating a FER forecast-error decomposition”</td>
 </tr></tbody></table><p>Each sprint ends with a CRAN-ready release (0.3.0-alpha through 0.3.0). 0.3.0 ships at end of S4. Items in 4.9 fold into 0.4.0.</p>
@@ -371,31 +371,31 @@
 <strong>A macrowithR fiscal cookbook chapter.</strong> The user already maintains <a href="https://macrowithr.com" class="external-link">macrowithR</a> and Chapter 11 (fiscal) is published. Add a worked example using <code>obr</code> v0.3 — every reader becomes a candidate user.</li>
 </ol><div class="section level3">
 <h3 id="id_6a-outreach-list-post-v03-ship">6a. Outreach list (post v0.3 ship)<a class="anchor" aria-label="anchor" href="#id_6a-outreach-list-post-v03-ship"></a></h3>
-<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr class="header"><th>Target</th>
+<table class="table"><colgroup><col width="33%"><col width="33%"><col width="33%"></colgroup><thead><tr><th>Target</th>
 <th>Channel</th>
 <th>Pitch</th>
-</tr></thead><tbody><tr class="odd"><td>Ben Northcott (OBR)</td>
+</tr></thead><tbody><tr><td>Ben Northcott (OBR)</td>
 <td>Reply to current email thread</td>
 <td>Demo: vintage-pinning + headroom calculator on March 2026 EFO. Offer to align variable naming with internal OBR conventions.</td>
-</tr><tr class="even"><td>Carl Emmerson, Bee Boileau, Isabel Stockton (IFS)</td>
+</tr><tr><td>Carl Emmerson, Bee Boileau, Isabel Stockton (IFS)</td>
 <td>Direct email</td>
 <td>“I built the package that reproduces your Green Budget public-finances chapter in 30 lines of R.” Show the worked example.</td>
-</tr><tr class="odd"><td>James Smith, Cara Pacitti (Resolution Foundation)</td>
+</tr><tr><td>James Smith, Cara Pacitti (Resolution Foundation)</td>
 <td>Direct email</td>
 <td>Same pitch, RF angle.</td>
-</tr><tr class="even"><td>OBR data page maintainer</td>
+</tr><tr><td>OBR data page maintainer</td>
 <td>Email via OBR contact</td>
 <td>Request listing as a third-party tool on <code>obr.uk/data/</code>.</td>
-</tr><tr class="odd"><td>GES analytical community</td>
+</tr><tr><td>GES analytical community</td>
 <td>GES Slack / R user community + a short LinkedIn post</td>
 <td>“If you build fiscal impact assessments, here’s the R package.”</td>
-</tr><tr class="even"><td>FT / Guardian data desk</td>
+</tr><tr><td>FT / Guardian data desk</td>
 <td>Direct email week before Spring Budget 2027</td>
 <td>“30-second tidy access to OBR forecast tables on Budget day.”</td>
-</tr><tr class="odd"><td>PolicyEngine UK</td>
+</tr><tr><td>PolicyEngine UK</td>
 <td>GitHub issue on policyengine-uk</td>
 <td>Offer <code>obr</code> as a dep replacement for hand-coded uprating tables.</td>
-</tr><tr class="even"><td>DBnomics</td>
+</tr><tr><td>DBnomics</td>
 <td>Direct email to providers team</td>
 <td>Offer to seed full OBR feed.</td>
 </tr></tbody></table></div>
