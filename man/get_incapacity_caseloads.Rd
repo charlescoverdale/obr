@@ -11,13 +11,12 @@ get_incapacity_caseloads(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} with columns:
-\describe{
-\item{year}{Fiscal year, e.g. \code{"2023-24"} (character)}
-\item{series}{Either \code{"Claimants"} (thousands) or
-\code{"Share of working age population"} (per cent) (character)}
-\item{value}{Value in units appropriate to the series (numeric)}
-}
+An \code{obr_tbl} with the standard v0.4.0 schema. The two series
+(\code{"Claimants"} and \code{"Share of working age population"}) carry different
+units: claimants are in thousands and the share is a percentage. After
+calling, the caller may want to overwrite \code{unit} to \code{"count_k"} for the
+claimants series, since the heuristic classifier cannot infer the
+"thousands" denomination from the series name alone.
 }
 \description{
 Downloads (and caches) the OBR Welfare Trends Report charts and tables

@@ -29,7 +29,13 @@ wtr_obr_tbl <- function(data, src) {
 # Layout: col 1 = NA (except "Back to contents" in row 1),
 #         col 2 = chart title (row 2) then series names in last data rows,
 #         cols 3+ = fiscal year labels (year_row) then values (data rows).
-parse_wtr_chart <- function(path, sheet) {
+#
+# Returns the v0.4.0 schema: period, period_type, series, metric_type, value, unit.
+# Most WTR data is denominated as a percentage of GDP; the unit defaults to
+# "pct" when the heuristic classifier cannot assign a more specific unit.
+# Caller can override by post-processing the returned frame (e.g. caseload
+# series that are denominated in thousands of claimants).
+parse_wtr_chart <- function(path, sheet, unit_default = "pct") {
   raw <- readxl::read_excel(path, sheet = sheet,
                             col_names = FALSE, .name_repair = "minimal")
   col2 <- as.character(unlist(raw[, 2]))
@@ -51,11 +57,16 @@ parse_wtr_chart <- function(path, sheet) {
     vals <- suppressWarnings(
       as.numeric(as.character(unlist(raw[data_rows[j], year_cols])))
     )
-    result_list[[j]] <- data.frame(
-      year   = fiscal_years,
-      series = series_names[j],
-      value  = vals,
-      stringsAsFactors = FALSE
+    metric <- classify_metric_type(series_names[j])
+    derived_unit <- default_unit_for_metric(metric)
+    unit <- if (is.na(derived_unit)) unit_default else derived_unit
+    result_list[[j]] <- obr_long(
+      period      = fiscal_years,
+      period_type = "fiscal_year",
+      series      = series_names[j],
+      value       = vals,
+      unit        = unit,
+      metric_type = metric
     )
   }
 
@@ -75,20 +86,17 @@ parse_wtr_chart <- function(path, sheet) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
-#' \describe{
-#'   \item{year}{Fiscal year, e.g. `"2023-24"` (character)}
-#'   \item{series}{Spending category: `"Working-age incapacity benefits spending"`
-#'     or `"Working-age non-incapacity spending"` (character)}
-#'   \item{value}{Spending as a percentage of GDP (numeric)}
-#' }
+#' @return An `obr_tbl` with the standard v0.4.0 schema (columns:
+#' `period`, `period_type`, `series`, `metric_type`, `value`, `unit`).
+#' Values are spending as a percentage of GDP; `metric_type` is `"pct"`,
+#' `unit` is `"pct"`.
 #'
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
 #' welfare <- get_welfare_spending()
 #' welfare[welfare$series == "Working-age incapacity benefits spending" &
-#'         welfare$year >= "2000-01", ]
+#'         welfare$period >= "2000-01", ]
 #' options(op)
 #' }
 #'
@@ -112,12 +120,10 @@ get_welfare_spending <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
-#' \describe{
-#'   \item{year}{Fiscal year, e.g. `"2023-24"` (character)}
-#'   \item{series}{Benefit name (character)}
-#'   \item{value}{Spending as a percentage of GDP (numeric)}
-#' }
+#' @return An `obr_tbl` with the standard v0.4.0 schema. `series` is the
+#' benefit name, values are spending as a percentage of GDP, `metric_type`
+#' is `"pct"`, `unit` is `"pct"`. See [get_public_finances()] for full
+#' column docs.
 #'
 #' @examples
 #' \donttest{
@@ -144,13 +150,12 @@ get_incapacity_spending <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
-#' \describe{
-#'   \item{year}{Fiscal year, e.g. `"2023-24"` (character)}
-#'   \item{series}{Either `"Claimants"` (thousands) or
-#'     `"Share of working age population"` (per cent) (character)}
-#'   \item{value}{Value in units appropriate to the series (numeric)}
-#' }
+#' @return An `obr_tbl` with the standard v0.4.0 schema. The two series
+#' (`"Claimants"` and `"Share of working age population"`) carry different
+#' units: claimants are in thousands and the share is a percentage. After
+#' calling, the caller may want to overwrite `unit` to `"count_k"` for the
+#' claimants series, since the heuristic classifier cannot infer the
+#' "thousands" denomination from the series name alone.
 #'
 #' @examples
 #' \donttest{
@@ -164,5 +169,11 @@ get_incapacity_spending <- function(refresh = FALSE) {
 #' @export
 get_incapacity_caseloads <- function(refresh = FALSE) {
   src <- wtr_source(refresh)
-  wtr_obr_tbl(parse_wtr_chart(src$path, "C3.1"), src)
+  out <- parse_wtr_chart(src$path, "C3.1")
+  if (!is.null(out)) {
+    is_claimants <- out$series == "Claimants"
+    out$unit[is_claimants] <- "count_k"
+    out$metric_type[is_claimants] <- "level"
+  }
+  wtr_obr_tbl(out, src)
 }

@@ -11,14 +11,18 @@ get_pension_projections(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} with columns:
+An \code{obr_tbl} with the standard v0.4.0 schema plus a
+\code{scenario_type} column to group scenarios:
 \describe{
+\item{period}{Fiscal year, e.g. \code{"2030-31"} (character)}
+\item{period_type}{Always \code{"fiscal_year"}}
+\item{series}{Scenario name, e.g. \code{"Central projection"},
+\code{"Higher life expectancy"} (character)}
+\item{metric_type}{Always \code{"pct"}}
+\item{value}{State pension spending as a percentage of GDP (numeric)}
+\item{unit}{Always \code{"pct"}}
 \item{scenario_type}{Either \code{"Demographic scenarios"} or
 \code{"Triple lock scenarios"} (character)}
-\item{scenario}{Scenario name, e.g. \code{"Central projection"},
-\code{"Higher life expectancy"} (character)}
-\item{fiscal_year}{Fiscal year, e.g. \code{"2030-31"} (character)}
-\item{pct_gdp}{State pension spending as a percentage of GDP (numeric)}
 }
 }
 \description{
@@ -40,7 +44,7 @@ op <- options(obr.cache_dir = tempdir())
 proj <- get_pension_projections()
 
 central <- proj[proj$scenario_type == "Demographic scenarios" &
-                proj$scenario == "Central projection", ]
+                proj$series == "Central projection", ]
 tail(central, 10)
 
 dem <- proj[proj$scenario_type == "Demographic scenarios", ]

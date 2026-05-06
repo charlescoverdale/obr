@@ -24,11 +24,18 @@ supplied, the function downloads the file for that specific EFO. If
 or falls back to the latest live EFO via the dynamic URL resolver.}
 }
 \value{
-An \code{obr_tbl} with columns:
+An \code{obr_tbl} with the standard v0.4.0 schema (columns:
+\code{period}, \code{period_type}, \code{series}, \code{metric_type}, \code{value}, \code{unit}):
 \describe{
 \item{period}{Calendar quarter, e.g. \code{"2025Q1"} (character)}
+\item{period_type}{Always \code{"quarter"} for this function (character)}
 \item{series}{Variable name, e.g. \code{"CPI"} (character)}
-\item{value}{Value in units appropriate to the series (numeric)}
+\item{metric_type}{One of \code{"index"}, \code{"yoy_pct"}, \code{"pct"}, \code{"level"},
+classified from the series name. This is the v0.4.0 fix for the v0.3.x
+issue where, e.g., CPI Index values and CPI YoY values shared a single
+\code{value} column with no machine-readable distinction.}
+\item{value}{Numeric value in units described by \code{unit}}
+\item{unit}{One of \code{"index"}, \code{"pct"}, etc., paired with \code{metric_type}}
 }
 }
 \description{

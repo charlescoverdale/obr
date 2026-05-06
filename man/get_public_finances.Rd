@@ -11,11 +11,17 @@ get_public_finances(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} (a \code{data.frame} with attached provenance) with columns:
+An \code{obr_tbl} (a \code{data.frame} with attached provenance) with the
+standard v0.4.0 schema (columns: \code{period}, \code{period_type}, \code{series},
+\code{metric_type}, \code{value}, \code{unit}):
 \describe{
-\item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
+\item{period}{Fiscal year (character, e.g. \code{"2024-25"})}
+\item{period_type}{Always \code{"fiscal_year"} for this function}
 \item{series}{Series name (character)}
-\item{value}{Value in \enc{£}{GBP} billion (numeric)}
+\item{metric_type}{Usually \code{"level"}; ratio or index series get a more
+specific value derived from the series name}
+\item{value}{Numeric value in units described by \code{unit}}
+\item{unit}{Usually \code{"gbp_bn"}; ratios and indices override}
 }
 Use \code{\link[=obr_provenance]{obr_provenance()}} to extract source URL, vintage, and retrieval time.
 }

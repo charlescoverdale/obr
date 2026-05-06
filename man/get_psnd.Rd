@@ -11,11 +11,9 @@ get_psnd(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} with columns:
-\describe{
-\item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
-\item{psnd_bn}{PSND in \enc{£}{GBP} billion (numeric)}
-}
+An \code{obr_tbl} with the standard v0.4.0 schema. \code{series} is
+\code{"PSND"}, \code{metric_type} is \code{"level"}, \code{unit} is \code{"gbp_bn"}. See
+\code{\link[=get_public_finances]{get_public_finances()}} for column definitions.
 }
 \description{
 Downloads (and caches) the OBR Public Finances Databank and returns

@@ -11,12 +11,10 @@ get_incapacity_spending(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} with columns:
-\describe{
-\item{year}{Fiscal year, e.g. \code{"2023-24"} (character)}
-\item{series}{Benefit name (character)}
-\item{value}{Spending as a percentage of GDP (numeric)}
-}
+An \code{obr_tbl} with the standard v0.4.0 schema. \code{series} is the
+benefit name, values are spending as a percentage of GDP, \code{metric_type}
+is \code{"pct"}, \code{unit} is \code{"pct"}. See \code{\link[=get_public_finances]{get_public_finances()}} for full
+column docs.
 }
 \description{
 Downloads (and caches) the OBR Welfare Trends Report charts and tables

@@ -77,6 +77,7 @@ efo_obr_tbl <- function(data, src) {
 # Parse sheet 6.5 (Components of Net Borrowing) from EFO aggregates file.
 # Row 5 has fiscal year labels in columns that contain year-like strings.
 # Data rows are those where col 2 is non-NA and at least one value is numeric.
+# Returns the v0.4.0 schema: period, period_type, series, metric_type, value, unit.
 parse_efo_fiscal <- function(path) {
   raw <- readxl::read_excel(path, sheet = "6.5",
                             col_names = FALSE, .name_repair = "minimal")
@@ -95,22 +96,41 @@ parse_efo_fiscal <- function(path) {
       as.numeric(as.character(unlist(raw[i, year_cols])))
     )
     if (all(is.na(vals))) next
-    result_list[[length(result_list) + 1]] <- data.frame(
-      fiscal_year = fiscal_years,
+    result_list[[length(result_list) + 1]] <- obr_long(
+      period      = fiscal_years,
+      period_type = "fiscal_year",
       series      = nm,
-      value_bn    = vals,
-      stringsAsFactors = FALSE
+      value       = vals,
+      unit        = "gbp_bn",
+      metric_type = "level"
     )
   }
 
   result <- do.call(rbind, result_list)
-  result[!is.na(result$value_bn), ]
+  result[!is.na(result$value), ]
 }
 
 # Generic parser for EFO economy sheets (quarterly, wide format).
 # Finds the first row where col 2 has a quarterly period (e.g. "2008Q1"),
 # then takes the row immediately before it as the series-name header.
-parse_efo_economy_sheet <- function(path, sheet) {
+#
+# Returns the v0.4.0 schema: period, period_type, series, metric_type, value, unit.
+#
+# metric_type is set per series, in order:
+#   1. heuristic classifier: detects "Index" / "deflator" → "index",
+#      "rate"/"share" → "pct", "growth"/"inflation" → "yoy_pct"
+#   2. for series the classifier returns "level" on, the caller's
+#      `default_metric_type` is applied (e.g. "yoy_pct" for the inflation sheet,
+#      where bare names like "CPI" / "RPI" denote annual rates by convention)
+#
+# This solves the v0.3.x bug where (e.g.) CPI YoY values and any CPI Index
+# values lived in the same `value` column with no machine-readable distinction.
+# The per-measure default also fixes the related issue that bare names like
+# "CPI" do not contain "inflation" / "growth" / "rate" in the source sheet,
+# so the classifier alone cannot tell what units they are in.
+parse_efo_economy_sheet <- function(path, sheet,
+                                    default_metric_type = NULL,
+                                    default_unit        = NA_character_) {
   raw <- readxl::read_excel(path, sheet = sheet,
                             col_names = FALSE, .name_repair = "minimal")
 
@@ -136,6 +156,15 @@ parse_efo_economy_sheet <- function(path, sheet) {
   data_idx <- which(is_period)
   periods  <- col2[data_idx]
 
+  metric <- classify_metric_type(series)
+  if (!is.null(default_metric_type)) {
+    metric[!is.na(metric) & metric == "level"] <- default_metric_type
+  }
+  unit <- default_unit_for_metric(metric)
+  if (!is.na(default_unit)) {
+    unit[is.na(unit)] <- default_unit
+  }
+
   result_list <- list()
   for (j in which(valid_series)) {
     col_idx <- j + 2L
@@ -144,11 +173,13 @@ parse_efo_economy_sheet <- function(path, sheet) {
       as.numeric(as.character(unlist(raw[data_idx, col_idx])))
     )
     if (all(is.na(vals))) next
-    result_list[[length(result_list) + 1]] <- data.frame(
-      period = periods,
-      series = series[j],
-      value  = vals,
-      stringsAsFactors = FALSE
+    result_list[[length(result_list) + 1]] <- obr_long(
+      period      = periods,
+      period_type = "quarter",
+      series      = series[j],
+      value       = vals,
+      unit        = unit[j],
+      metric_type = metric[j]
     )
   }
 
@@ -184,13 +215,15 @@ parse_efo_output_gap <- function(path) {
   }
   if (is.na(best_col)) return(NULL)
 
-  data.frame(
-    period = col2[data_idx],
-    series = "Output gap",
-    value  = suppressWarnings(
+  obr_long(
+    period      = col2[data_idx],
+    period_type = "quarter",
+    series      = "Output gap",
+    value       = suppressWarnings(
       as.numeric(as.character(unlist(raw[data_idx, best_col])))
     ),
-    stringsAsFactors = FALSE
+    unit        = "pct",
+    metric_type = "pct"
   )
 }
 
@@ -240,11 +273,15 @@ list_efo_economy_measures <- function() {
 #'   or falls back to the latest live EFO via the dynamic URL resolver. See
 #'   [obr_efo_vintages()] for the full list of supported vintages.
 #'
-#' @return An `obr_tbl` with columns:
+#' @return An `obr_tbl` with the standard v0.4.0 schema (columns:
+#' `period`, `period_type`, `series`, `metric_type`, `value`, `unit`):
 #' \describe{
-#'   \item{fiscal_year}{Fiscal year being forecast, e.g. `"2025-26"` (character)}
+#'   \item{period}{Fiscal year being forecast, e.g. `"2025-26"` (character)}
+#'   \item{period_type}{Always `"fiscal_year"` for this function (character)}
 #'   \item{series}{Component name, e.g. `"Net borrowing"` (character)}
-#'   \item{value_bn}{Projected value in \enc{£}{GBP} billion (numeric)}
+#'   \item{metric_type}{Always `"level"` for this function (character)}
+#'   \item{value}{Projected value (numeric)}
+#'   \item{unit}{Always `"gbp_bn"` for this function (character)}
 #' }
 #'
 #' @examples
@@ -285,11 +322,18 @@ get_efo_fiscal <- function(refresh = FALSE, vintage = NULL) {
 #'   `NULL` (the default), the function uses any vintage set via [obr_pin()],
 #'   or falls back to the latest live EFO via the dynamic URL resolver.
 #'
-#' @return An `obr_tbl` with columns:
+#' @return An `obr_tbl` with the standard v0.4.0 schema (columns:
+#' `period`, `period_type`, `series`, `metric_type`, `value`, `unit`):
 #' \describe{
 #'   \item{period}{Calendar quarter, e.g. `"2025Q1"` (character)}
+#'   \item{period_type}{Always `"quarter"` for this function (character)}
 #'   \item{series}{Variable name, e.g. `"CPI"` (character)}
-#'   \item{value}{Value in units appropriate to the series (numeric)}
+#'   \item{metric_type}{One of `"index"`, `"yoy_pct"`, `"pct"`, `"level"`,
+#'     classified from the series name. This is the v0.4.0 fix for the v0.3.x
+#'     issue where, e.g., CPI Index values and CPI YoY values shared a single
+#'     `value` column with no machine-readable distinction.}
+#'   \item{value}{Numeric value in units described by `unit`}
+#'   \item{unit}{One of `"index"`, `"pct"`, etc., paired with `metric_type`}
 #' }
 #'
 #' @examples
@@ -315,9 +359,18 @@ get_efo_economy <- function(measure = c("inflation", "labour", "output_gap"),
   src <- efo_economy_source(refresh = refresh, vintage = vintage)
   data <- if (measure == "output_gap") {
     parse_efo_output_gap(src$path)
-  } else {
-    sheet_map <- c(labour = "1.6", inflation = "1.7")
-    parse_efo_economy_sheet(src$path, sheet_map[[measure]])
+  } else if (measure == "inflation") {
+    # Sheet 1.7: bare names like "CPI", "RPI" denote annual rates (yoy_pct);
+    # series matching "Index" / "deflator" are overridden to "index" by the
+    # classifier inside the parser.
+    parse_efo_economy_sheet(src$path, "1.7",
+                            default_metric_type = "yoy_pct",
+                            default_unit        = "pct")
+  } else {  # measure == "labour"
+    # Sheet 1.6: mixed - rates (unemployment, participation) are classified
+    # as "pct"; counts (employment) and hours stay as "level" with no
+    # default unit (callers can post-process if they need the specific unit).
+    parse_efo_economy_sheet(src$path, "1.6")
   }
   efo_obr_tbl(data, src)
 }

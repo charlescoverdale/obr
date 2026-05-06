@@ -1,16 +1,23 @@
-test_that("get_pension_projections() returns correct structure", {
+# v0.4.0 schema for FSR output: standard tidy long cols + scenario_type.
+fsr_cols <- c("period", "period_type", "series",
+              "metric_type", "value", "unit", "scenario_type")
+
+test_that("get_pension_projections() returns the v0.4.0 schema", {
   skip_on_cran()
   skip_if_offline()
 
   result <- get_pension_projections()
 
   expect_s3_class(result, "data.frame")
-  expect_named(result, c("scenario_type", "scenario", "fiscal_year", "pct_gdp"))
+  expect_named(result, fsr_cols)
+  expect_type(result$period,        "character")
+  expect_type(result$series,        "character")
+  expect_type(result$value,         "double")
   expect_type(result$scenario_type, "character")
-  expect_type(result$scenario,      "character")
-  expect_type(result$fiscal_year,   "character")
-  expect_type(result$pct_gdp,       "double")
   expect_gt(nrow(result), 100)
+  expect_true(all(result$period_type == "fiscal_year"))
+  expect_true(all(result$metric_type == "pct"))
+  expect_true(all(result$unit == "pct"))
 })
 
 test_that("get_pension_projections() covers two scenario types", {
@@ -20,8 +27,8 @@ test_that("get_pension_projections() covers two scenario types", {
   result <- get_pension_projections()
   types  <- unique(result$scenario_type)
 
-  expect_true("Demographic scenarios"  %in% types)
-  expect_true("Triple lock scenarios"  %in% types)
+  expect_true("Demographic scenarios" %in% types)
+  expect_true("Triple lock scenarios" %in% types)
 })
 
 test_that("get_pension_projections() covers 50-year horizon", {
@@ -30,11 +37,10 @@ test_that("get_pension_projections() covers 50-year horizon", {
 
   result  <- get_pension_projections()
   dem     <- result[result$scenario_type == "Demographic scenarios", ]
-  n_years <- length(unique(dem$fiscal_year))
+  n_years <- length(unique(dem$period))
 
   expect_gte(n_years, 40)
-  # Should reach at least 2060s
-  expect_true(any(grepl("^206", dem$fiscal_year)))
+  expect_true(any(grepl("^206", dem$period)))
 })
 
 test_that("get_pension_projections() has plausible pension spending values", {
@@ -42,14 +48,12 @@ test_that("get_pension_projections() has plausible pension spending values", {
   skip_if_offline()
 
   result  <- get_pension_projections()
-  # State pension spending is typically 4-10% of GDP
-  expect_true(all(result$pct_gdp >= 2 & result$pct_gdp <= 20))
-  # Central demographic projection should be around 4-6% of GDP near the start
+  expect_true(all(result$value >= 2 & result$value <= 20))
   central <- result[
-    result$scenario == "Central projection" &
+    result$series == "Central projection" &
     result$scenario_type == "Demographic scenarios", ]
   expect_gt(nrow(central), 0)
-  expect_true(all(central$pct_gdp >= 3 & central$pct_gdp <= 15))
+  expect_true(all(central$value >= 3 & central$value <= 15))
 })
 
 test_that("get_pension_projections() returns obr_tbl with FSR provenance", {

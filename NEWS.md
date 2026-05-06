@@ -1,3 +1,70 @@
+# obr 0.4.0
+
+## Breaking: standard tidy long schema across all data-fetching functions
+
+This release standardises the columns returned by every data-fetching
+function so they can be `rbind()`'d, joined, plotted, and reasoned about
+the same way regardless of which OBR publication produced them. Driven by
+feedback from Ben Northcott (Office for Budget Responsibility) on the
+v0.3.x release.
+
+All long-format outputs now share the columns:
+
+* `period` - the time period as a character string
+* `period_type` - one of `"fiscal_year"`, `"quarter"`, `"calendar_year"`
+* `series` - the variable name
+* `metric_type` - one of `"level"`, `"yoy_pct"`, `"index"`, `"pct"`, `"pct_pts"`
+* `value` - the numeric value
+* `unit` - one of `"gbp_bn"`, `"pct"`, `"pct_pts"`, `"index"`, `"count_k"`, etc.
+
+`get_forecasts()` adds `forecast_date` as a leading column.
+`get_pension_projections()` adds `scenario_type` as a trailing column.
+
+### Migration
+
+| Old column | New column |
+|------------|-----------|
+| `year`, `fiscal_year` | `period` (with `period_type` to disambiguate) |
+| `value_bn`, `psnb_bn`, `psnd_bn`, `tme_bn` | `value` (with `unit = "gbp_bn"`) |
+| `pct_gdp` (FSR pension projections) | `value` (with `unit = "pct"`) |
+| `scenario` (FSR) | `series` |
+
+`get_psnb()`, `get_psnd()`, `get_expenditure()` now return the standard
+long schema and tag rows with `series = "PSNB"`, `"PSND"`, `"TME"`
+respectively rather than collapsing the value into a series-named column.
+
+## CPI Index vs YoY split (the headline fix)
+
+In v0.3.x, calling `get_efo_economy("inflation")` returned CPI Index values
+(~135) and CPI YoY growth values (~2.1) in the same `value` column with
+no machine-readable distinction between them. v0.4.0 tags every row with
+a `metric_type` (`"index"` for index levels, `"yoy_pct"` for growth
+rates, `"pct"` for shares, etc.) and a matching `unit`, so callers can
+filter or facet on metric type directly.
+
+This is the v0.4.0 fix for the bug Ben Northcott raised on 2026-04-29:
+"If I pull e.g. the CPI forecast the index value and the YoY growth rate
+appear in the same 'value' column. Probably an additional column in long
+format indicating YoY or Index would be useful."
+
+## New helpers
+
+* `classify_metric_type()` (internal): heuristic classifier for series
+  names. Returns `"index"`, `"yoy_pct"`, `"pct"`, `"pct_pts"`, or
+  `"level"`. Used by every parser to populate `metric_type` from raw
+  source labels.
+* `default_unit_for_metric()` (internal): maps a `metric_type` to its
+  default `unit`. For `"level"` returns `NA` (caller must supply since a
+  level can be `gbp_bn`, `count_mn`, etc.).
+* `obr_long()` (internal): canonical constructor for the v0.4.0 schema.
+  All parsers use this to build their tidy long output.
+
+## Constants
+
+* `OBR_PERIOD_TYPES`, `OBR_METRIC_TYPES`, `OBR_UNITS`: controlled
+  vocabularies for the schema metadata columns. Internal but documented
+  in the package source.
+
 # obr 0.3.0
 
 ## New: provenance metadata on every returned object

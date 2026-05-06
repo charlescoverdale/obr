@@ -80,13 +80,16 @@ parse_pension_projections <- function(path) {
         as.numeric(as.character(unlist(raw[i, year_cols])))
       )
       if (all(is.na(vals))) next
-      result_list[[length(result_list) + 1L]] <- data.frame(
-        scenario_type = sec_name,
-        scenario      = nm,
-        fiscal_year   = fiscal_years,
-        pct_gdp       = vals,
-        stringsAsFactors = FALSE
+      base <- obr_long(
+        period      = fiscal_years,
+        period_type = "fiscal_year",
+        series      = nm,
+        value       = vals,
+        unit        = "pct",
+        metric_type = "pct"
       )
+      base$scenario_type <- sec_name
+      result_list[[length(result_list) + 1L]] <- base
     }
   }
 
@@ -110,14 +113,18 @@ parse_pension_projections <- function(path) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
+#' @return An `obr_tbl` with the standard v0.4.0 schema plus a
+#' `scenario_type` column to group scenarios:
 #' \describe{
+#'   \item{period}{Fiscal year, e.g. `"2030-31"` (character)}
+#'   \item{period_type}{Always `"fiscal_year"`}
+#'   \item{series}{Scenario name, e.g. `"Central projection"`,
+#'     `"Higher life expectancy"` (character)}
+#'   \item{metric_type}{Always `"pct"`}
+#'   \item{value}{State pension spending as a percentage of GDP (numeric)}
+#'   \item{unit}{Always `"pct"`}
 #'   \item{scenario_type}{Either `"Demographic scenarios"` or
 #'     `"Triple lock scenarios"` (character)}
-#'   \item{scenario}{Scenario name, e.g. `"Central projection"`,
-#'     `"Higher life expectancy"` (character)}
-#'   \item{fiscal_year}{Fiscal year, e.g. `"2030-31"` (character)}
-#'   \item{pct_gdp}{State pension spending as a percentage of GDP (numeric)}
 #' }
 #'
 #' @examples
@@ -126,7 +133,7 @@ parse_pension_projections <- function(path) {
 #' proj <- get_pension_projections()
 #'
 #' central <- proj[proj$scenario_type == "Demographic scenarios" &
-#'                 proj$scenario == "Central projection", ]
+#'                 proj$series == "Central projection", ]
 #' tail(central, 10)
 #'
 #' dem <- proj[proj$scenario_type == "Demographic scenarios", ]

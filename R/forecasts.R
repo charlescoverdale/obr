@@ -40,6 +40,22 @@ SERIES_FALLBACK <- c(
   "expenditure" = "^.TME$"
 )
 
+# v0.4.0 schema metadata for each series in SERIES_MAP. Used to tag every
+# returned row with metric_type and unit so callers can rbind() across series
+# and know what the value column means.
+SERIES_META <- list(
+  "PSNB"            = list(metric_type = "level",   unit = "gbp_bn"),
+  "PSNB_pct"        = list(metric_type = "pct",     unit = "pct"),
+  "PSND"            = list(metric_type = "pct",     unit = "pct"),
+  "receipts"        = list(metric_type = "level",   unit = "gbp_bn"),
+  "receipts_pct"    = list(metric_type = "pct",     unit = "pct"),
+  "expenditure"     = list(metric_type = "level",   unit = "gbp_bn"),
+  "expenditure_pct" = list(metric_type = "pct",     unit = "pct"),
+  "GDP"             = list(metric_type = "yoy_pct", unit = "pct"),
+  "real_GDP"        = list(metric_type = "yoy_pct", unit = "pct"),
+  "CPI"             = list(metric_type = "yoy_pct", unit = "pct")
+)
+
 #' List available forecast series
 #'
 #' Returns a data frame showing the series names accepted by
@@ -90,12 +106,20 @@ list_forecast_series <- function() {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
+#' @return An `obr_tbl` with the standard v0.4.0 schema plus a
+#' `forecast_date` column (so each row identifies one fiscal-year value at
+#' one fiscal event):
 #' \describe{
+#'   \item{forecast_date}{When the forecast was published, e.g. `"March 2024"`}
+#'   \item{period}{Fiscal year being forecast, e.g. `"2024-25"`}
+#'   \item{period_type}{Always `"fiscal_year"`}
 #'   \item{series}{Series name as supplied (character)}
-#'   \item{forecast_date}{When the forecast was published, e.g. `"March 2024"` (character)}
-#'   \item{fiscal_year}{The fiscal year being forecast, e.g. `"2024-25"` (character)}
-#'   \item{value}{Forecast value (numeric)}
+#'   \item{metric_type}{One of `"level"`, `"pct"`, `"yoy_pct"`, set per
+#'     series. CPI / GDP / real_GDP are `"yoy_pct"` (rates of change);
+#'     PSNB / receipts / expenditure are `"level"`; the `_pct` variants and
+#'     PSND are `"pct"` (% of GDP).}
+#'   \item{value}{Numeric forecast value in the unit described by `unit`}
+#'   \item{unit}{`"gbp_bn"` for level series, `"pct"` for percentage series}
 #' }
 #'
 #' @examples
@@ -104,7 +128,7 @@ list_forecast_series <- function() {
 #' get_forecasts("PSNB")
 #'
 #' psnb <- get_forecasts("PSNB")
-#' psnb[psnb$fiscal_year == "2024-25", ]
+#' psnb[psnb$period == "2024-25", ]
 #' options(op)
 #' }
 #'
@@ -138,15 +162,21 @@ get_forecasts <- function(series = "PSNB", refresh = FALSE) {
   n_dates <- length(forecast_dates)
   n_years <- length(fiscal_years)
 
+  meta <- SERIES_META[[series]]
+
   result <- data.frame(
-    series        = series,
     forecast_date = rep(forecast_dates, times  = n_years),
-    fiscal_year   = rep(fiscal_years,   each   = n_dates),
+    period        = rep(fiscal_years,   each   = n_dates),
+    period_type   = "fiscal_year",
+    series        = series,
+    metric_type   = meta$metric_type,
     value         = suppressWarnings(as.numeric(unlist(data_matrix))),
+    unit          = meta$unit,
     stringsAsFactors = FALSE
   )
 
   result <- result[!is.na(result$value), ]
+  rownames(result) <- NULL
 
   new_obr_tbl(
     data        = result,

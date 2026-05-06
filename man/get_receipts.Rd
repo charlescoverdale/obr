@@ -11,12 +11,10 @@ get_receipts(refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} with columns:
-\describe{
-\item{year}{Fiscal year (character, e.g. \code{"2024-25"})}
-\item{series}{Tax or receipt category (character)}
-\item{value}{Value in \enc{£}{GBP} billion (numeric)}
-}
+An \code{obr_tbl} with the standard v0.4.0 schema (columns:
+\code{period}, \code{period_type}, \code{series}, \code{metric_type}, \code{value}, \code{unit}).
+\code{series} is the tax or receipt category, \code{metric_type} is \code{"level"},
+\code{unit} is \code{"gbp_bn"}. See \code{\link[=get_public_finances]{get_public_finances()}} for full column docs.
 }
 \description{
 Downloads (and caches) the OBR Public Finances Databank and returns

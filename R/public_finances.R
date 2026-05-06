@@ -43,11 +43,16 @@ parse_aggregates_bn <- function(path) {
 
   value_cols <- setdiff(names(data), "year")
   result <- do.call(rbind, lapply(value_cols, function(col) {
-    data.frame(
-      year   = data$year,
-      series = col,
-      value  = suppressWarnings(as.numeric(data[[col]])),
-      stringsAsFactors = FALSE
+    metric <- classify_metric_type(col)
+    derived_unit <- default_unit_for_metric(metric)
+    unit <- if (is.na(derived_unit)) "gbp_bn" else derived_unit
+    obr_long(
+      period      = data$year,
+      period_type = "fiscal_year",
+      series      = col,
+      value       = suppressWarnings(as.numeric(data[[col]])),
+      unit        = unit,
+      metric_type = metric
     )
   }))
   result[!is.na(result$value), ]
@@ -78,11 +83,13 @@ parse_receipts_bn <- function(path) {
 
   value_cols <- setdiff(names(data), "year")
   result <- do.call(rbind, lapply(value_cols, function(col) {
-    data.frame(
-      year   = data$year,
-      series = col,
-      value  = suppressWarnings(as.numeric(data[[col]])),
-      stringsAsFactors = FALSE
+    obr_long(
+      period      = data$year,
+      period_type = "fiscal_year",
+      series      = col,
+      value       = suppressWarnings(as.numeric(data[[col]])),
+      unit        = "gbp_bn",
+      metric_type = "level"
     )
   }))
   result[!is.na(result$value), ]
@@ -113,11 +120,17 @@ pfd_obr_tbl <- function(data, src) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` (a `data.frame` with attached provenance) with columns:
+#' @return An `obr_tbl` (a `data.frame` with attached provenance) with the
+#' standard v0.4.0 schema (columns: `period`, `period_type`, `series`,
+#' `metric_type`, `value`, `unit`):
 #' \describe{
-#'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
+#'   \item{period}{Fiscal year (character, e.g. `"2024-25"`)}
+#'   \item{period_type}{Always `"fiscal_year"` for this function}
 #'   \item{series}{Series name (character)}
-#'   \item{value}{Value in \enc{£}{GBP} billion (numeric)}
+#'   \item{metric_type}{Usually `"level"`; ratio or index series get a more
+#'     specific value derived from the series name}
+#'   \item{value}{Numeric value in units described by `unit`}
+#'   \item{unit}{Usually `"gbp_bn"`; ratios and indices override}
 #' }
 #' Use [obr_provenance()] to extract source URL, vintage, and retrieval time.
 #'
@@ -147,11 +160,9 @@ get_public_finances <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
-#' \describe{
-#'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
-#'   \item{psnb_bn}{PSNB in \enc{£}{GBP} billion (numeric)}
-#' }
+#' @return An `obr_tbl` with the standard v0.4.0 schema. `series` is
+#' `"PSNB"`, `metric_type` is `"level"`, `unit` is `"gbp_bn"`. See
+#' [get_public_finances()] for column definitions.
 #'
 #' @examples
 #' \donttest{
@@ -166,8 +177,8 @@ get_public_finances <- function(refresh = FALSE) {
 get_psnb <- function(refresh = FALSE) {
   src <- pfd_source(refresh)
   agg <- parse_aggregates_bn(src$path)
-  out <- agg[agg$series == "Public sector net borrowing", c("year", "value")]
-  names(out)[2] <- "psnb_bn"
+  out <- agg[agg$series == "Public sector net borrowing", ]
+  out$series <- "PSNB"
   rownames(out) <- NULL
   pfd_obr_tbl(out, src)
 }
@@ -180,11 +191,9 @@ get_psnb <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
-#' \describe{
-#'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
-#'   \item{psnd_bn}{PSND in \enc{£}{GBP} billion (numeric)}
-#' }
+#' @return An `obr_tbl` with the standard v0.4.0 schema. `series` is
+#' `"PSND"`, `metric_type` is `"level"`, `unit` is `"gbp_bn"`. See
+#' [get_public_finances()] for column definitions.
 #'
 #' @examples
 #' \donttest{
@@ -199,8 +208,8 @@ get_psnb <- function(refresh = FALSE) {
 get_psnd <- function(refresh = FALSE) {
   src <- pfd_source(refresh)
   agg <- parse_aggregates_bn(src$path)
-  out <- agg[agg$series == "Public sector net debt", c("year", "value")]
-  names(out)[2] <- "psnd_bn"
+  out <- agg[agg$series == "Public sector net debt", ]
+  out$series <- "PSND"
   rownames(out) <- NULL
   pfd_obr_tbl(out, src)
 }
@@ -214,11 +223,9 @@ get_psnd <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
-#' \describe{
-#'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
-#'   \item{tme_bn}{Total managed expenditure in \enc{£}{GBP} billion (numeric)}
-#' }
+#' @return An `obr_tbl` with the standard v0.4.0 schema. `series` is
+#' `"TME"`, `metric_type` is `"level"`, `unit` is `"gbp_bn"`. See
+#' [get_public_finances()] for column definitions.
 #'
 #' @examples
 #' \donttest{
@@ -233,8 +240,8 @@ get_psnd <- function(refresh = FALSE) {
 get_expenditure <- function(refresh = FALSE) {
   src <- pfd_source(refresh)
   agg <- parse_aggregates_bn(src$path)
-  out <- agg[agg$series == "Total managed expenditure", c("year", "value")]
-  names(out)[2] <- "tme_bn"
+  out <- agg[agg$series == "Total managed expenditure", ]
+  out$series <- "TME"
   rownames(out) <- NULL
   pfd_obr_tbl(out, src)
 }
@@ -248,12 +255,10 @@ get_expenditure <- function(refresh = FALSE) {
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy exists.
 #'   Defaults to `FALSE`.
 #'
-#' @return An `obr_tbl` with columns:
-#' \describe{
-#'   \item{year}{Fiscal year (character, e.g. `"2024-25"`)}
-#'   \item{series}{Tax or receipt category (character)}
-#'   \item{value}{Value in \enc{£}{GBP} billion (numeric)}
-#' }
+#' @return An `obr_tbl` with the standard v0.4.0 schema (columns:
+#' `period`, `period_type`, `series`, `metric_type`, `value`, `unit`).
+#' `series` is the tax or receipt category, `metric_type` is `"level"`,
+#' `unit` is `"gbp_bn"`. See [get_public_finances()] for full column docs.
 #'
 #' @examples
 #' \donttest{

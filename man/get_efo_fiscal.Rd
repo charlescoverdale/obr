@@ -17,11 +17,15 @@ or falls back to the latest live EFO via the dynamic URL resolver. See
 \code{\link[=obr_efo_vintages]{obr_efo_vintages()}} for the full list of supported vintages.}
 }
 \value{
-An \code{obr_tbl} with columns:
+An \code{obr_tbl} with the standard v0.4.0 schema (columns:
+\code{period}, \code{period_type}, \code{series}, \code{metric_type}, \code{value}, \code{unit}):
 \describe{
-\item{fiscal_year}{Fiscal year being forecast, e.g. \code{"2025-26"} (character)}
+\item{period}{Fiscal year being forecast, e.g. \code{"2025-26"} (character)}
+\item{period_type}{Always \code{"fiscal_year"} for this function (character)}
 \item{series}{Component name, e.g. \code{"Net borrowing"} (character)}
-\item{value_bn}{Projected value in \enc{£}{GBP} billion (numeric)}
+\item{metric_type}{Always \code{"level"} for this function (character)}
+\item{value}{Projected value (numeric)}
+\item{unit}{Always \code{"gbp_bn"} for this function (character)}
 }
 }
 \description{

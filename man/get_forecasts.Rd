@@ -15,12 +15,20 @@ get_forecasts(series = "PSNB", refresh = FALSE)
 Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} with columns:
+An \code{obr_tbl} with the standard v0.4.0 schema plus a
+\code{forecast_date} column (so each row identifies one fiscal-year value at
+one fiscal event):
 \describe{
+\item{forecast_date}{When the forecast was published, e.g. \code{"March 2024"}}
+\item{period}{Fiscal year being forecast, e.g. \code{"2024-25"}}
+\item{period_type}{Always \code{"fiscal_year"}}
 \item{series}{Series name as supplied (character)}
-\item{forecast_date}{When the forecast was published, e.g. \code{"March 2024"} (character)}
-\item{fiscal_year}{The fiscal year being forecast, e.g. \code{"2024-25"} (character)}
-\item{value}{Forecast value (numeric)}
+\item{metric_type}{One of \code{"level"}, \code{"pct"}, \code{"yoy_pct"}, set per
+series. CPI / GDP / real_GDP are \code{"yoy_pct"} (rates of change);
+PSNB / receipts / expenditure are \code{"level"}; the \verb{_pct} variants and
+PSND are \code{"pct"} (\% of GDP).}
+\item{value}{Numeric forecast value in the unit described by \code{unit}}
+\item{unit}{\code{"gbp_bn"} for level series, \code{"pct"} for percentage series}
 }
 }
 \description{
@@ -40,7 +48,7 @@ op <- options(obr.cache_dir = tempdir())
 get_forecasts("PSNB")
 
 psnb <- get_forecasts("PSNB")
-psnb[psnb$fiscal_year == "2024-25", ]
+psnb[psnb$period == "2024-25", ]
 options(op)
 }
 

@@ -68,11 +68,13 @@ obr_forecast_panel <- function(series = "PSNB",
     long$.idx <- NULL
   }
 
-  # Use stats::reshape for the long-to-wide pivot
+  # Use stats::reshape for the long-to-wide pivot.
+  # `period` replaced `fiscal_year` in v0.4.0; the source column is still
+  # the fiscal year being forecast.
   wide <- stats::reshape(
-    long[, c("forecast_date", "fiscal_year", "value")],
+    long[, c("forecast_date", "period", "value")],
     idvar     = "forecast_date",
-    timevar   = "fiscal_year",
+    timevar   = "period",
     direction = "wide"
   )
   rownames(wide) <- NULL

@@ -11,13 +11,10 @@ get_welfare_spending(refresh = FALSE)
 exists. Defaults to \code{FALSE}.}
 }
 \value{
-An \code{obr_tbl} with columns:
-\describe{
-\item{year}{Fiscal year, e.g. \code{"2023-24"} (character)}
-\item{series}{Spending category: \code{"Working-age incapacity benefits spending"}
-or \code{"Working-age non-incapacity spending"} (character)}
-\item{value}{Spending as a percentage of GDP (numeric)}
-}
+An \code{obr_tbl} with the standard v0.4.0 schema (columns:
+\code{period}, \code{period_type}, \code{series}, \code{metric_type}, \code{value}, \code{unit}).
+Values are spending as a percentage of GDP; \code{metric_type} is \code{"pct"},
+\code{unit} is \code{"pct"}.
 }
 \description{
 Downloads (and caches) the OBR Welfare Trends Report charts and tables
@@ -33,7 +30,7 @@ The exact vintage is recorded in the returned object's provenance.
 op <- options(obr.cache_dir = tempdir())
 welfare <- get_welfare_spending()
 welfare[welfare$series == "Working-age incapacity benefits spending" &
-        welfare$year >= "2000-01", ]
+        welfare$period >= "2000-01", ]
 options(op)
 }
 

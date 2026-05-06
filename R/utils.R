@@ -198,6 +198,74 @@ resolve_sheet_name <- function(path, primary, fallback_pattern = NULL) {
   ))
 }
 
+# Allowed values for the schema metadata columns.
+# These are the controlled vocabularies that all data-returning functions
+# populate from 0.4.0 onwards.
+OBR_PERIOD_TYPES <- c("fiscal_year", "quarter", "calendar_year")
+OBR_METRIC_TYPES <- c("level", "yoy_pct", "index", "pct", "pct_pts")
+OBR_UNITS        <- c("gbp_bn", "gbp_mn", "pct", "pct_pts", "index",
+                      "count_mn", "count_k", "count", "hours", "ratio")
+
+# Internal: classify a series name into a metric_type.
+# Heuristic; returns one of OBR_METRIC_TYPES. Defaults to "level".
+# Used so users can tell apart, e.g. CPI Index (135.2) vs CPI YoY (2.1) which
+# previously sat in the same `value` column with no machine-readable distinction.
+classify_metric_type <- function(series) {
+  if (length(series) == 0L) return(character(0))
+  s <- tolower(as.character(series))
+  vapply(s, function(x) {
+    if (is.na(x) || x == "") return(NA_character_)
+    if (grepl("\\binflation\\b|\\bgrowth\\b|\\bchange\\b|y[-/ ]?o[-/ ]?y|year[ -]on[ -]year|annual\\s*%", x)) {
+      "yoy_pct"
+    } else if (grepl("\\bindex\\b|\\(2015[ =]100\\)|\\(2010[ =]100\\)", x)) {
+      "index"
+    } else if (grepl("percentage points?|\\bpp\\b", x)) {
+      "pct_pts"
+    } else if (grepl("\\brate\\b|\\bratio\\b|\\bshare\\b|\\(%\\)|\\bper cent\\b|\\bpercent\\b|\\bpct\\b|%\\s*$", x)) {
+      "pct"
+    } else {
+      "level"
+    }
+  }, character(1), USE.NAMES = FALSE)
+}
+
+# Internal: default unit for a metric_type. For "level" the caller must supply
+# the actual unit (gbp_bn, count_mn, etc.) since level can be many things.
+default_unit_for_metric <- function(metric_type) {
+  vapply(metric_type, function(m) {
+    if (is.na(m)) return(NA_character_)
+    switch(m,
+           "index"   = "index",
+           "yoy_pct" = "pct",
+           "pct"     = "pct",
+           "pct_pts" = "pct_pts",
+           NA_character_)
+  }, character(1), USE.NAMES = FALSE)
+}
+
+# Internal: build a standard tidy-long observation frame using the v0.4.0
+# schema. All data-returning functions use this so outputs can be rbind()'d
+# across publications.
+#
+# Columns: period, period_type, series, metric_type, value, unit
+obr_long <- function(period, period_type, series, value,
+                     unit = NA_character_, metric_type = NULL) {
+  if (is.null(metric_type)) {
+    metric_type <- classify_metric_type(series)
+  }
+  if (length(period_type) == 1L) period_type <- rep(period_type, length(period))
+  if (length(unit) == 1L)        unit        <- rep(unit,        length(period))
+  data.frame(
+    period      = as.character(period),
+    period_type = as.character(period_type),
+    series      = as.character(series),
+    metric_type = as.character(metric_type),
+    value       = as.numeric(value),
+    unit        = as.character(unit),
+    stringsAsFactors = FALSE
+  )
+}
+
 #' Clear cached OBR files
 #'
 #' Deletes all files downloaded and cached by the obr package. The next
