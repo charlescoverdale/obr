@@ -73,16 +73,16 @@ panel <- obr_forecast_panel("PSNB")
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> Warning: multiple rows match for fiscal_year=1996-97: first taken
-#> Warning: multiple rows match for fiscal_year=1997-98: first taken
+#> Warning: multiple rows match for period=1996-97: first taken
+#> Warning: multiple rows match for period=1997-98: first taken
 # PSNB forecast for 2024-25 across every vintage
 panel[, c("forecast_date", "2024-25")]
 #> # obr_tbl: 104 rows x 2 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-04 19:14:07 UTC
+#> # Retrieved:    2026-05-06 19:54:30 UTC
 #> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> # Note:         Wide real-time panel for PSNB: rows = forecast vintage, columns = fiscal year.
 #> 
 #>    forecast_date 2024-25

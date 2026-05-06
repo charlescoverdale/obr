@@ -19,19 +19,12 @@ get_receipts(refresh = FALSE)
 
 ## Value
 
-An `obr_tbl` with columns:
-
-- year:
-
-  Fiscal year (character, e.g. `"2024-25"`)
-
-- series:
-
-  Tax or receipt category (character)
-
-- value:
-
-  Value in £ billion (numeric)
+An `obr_tbl` with the standard v0.4.0 schema (columns: `period`,
+`period_type`, `series`, `metric_type`, `value`, `unit`). `series` is
+the tax or receipt category, `metric_type` is `"level"`, `unit` is
+`"gbp_bn"`. See
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md)
+for full column docs.
 
 ## See also
 
@@ -53,24 +46,35 @@ receipts <- get_receipts()
 #>   vintage explicitly when that feature ships.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
-#> # obr_tbl: 81 rows x 3 cols
+#> # obr_tbl: 81 rows x 6 cols
 #> # Source:       OBR Public Finances Databank
 #> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-04 19:14:00 UTC
+#> # Retrieved:    2026-05-06 19:54:25 UTC
 #> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> 
-#>        year                             series   value
-#> 379 1999-00 Pay as your earn (PAYE) income tax  80.320
-#> 380 2000-01 Pay as your earn (PAYE) income tax  89.778
-#> 381 2001-02 Pay as your earn (PAYE) income tax  92.128
-#> 382 2002-03 Pay as your earn (PAYE) income tax  94.681
-#> 383 2003-04 Pay as your earn (PAYE) income tax 100.323
-#> 384 2004-05 Pay as your earn (PAYE) income tax 107.546
-#> 385 2005-06 Pay as your earn (PAYE) income tax 114.908
-#> 386 2006-07 Pay as your earn (PAYE) income tax 123.424
-#> 387 2007-08 Pay as your earn (PAYE) income tax 131.866
-#> 388 2008-09 Pay as your earn (PAYE) income tax 126.418
+#>      period period_type                             series metric_type   value
+#> 379 1999-00 fiscal_year Pay as your earn (PAYE) income tax       level  80.320
+#> 380 2000-01 fiscal_year Pay as your earn (PAYE) income tax       level  89.778
+#> 381 2001-02 fiscal_year Pay as your earn (PAYE) income tax       level  92.128
+#> 382 2002-03 fiscal_year Pay as your earn (PAYE) income tax       level  94.681
+#> 383 2003-04 fiscal_year Pay as your earn (PAYE) income tax       level 100.323
+#> 384 2004-05 fiscal_year Pay as your earn (PAYE) income tax       level 107.546
+#> 385 2005-06 fiscal_year Pay as your earn (PAYE) income tax       level 114.908
+#> 386 2006-07 fiscal_year Pay as your earn (PAYE) income tax       level 123.424
+#> 387 2007-08 fiscal_year Pay as your earn (PAYE) income tax       level 131.866
+#> 388 2008-09 fiscal_year Pay as your earn (PAYE) income tax       level 126.418
+#>       unit
+#> 379 gbp_bn
+#> 380 gbp_bn
+#> 381 gbp_bn
+#> 382 gbp_bn
+#> 383 gbp_bn
+#> 384 gbp_bn
+#> 385 gbp_bn
+#> 386 gbp_bn
+#> 387 gbp_bn
+#> 388 gbp_bn
 #> # ... with 71 more rows
 options(op)
 # }

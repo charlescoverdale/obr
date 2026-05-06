@@ -20,25 +20,38 @@ get_pension_projections(refresh = FALSE)
 
 ## Value
 
-An `obr_tbl` with columns:
+An `obr_tbl` with the standard v0.4.0 schema plus a `scenario_type`
+column to group scenarios:
+
+- period:
+
+  Fiscal year, e.g. `"2030-31"` (character)
+
+- period_type:
+
+  Always `"fiscal_year"`
+
+- series:
+
+  Scenario name, e.g. `"Central projection"`, `"Higher life expectancy"`
+  (character)
+
+- metric_type:
+
+  Always `"pct"`
+
+- value:
+
+  State pension spending as a percentage of GDP (numeric)
+
+- unit:
+
+  Always `"pct"`
 
 - scenario_type:
 
   Either `"Demographic scenarios"` or `"Triple lock scenarios"`
   (character)
-
-- scenario:
-
-  Scenario name, e.g. `"Central projection"`, `"Higher life expectancy"`
-  (character)
-
-- fiscal_year:
-
-  Fiscal year, e.g. `"2030-31"` (character)
-
-- pct_gdp:
-
-  State pension spending as a percentage of GDP (numeric)
 
 ## Details
 
@@ -58,26 +71,37 @@ proj <- get_pension_projections()
 #> ✔ Saved to cache.
 
 central <- proj[proj$scenario_type == "Demographic scenarios" &
-                proj$scenario == "Central projection", ]
+                proj$series == "Central projection", ]
 tail(central, 10)
-#> # obr_tbl: 10 rows x 4 cols
+#> # obr_tbl: 10 rows x 7 cols
 #> # Source:       OBR Fiscal Risks and Sustainability Report, July 2025
 #> # URL:          https://obr.uk/download/july-2025-fiscal-risks-and-sustainability-charts-and-tables-executive-summary/
-#> # Retrieved:    2026-05-04 19:14:20 UTC
+#> # Retrieved:    2026-05-06 19:54:45 UTC
 #> # File MD5:     bdf4d8711300
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> 
-#>            scenario_type           scenario fiscal_year  pct_gdp
-#> 42 Demographic scenarios Central projection     2064-65 7.240896
-#> 43 Demographic scenarios Central projection     2065-66 7.344158
-#> 44 Demographic scenarios Central projection     2066-67 7.448355
-#> 45 Demographic scenarios Central projection     2067-68 7.548574
-#> 46 Demographic scenarios Central projection     2068-69 7.640862
-#> 47 Demographic scenarios Central projection     2069-70 7.732326
-#> 48 Demographic scenarios Central projection     2070-71 7.820863
-#> 49 Demographic scenarios Central projection     2071-72 7.769048
-#> 50 Demographic scenarios Central projection     2072-73 7.661269
-#> 51 Demographic scenarios Central projection     2073-74 7.650863
+#>     period period_type             series metric_type    value unit
+#> 42 2064-65 fiscal_year Central projection         pct 7.240896  pct
+#> 43 2065-66 fiscal_year Central projection         pct 7.344158  pct
+#> 44 2066-67 fiscal_year Central projection         pct 7.448355  pct
+#> 45 2067-68 fiscal_year Central projection         pct 7.548574  pct
+#> 46 2068-69 fiscal_year Central projection         pct 7.640862  pct
+#> 47 2069-70 fiscal_year Central projection         pct 7.732326  pct
+#> 48 2070-71 fiscal_year Central projection         pct 7.820863  pct
+#> 49 2071-72 fiscal_year Central projection         pct 7.769048  pct
+#> 50 2072-73 fiscal_year Central projection         pct 7.661269  pct
+#> 51 2073-74 fiscal_year Central projection         pct 7.650863  pct
+#>            scenario_type
+#> 42 Demographic scenarios
+#> 43 Demographic scenarios
+#> 44 Demographic scenarios
+#> 45 Demographic scenarios
+#> 46 Demographic scenarios
+#> 47 Demographic scenarios
+#> 48 Demographic scenarios
+#> 49 Demographic scenarios
+#> 50 Demographic scenarios
+#> 51 Demographic scenarios
 
 dem <- proj[proj$scenario_type == "Demographic scenarios", ]
 options(op)

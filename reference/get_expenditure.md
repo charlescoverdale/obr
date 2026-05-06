@@ -19,15 +19,10 @@ get_expenditure(refresh = FALSE)
 
 ## Value
 
-An `obr_tbl` with columns:
-
-- year:
-
-  Fiscal year (character, e.g. `"2024-25"`)
-
-- tme_bn:
-
-  Total managed expenditure in £ billion (numeric)
+An `obr_tbl` with the standard v0.4.0 schema. `series` is `"TME"`,
+`metric_type` is `"level"`, `unit` is `"gbp_bn"`. See
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md)
+for column definitions.
 
 ## See also
 
@@ -46,20 +41,20 @@ tme <- get_expenditure()
 #> ℹ Downloading public_finances_databank.xlsx from OBR...
 #> ✔ Saved to cache.
 tail(tme)
-#> # obr_tbl: 6 rows x 2 cols
+#> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Public Finances Databank
 #> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-04 19:14:00 UTC
+#> # Retrieved:    2026-05-06 19:54:25 UTC
 #> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> 
-#>       year    tme_bn
-#> 75 2020-21 1164.5793
-#> 76 2021-22 1011.4941
-#> 77 2022-23  990.4851
-#> 78 2023-24 1027.3872
-#> 79 2024-25 1063.9669
-#> 80 2025-26 1106.0997
+#>     period period_type series metric_type     value   unit
+#> 75 2020-21 fiscal_year    TME       level 1164.5793 gbp_bn
+#> 76 2021-22 fiscal_year    TME       level 1011.4941 gbp_bn
+#> 77 2022-23 fiscal_year    TME       level  990.4851 gbp_bn
+#> 78 2023-24 fiscal_year    TME       level 1027.3872 gbp_bn
+#> 79 2024-25 fiscal_year    TME       level 1063.9669 gbp_bn
+#> 80 2025-26 fiscal_year    TME       level 1106.0997 gbp_bn
 options(op)
 # }
 ```

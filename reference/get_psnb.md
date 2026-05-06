@@ -19,15 +19,10 @@ get_psnb(refresh = FALSE)
 
 ## Value
 
-An `obr_tbl` with columns:
-
-- year:
-
-  Fiscal year (character, e.g. `"2024-25"`)
-
-- psnb_bn:
-
-  PSNB in £ billion (numeric)
+An `obr_tbl` with the standard v0.4.0 schema. `series` is `"PSNB"`,
+`metric_type` is `"level"`, `unit` is `"gbp_bn"`. See
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md)
+for column definitions.
 
 ## See also
 
@@ -49,20 +44,20 @@ psnb <- get_psnb()
 #>   vintage explicitly when that feature ships.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 tail(psnb)
-#> # obr_tbl: 6 rows x 2 cols
+#> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Public Finances Databank
 #> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-04 19:14:00 UTC
+#> # Retrieved:    2026-05-06 19:54:25 UTC
 #> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> 
-#>       year   psnb_bn
-#> 75 2020-21 393.54689
-#> 76 2021-22 164.22802
-#> 77 2022-23 104.59795
-#> 78 2023-24 100.39440
-#> 79 2024-25  99.57407
-#> 80 2025-26 101.83223
+#>     period period_type series metric_type     value   unit
+#> 75 2020-21 fiscal_year   PSNB       level 393.54689 gbp_bn
+#> 76 2021-22 fiscal_year   PSNB       level 164.22802 gbp_bn
+#> 77 2022-23 fiscal_year   PSNB       level 104.59795 gbp_bn
+#> 78 2023-24 fiscal_year   PSNB       level 100.39440 gbp_bn
+#> 79 2024-25 fiscal_year   PSNB       level  99.57407 gbp_bn
+#> 80 2025-26 fiscal_year   PSNB       level 101.83223 gbp_bn
 options(op)
 # }
 ```

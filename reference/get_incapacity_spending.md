@@ -19,19 +19,11 @@ get_incapacity_spending(refresh = FALSE)
 
 ## Value
 
-An `obr_tbl` with columns:
-
-- year:
-
-  Fiscal year, e.g. `"2023-24"` (character)
-
-- series:
-
-  Benefit name (character)
-
-- value:
-
-  Spending as a percentage of GDP (numeric)
+An `obr_tbl` with the standard v0.4.0 schema. `series` is the benefit
+name, values are spending as a percentage of GDP, `metric_type` is
+`"pct"`, `unit` is `"pct"`. See
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md)
+for full column docs.
 
 ## Details
 

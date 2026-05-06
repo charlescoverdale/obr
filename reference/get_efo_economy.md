@@ -36,19 +36,35 @@ get_efo_economy(
 
 ## Value
 
-An `obr_tbl` with columns:
+An `obr_tbl` with the standard v0.4.0 schema (columns: `period`,
+`period_type`, `series`, `metric_type`, `value`, `unit`):
 
 - period:
 
   Calendar quarter, e.g. `"2025Q1"` (character)
 
+- period_type:
+
+  Always `"quarter"` for this function (character)
+
 - series:
 
   Variable name, e.g. `"CPI"` (character)
 
+- metric_type:
+
+  One of `"index"`, `"yoy_pct"`, `"pct"`, `"level"`, classified from the
+  series name. This is the v0.4.0 fix for the v0.3.x issue where, e.g.,
+  CPI Index values and CPI YoY values shared a single `value` column
+  with no machine-readable distinction.
+
 - value:
 
-  Value in units appropriate to the series (numeric)
+  Numeric value in units described by `unit`
+
+- unit:
+
+  One of `"index"`, `"pct"`, etc., paired with `metric_type`
 
 ## Details
 
@@ -71,24 +87,24 @@ inf <- get_efo_economy("inflation")
 #> ℹ Downloading efo_economy.xlsx from OBR...
 #> ✔ Saved to cache.
 inf[inf$series == "CPI", ]
-#> # obr_tbl: 186 rows x 3 cols
+#> # obr_tbl: 186 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/
-#> # Retrieved:    2026-05-04 19:13:57 UTC
+#> # Retrieved:    2026-05-06 19:54:23 UTC
 #> # File MD5:     da58dba1f8d3
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> 
-#>     period series    value
-#> 183 2008Q1    CPI 2.375720
-#> 184 2008Q2    CPI 3.419723
-#> 185 2008Q3    CPI 4.838841
-#> 186 2008Q4    CPI 3.824052
-#> 187 2009Q1    CPI 3.005551
-#> 188 2009Q2    CPI 2.088718
-#> 189 2009Q3    CPI 1.489726
-#> 190 2009Q4    CPI 2.103189
-#> 191 2010Q1    CPI 3.274537
-#> 192 2010Q2    CPI 3.456674
+#>     period period_type series metric_type    value unit
+#> 183 2008Q1     quarter    CPI     yoy_pct 2.375720  pct
+#> 184 2008Q2     quarter    CPI     yoy_pct 3.419723  pct
+#> 185 2008Q3     quarter    CPI     yoy_pct 4.838841  pct
+#> 186 2008Q4     quarter    CPI     yoy_pct 3.824052  pct
+#> 187 2009Q1     quarter    CPI     yoy_pct 3.005551  pct
+#> 188 2009Q2     quarter    CPI     yoy_pct 2.088718  pct
+#> 189 2009Q3     quarter    CPI     yoy_pct 1.489726  pct
+#> 190 2009Q4     quarter    CPI     yoy_pct 2.103189  pct
+#> 191 2010Q1     quarter    CPI     yoy_pct 3.274537  pct
+#> 192 2010Q2     quarter    CPI     yoy_pct 3.456674  pct
 #> # ... with 176 more rows
 
 lab <- get_efo_economy("labour")

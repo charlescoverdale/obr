@@ -73,9 +73,9 @@ rev[rev$component %in% c("Total", "Policy",
 #> # obr_tbl: 564 rows x 4 cols
 #> # Source:       OBR Forecast Revisions Database
 #> # URL:          https://obr.uk/download/forecast-revisions-database-march-2025/
-#> # Retrieved:    2026-05-04 19:14:04 UTC
+#> # Retrieved:    2026-05-06 19:54:28 UTC
 #> # File MD5:     88649f739c50
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> # Note:         Decomposition of PSNB forecast revisions in GBP billion.
 #> 
 #>    forecast_date component fiscal_year value

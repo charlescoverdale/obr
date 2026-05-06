@@ -11,7 +11,7 @@ and OBR projections through the current forecast horizon."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,14 +65,26 @@ Defaults to <code>FALSE</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>obr_tbl</code> (a <code>data.frame</code> with attached provenance) with columns:</p><dl><dt>year</dt>
+    <p>An <code>obr_tbl</code> (a <code>data.frame</code> with attached provenance) with the
+standard v0.4.0 schema (columns: <code>period</code>, <code>period_type</code>, <code>series</code>,
+<code>metric_type</code>, <code>value</code>, <code>unit</code>):</p><dl><dt>period</dt>
 <dd><p>Fiscal year (character, e.g. <code>"2024-25"</code>)</p></dd>
+
+<dt>period_type</dt>
+<dd><p>Always <code>"fiscal_year"</code> for this function</p></dd>
 
 <dt>series</dt>
 <dd><p>Series name (character)</p></dd>
 
+<dt>metric_type</dt>
+<dd><p>Usually <code>"level"</code>; ratio or index series get a more
+specific value derived from the series name</p></dd>
+
 <dt>value</dt>
-<dd><p>Value in £ billion (numeric)</p></dd>
+<dd><p>Numeric value in units described by <code>unit</code></p></dd>
+
+<dt>unit</dt>
+<dd><p>Usually <code>"gbp_bn"</code>; ratios and indices override</p></dd>
 
 
 </dl><p>Use <code><a href="obr_provenance.html">obr_provenance()</a></code> to extract source URL, vintage, and retrieval time.</p>
@@ -138,13 +150,13 @@ deflator, and more.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://obr.uk/download/public-finances-databank/"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $retrieved</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-05-04 19:14:00 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-05-06 19:54:25 UTC"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file_md5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "77a07b6641ca8ef85449de08077a9b87"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $package_version</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0.3.0"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0.4.0"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $notes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>

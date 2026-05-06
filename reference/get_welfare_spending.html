@@ -11,7 +11,7 @@ GDP, split into incapacity-related and non-incapacity spending."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,18 +65,11 @@ exists. Defaults to <code>FALSE</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>obr_tbl</code> with columns:</p><dl><dt>year</dt>
-<dd><p>Fiscal year, e.g. <code>"2023-24"</code> (character)</p></dd>
-
-<dt>series</dt>
-<dd><p>Spending category: <code>"Working-age incapacity benefits spending"</code>
-or <code>"Working-age non-incapacity spending"</code> (character)</p></dd>
-
-<dt>value</dt>
-<dd><p>Spending as a percentage of GDP (numeric)</p></dd>
-
-
-</dl></div>
+    <p>An <code>obr_tbl</code> with the standard v0.4.0 schema (columns:
+<code>period</code>, <code>period_type</code>, <code>series</code>, <code>metric_type</code>, <code>value</code>, <code>unit</code>).
+Values are spending as a percentage of GDP; <code>metric_type</code> is <code>"pct"</code>,
+<code>unit</code> is <code>"pct"</code>.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Data cover fiscal years from 1978-79 through the current forecast horizon.
@@ -101,25 +94,36 @@ The exact vintage is recorded in the returned object's provenance.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   vintage explicitly when that feature ships.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-in"><span><span class="va">welfare</span><span class="op">[</span><span class="va">welfare</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Working-age incapacity benefits spending"</span> <span class="op">&amp;</span></span></span>
-<span class="r-in"><span>        <span class="va">welfare</span><span class="op">$</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="st">"2000-01"</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # obr_tbl: 29 rows x 3 cols</span>
+<span class="r-in"><span>        <span class="va">welfare</span><span class="op">$</span><span class="va">period</span> <span class="op">&gt;=</span> <span class="st">"2000-01"</span>, <span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # obr_tbl: 29 rows x 6 cols</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Source:       OBR Welfare Trends Report, October 2024</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Retrieved:    2026-05-04 19:14:14 UTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Retrieved:    2026-05-06 19:54:38 UTC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # File MD5:     c587017c08a1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Package:      obr 0.3.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Package:      obr 0.4.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       year                                   series     value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2000-01 Working-age incapacity benefits spending 1.0914588</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2001-02 Working-age incapacity benefits spending 1.0812179</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2002-03 Working-age incapacity benefits spending 1.0345429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2003-04 Working-age incapacity benefits spending 0.9930008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2004-05 Working-age incapacity benefits spending 0.9203422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2005-06 Working-age incapacity benefits spending 0.8546259</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2006-07 Working-age incapacity benefits spending 0.8089978</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2007-08 Working-age incapacity benefits spending 0.8035180</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 2008-09 Working-age incapacity benefits spending 0.7741892</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 2009-10 Working-age incapacity benefits spending 0.7877039</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     period period_type                                   series metric_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2000-01 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2001-02 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2002-03 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2003-04 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2004-05 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2005-06 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2006-07 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2007-08 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 2008-09 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 2009-10 fiscal_year Working-age incapacity benefits spending       level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        value unit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 1.0914588  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 1.0812179  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 1.0345429  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 0.9930008  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 0.9203422  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 0.8546259  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 0.8089978  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 0.8035180  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 0.7741892  pct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 0.7877039  pct</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # ... with 19 more rows</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

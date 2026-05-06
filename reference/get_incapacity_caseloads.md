@@ -20,20 +20,12 @@ get_incapacity_caseloads(refresh = FALSE)
 
 ## Value
 
-An `obr_tbl` with columns:
-
-- year:
-
-  Fiscal year, e.g. `"2023-24"` (character)
-
-- series:
-
-  Either `"Claimants"` (thousands) or
-  `"Share of working age population"` (per cent) (character)
-
-- value:
-
-  Value in units appropriate to the series (numeric)
+An `obr_tbl` with the standard v0.4.0 schema. The two series
+(`"Claimants"` and `"Share of working age population"`) carry different
+units: claimants are in thousands and the share is a percentage. After
+calling, the caller may want to overwrite `unit` to `"count_k"` for the
+claimants series, since the heuristic classifier cannot infer the
+"thousands" denomination from the series name alone.
 
 ## See also
 
@@ -50,24 +42,24 @@ cases <- get_incapacity_caseloads()
 #> ℹ Downloading welfare_trends.xlsx from OBR...
 #> ✔ Saved to cache.
 cases[cases$series == "Claimants", ]
-#> # obr_tbl: 16 rows x 3 cols
+#> # obr_tbl: 16 rows x 6 cols
 #> # Source:       OBR Welfare Trends Report, October 2024
 #> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
-#> # Retrieved:    2026-05-04 19:14:14 UTC
+#> # Retrieved:    2026-05-06 19:54:38 UTC
 #> # File MD5:     c587017c08a1
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> 
-#>       year    series    value
-#> 1  2008-09 Claimants 2588.000
-#> 2  2009-10 Claimants 2350.000
-#> 3  2010-11 Claimants 2253.000
-#> 4  2011-12 Claimants 2179.000
-#> 5  2012-13 Claimants 1959.000
-#> 6  2013-14 Claimants 1864.000
-#> 7  2014-15 Claimants 1880.001
-#> 8  2015-16 Claimants 2012.076
-#> 9  2016-17 Claimants 2047.989
-#> 10 2017-18 Claimants 2032.168
+#>     period period_type    series metric_type    value    unit
+#> 1  2008-09 fiscal_year Claimants       level 2588.000 count_k
+#> 2  2009-10 fiscal_year Claimants       level 2350.000 count_k
+#> 3  2010-11 fiscal_year Claimants       level 2253.000 count_k
+#> 4  2011-12 fiscal_year Claimants       level 2179.000 count_k
+#> 5  2012-13 fiscal_year Claimants       level 1959.000 count_k
+#> 6  2013-14 fiscal_year Claimants       level 1864.000 count_k
+#> 7  2014-15 fiscal_year Claimants       level 1880.001 count_k
+#> 8  2015-16 fiscal_year Claimants       level 2012.076 count_k
+#> 9  2016-17 fiscal_year Claimants       level 2047.989 count_k
+#> 10 2017-18 fiscal_year Claimants       level 2032.168 count_k
 #> # ... with 6 more rows
 options(op)
 # }

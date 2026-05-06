@@ -29,19 +29,32 @@ get_efo_fiscal(refresh = FALSE, vintage = NULL)
 
 ## Value
 
-An `obr_tbl` with columns:
+An `obr_tbl` with the standard v0.4.0 schema (columns: `period`,
+`period_type`, `series`, `metric_type`, `value`, `unit`):
 
-- fiscal_year:
+- period:
 
   Fiscal year being forecast, e.g. `"2025-26"` (character)
+
+- period_type:
+
+  Always `"fiscal_year"` for this function (character)
 
 - series:
 
   Component name, e.g. `"Net borrowing"` (character)
 
-- value_bn:
+- metric_type:
 
-  Projected value in £ billion (numeric)
+  Always `"level"` for this function (character)
+
+- value:
+
+  Projected value (numeric)
+
+- unit:
+
+  Always `"gbp_bn"` for this function (character)
 
 ## Details
 
@@ -66,20 +79,20 @@ efo <- get_efo_fiscal()
 #> ℹ Downloading efo_aggregates.xlsx from OBR...
 #> ✔ Saved to cache.
 efo[efo$series == "Net borrowing", ]
-#> # obr_tbl: 6 rows x 3 cols
+#> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-05-04 19:13:59 UTC
+#> # Retrieved:    2026-05-06 19:54:25 UTC
 #> # File MD5:     43d7526594ab
-#> # Package:      obr 0.3.0
+#> # Package:      obr 0.4.0
 #> 
-#>    fiscal_year        series  value_bn
-#> 43     2025-26 Net borrowing 132.73508
-#> 44     2026-27 Net borrowing 115.46142
-#> 45     2027-28 Net borrowing  96.46737
-#> 46     2028-29 Net borrowing  86.01563
-#> 47     2029-30 Net borrowing  63.40344
-#> 48     2030-31 Net borrowing  59.01991
+#>     period period_type        series metric_type     value   unit
+#> 43 2025-26 fiscal_year Net borrowing       level 132.73508 gbp_bn
+#> 44 2026-27 fiscal_year Net borrowing       level 115.46142 gbp_bn
+#> 45 2027-28 fiscal_year Net borrowing       level  96.46737 gbp_bn
+#> 46 2028-29 fiscal_year Net borrowing       level  86.01563 gbp_bn
+#> 47 2029-30 fiscal_year Net borrowing       level  63.40344 gbp_bn
+#> 48 2030-31 fiscal_year Net borrowing       level  59.01991 gbp_bn
 obr_provenance(efo)$vintage
 #> [1] "March 2026"
 

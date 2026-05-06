@@ -19,19 +19,34 @@ get_public_finances(refresh = FALSE)
 
 ## Value
 
-An `obr_tbl` (a `data.frame` with attached provenance) with columns:
+An `obr_tbl` (a `data.frame` with attached provenance) with the standard
+v0.4.0 schema (columns: `period`, `period_type`, `series`,
+`metric_type`, `value`, `unit`):
 
-- year:
+- period:
 
   Fiscal year (character, e.g. `"2024-25"`)
+
+- period_type:
+
+  Always `"fiscal_year"` for this function
 
 - series:
 
   Series name (character)
 
+- metric_type:
+
+  Usually `"level"`; ratio or index series get a more specific value
+  derived from the series name
+
 - value:
 
-  Value in £ billion (numeric)
+  Numeric value in units described by `unit`
+
+- unit:
+
+  Usually `"gbp_bn"`; ratios and indices override
 
 Use
 [`obr_provenance()`](https://charlescoverdale.github.io/obr/reference/obr_provenance.md)
@@ -98,13 +113,13 @@ obr_provenance(pf)
 #> [1] "https://obr.uk/download/public-finances-databank/"
 #> 
 #> $retrieved
-#> [1] "2026-05-04 19:14:00 UTC"
+#> [1] "2026-05-06 19:54:25 UTC"
 #> 
 #> $file_md5
 #> [1] "77a07b6641ca8ef85449de08077a9b87"
 #> 
 #> $package_version
-#> [1] "0.3.0"
+#> [1] "0.4.0"
 #> 
 #> $notes
 #> NULL

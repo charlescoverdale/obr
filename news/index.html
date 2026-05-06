@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,71 @@
       <small>Source: <a href="https://github.com/charlescoverdale/obr/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="obr-040">obr 0.4.0<a class="anchor" aria-label="anchor" href="#obr-040"></a></h2>
+<div class="section level3">
+<h3 id="breaking-standard-tidy-long-schema-across-all-data-fetching-functions-0-4-0">Breaking: standard tidy long schema across all data-fetching functions<a class="anchor" aria-label="anchor" href="#breaking-standard-tidy-long-schema-across-all-data-fetching-functions-0-4-0"></a></h3>
+<p>This release standardises the columns returned by every data-fetching function so they can be <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code>’d, joined, plotted, and reasoned about the same way regardless of which OBR publication produced them. Driven by feedback from Ben Northcott (Office for Budget Responsibility) on the v0.3.x release.</p>
+<p>All long-format outputs now share the columns:</p>
+<ul><li>
+<code>period</code> - the time period as a character string</li>
+<li>
+<code>period_type</code> - one of <code>"fiscal_year"</code>, <code>"quarter"</code>, <code>"calendar_year"</code>
+</li>
+<li>
+<code>series</code> - the variable name</li>
+<li>
+<code>metric_type</code> - one of <code>"level"</code>, <code>"yoy_pct"</code>, <code>"index"</code>, <code>"pct"</code>, <code>"pct_pts"</code>
+</li>
+<li>
+<code>value</code> - the numeric value</li>
+<li>
+<code>unit</code> - one of <code>"gbp_bn"</code>, <code>"pct"</code>, <code>"pct_pts"</code>, <code>"index"</code>, <code>"count_k"</code>, etc.</li>
+</ul><p><code><a href="../reference/get_forecasts.html">get_forecasts()</a></code> adds <code>forecast_date</code> as a leading column. <code><a href="../reference/get_pension_projections.html">get_pension_projections()</a></code> adds <code>scenario_type</code> as a trailing column.</p>
+<div class="section level4">
+<h4 id="migration-0-4-0">Migration<a class="anchor" aria-label="anchor" href="#migration-0-4-0"></a></h4>
+<table class="table"><colgroup><col width="52%"><col width="47%"></colgroup><thead><tr><th>Old column</th>
+<th>New column</th>
+</tr></thead><tbody><tr><td>
+<code>year</code>, <code>fiscal_year</code>
+</td>
+<td>
+<code>period</code> (with <code>period_type</code> to disambiguate)</td>
+</tr><tr><td>
+<code>value_bn</code>, <code>psnb_bn</code>, <code>psnd_bn</code>, <code>tme_bn</code>
+</td>
+<td>
+<code>value</code> (with <code>unit = "gbp_bn"</code>)</td>
+</tr><tr><td>
+<code>pct_gdp</code> (FSR pension projections)</td>
+<td>
+<code>value</code> (with <code>unit = "pct"</code>)</td>
+</tr><tr><td>
+<code>scenario</code> (FSR)</td>
+<td><code>series</code></td>
+</tr></tbody></table><p><code><a href="../reference/get_psnb.html">get_psnb()</a></code>, <code><a href="../reference/get_psnd.html">get_psnd()</a></code>, <code><a href="../reference/get_expenditure.html">get_expenditure()</a></code> now return the standard long schema and tag rows with <code>series = "PSNB"</code>, <code>"PSND"</code>, <code>"TME"</code> respectively rather than collapsing the value into a series-named column.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="cpi-index-vs-yoy-split-the-headline-fix-0-4-0">CPI Index vs YoY split (the headline fix)<a class="anchor" aria-label="anchor" href="#cpi-index-vs-yoy-split-the-headline-fix-0-4-0"></a></h3>
+<p>In v0.3.x, calling <code>get_efo_economy("inflation")</code> returned CPI Index values (~135) and CPI YoY growth values (~2.1) in the same <code>value</code> column with no machine-readable distinction between them. v0.4.0 tags every row with a <code>metric_type</code> (<code>"index"</code> for index levels, <code>"yoy_pct"</code> for growth rates, <code>"pct"</code> for shares, etc.) and a matching <code>unit</code>, so callers can filter or facet on metric type directly.</p>
+<p>This is the v0.4.0 fix for the bug Ben Northcott raised on 2026-04-29: “If I pull e.g. the CPI forecast the index value and the YoY growth rate appear in the same ‘value’ column. Probably an additional column in long format indicating YoY or Index would be useful.”</p>
+</div>
+<div class="section level3">
+<h3 id="new-helpers-0-4-0">New helpers<a class="anchor" aria-label="anchor" href="#new-helpers-0-4-0"></a></h3>
+<ul><li>
+<code>classify_metric_type()</code> (internal): heuristic classifier for series names. Returns <code>"index"</code>, <code>"yoy_pct"</code>, <code>"pct"</code>, <code>"pct_pts"</code>, or <code>"level"</code>. Used by every parser to populate <code>metric_type</code> from raw source labels.</li>
+<li>
+<code>default_unit_for_metric()</code> (internal): maps a <code>metric_type</code> to its default <code>unit</code>. For <code>"level"</code> returns <code>NA</code> (caller must supply since a level can be <code>gbp_bn</code>, <code>count_mn</code>, etc.).</li>
+<li>
+<code>obr_long()</code> (internal): canonical constructor for the v0.4.0 schema. All parsers use this to build their tidy long output.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="constants-0-4-0">Constants<a class="anchor" aria-label="anchor" href="#constants-0-4-0"></a></h3>
+<ul><li>
+<code>OBR_PERIOD_TYPES</code>, <code>OBR_METRIC_TYPES</code>, <code>OBR_UNITS</code>: controlled vocabularies for the schema metadata columns. Internal but documented in the package source.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="obr-030">obr 0.3.0<a class="anchor" aria-label="anchor" href="#obr-030"></a></h2>
 <div class="section level3">

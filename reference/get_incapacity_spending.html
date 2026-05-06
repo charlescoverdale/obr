@@ -11,7 +11,7 @@ share of GDP, from 1978-79 to the current forecast horizon."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,17 +65,11 @@ exists. Defaults to <code>FALSE</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An <code>obr_tbl</code> with columns:</p><dl><dt>year</dt>
-<dd><p>Fiscal year, e.g. <code>"2023-24"</code> (character)</p></dd>
-
-<dt>series</dt>
-<dd><p>Benefit name (character)</p></dd>
-
-<dt>value</dt>
-<dd><p>Spending as a percentage of GDP (numeric)</p></dd>
-
-
-</dl></div>
+    <p>An <code>obr_tbl</code> with the standard v0.4.0 schema. <code>series</code> is the
+benefit name, values are spending as a percentage of GDP, <code>metric_type</code>
+is <code>"pct"</code>, <code>unit</code> is <code>"pct"</code>. See <code><a href="get_public_finances.html">get_public_finances()</a></code> for full
+column docs.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Series include: Invalidity Benefit, Incapacity Benefit, Employment and
