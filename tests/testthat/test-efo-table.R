@@ -9,7 +9,7 @@ test_that("obr_efo_catalogue() returns a populated catalogue", {
   expect_named(cat, c("table_id", "file", "section", "title",
                       "layout", "default_metric_type", "default_unit"))
   # 17 aggregates + 22 economy = 39 rows
-  expect_gte(nrow(cat), 35)
+  expect_gte(nrow(cat), 39)
   expect_true("6.5" %in% cat$table_id)
   expect_true("1.7" %in% cat$table_id)
   expect_true("1.14" %in% cat$table_id)
@@ -18,7 +18,8 @@ test_that("obr_efo_catalogue() returns a populated catalogue", {
                     c("quarterly_wide", "quarterly_single",
                       "annual_year_wide", "annual_period_wide",
                       "fiscal_year_wide",
-                      "cross_reference", "complex_layout")))
+                      "subsector_matrix", "quarterly_indented",
+                      "cross_reference")))
 })
 
 # ----- Argument validation -------------------------------------------------
@@ -34,14 +35,39 @@ test_that("get_efo_table() errors on non-string table id", {
 
 # ----- Cross-reference and complex-layout sheets ---------------------------
 
-test_that("get_efo_table() returns NULL with a warning for cross-reference sheets", {
-  expect_warning(res <- get_efo_table("6.11"), regexp = "cross-reference")
-  expect_null(res)
+test_that("get_efo_table() follows cross-references to a previous EFO", {
+  skip_on_cran()
+  skip_if_offline()
+  out <- get_efo_table("6.11")
+  expect_s3_class(out, "obr_tbl")
+  expect_named(out, v04_long_cols)
+  prov <- obr_provenance(out)
+  # Resolves to a previous EFO vintage, not the current one
+  expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
+  expect_match(prov$notes, "Cross-reference")
 })
 
-test_that("get_efo_table() returns NULL with a warning for complex-layout sheets", {
-  expect_warning(res <- get_efo_table("6.4"), regexp = "non-standard layout")
-  expect_null(res)
+test_that("get_efo_table('6.4') returns subsector_matrix shape", {
+  skip_on_cran()
+  skip_if_offline()
+  out <- get_efo_table("6.4")
+  expect_s3_class(out, "obr_tbl")
+  expect_true("sub_sector" %in% names(out))
+  expect_true(all(c(v04_long_cols, "sub_sector") %in% names(out)))
+  expect_true("Central government" %in% out$sub_sector)
+  expect_true(all(out$period_type == "fiscal_year"))
+  expect_true(all(out$unit == "gbp_bn"))
+})
+
+test_that("get_efo_table('6.10') returns quarterly_indented data", {
+  skip_on_cran()
+  skip_if_offline()
+  out <- get_efo_table("6.10")
+  expect_s3_class(out, "obr_tbl")
+  expect_named(out, v04_long_cols)
+  expect_true(all(out$period_type == "quarter"))
+  expect_true(all(grepl("^[0-9]{4}Q[1-4]$", out$period)))
+  expect_true(all(out$unit == "pct"))
 })
 
 # ----- Each layout returns the standard schema -----------------------------

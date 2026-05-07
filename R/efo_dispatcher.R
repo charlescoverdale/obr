@@ -72,6 +72,150 @@ parse_quarterly_wide <- function(path, sheet,
   result[!is.na(result$value), ]
 }
 
+# Sub-sector matrix layout: a single fiscal year, transactions as rows,
+# sub-sectors (Central government / Local authorities / etc) as columns.
+# Used by Table 6.4 (Public sector transactions by sub-sector). Returns the
+# standard v0.4 schema plus a `sub_sector` column carrying the column header.
+parse_subsector_matrix <- function(path, sheet,
+                                   default_metric_type = "level",
+                                   default_unit        = "gbp_bn") {
+  raw <- readxl::read_excel(path, sheet = sheet,
+                            col_names = FALSE, .name_repair = "minimal")
+
+  # Locate the single fiscal-year cell (typically row 4 col 3)
+  fy_row <- NA_integer_
+  for (i in seq_len(nrow(raw))) {
+    cells <- as.character(unlist(raw[i, ]))
+    if (any(grepl("^[0-9]{4}-[0-9]{2}$", cells), na.rm = TRUE)) {
+      fy_row <- i
+      break
+    }
+  }
+  if (is.na(fy_row)) return(NULL)
+  fy_cells <- as.character(unlist(raw[fy_row, ]))
+  fy_idx   <- which(grepl("^[0-9]{4}-[0-9]{2}$", fy_cells))[1L]
+  fiscal_year <- fy_cells[fy_idx]
+
+  # Sub-sector header row is below the fiscal-year row; first non-empty
+  # row whose cells in cols 3+ are mostly non-numeric strings.
+  subsector_row <- NA_integer_
+  for (i in (fy_row + 1L):min(fy_row + 4L, nrow(raw))) {
+    cells <- as.character(unlist(raw[i, 3L:ncol(raw)]))
+    n_chr <- sum(!is.na(cells) & nzchar(cells) &
+                   is.na(suppressWarnings(as.numeric(cells))))
+    if (n_chr >= 2L) { subsector_row <- i; break }
+  }
+  if (is.na(subsector_row)) return(NULL)
+
+  subsectors <- trimws(gsub("\r\n", " ",
+                            as.character(unlist(raw[subsector_row, ]))))
+  ss_cols    <- which(!is.na(subsectors) & nzchar(subsectors) &
+                        seq_along(subsectors) >= 3L)
+  if (length(ss_cols) == 0L) return(NULL)
+
+  # Walk data rows: series name in col 2, values in ss_cols.
+  results <- list()
+  if (subsector_row >= nrow(raw)) return(NULL)
+  for (i in (subsector_row + 1L):nrow(raw)) {
+    series <- as.character(unlist(raw[i, 2L]))
+    if (is.na(series) || !nzchar(series)) next
+    for (j in ss_cols) {
+      cell <- as.character(unlist(raw[i, j]))
+      val  <- suppressWarnings(as.numeric(cell))
+      if (is.na(val)) next
+      out <- obr_long(
+        period      = fiscal_year,
+        period_type = "fiscal_year",
+        series      = series,
+        value       = val,
+        unit        = default_unit,
+        metric_type = default_metric_type
+      )
+      out$sub_sector <- subsectors[j]
+      results[[length(results) + 1L]] <- out
+    }
+  }
+  if (length(results) == 0L) return(NULL)
+  do.call(rbind, results)
+}
+
+# Indented quarterly layout: periods in col 3 in "Q1 2016" format, single
+# value column in col 4. Section markers ("Outturn" / "Forecast") sit in
+# col 2 sparsely (only on first row of each section). Used by 6.10.
+parse_quarterly_indented <- function(path, sheet,
+                                     default_metric_type = "pct",
+                                     default_unit        = "pct") {
+  raw <- readxl::read_excel(path, sheet = sheet,
+                            col_names = FALSE, .name_repair = "minimal")
+
+  if (ncol(raw) < 4L) return(NULL)
+
+  col2 <- as.character(unlist(raw[, 2L]))
+  col3 <- as.character(unlist(raw[, 3L]))
+  col4 <- as.character(unlist(raw[, 4L]))
+
+  # Periods: "Q1 2016" -> canonical "2016Q1"
+  q_match <- regexec("^Q([1-4])\\s+([0-9]{4})$", col3)
+  is_period <- vapply(q_match, function(m) m[[1L]][1L] != -1L, logical(1L))
+  data_idx  <- which(is_period)
+  if (length(data_idx) == 0L) return(NULL)
+
+  periods <- vapply(regmatches(col3[data_idx], q_match[data_idx]),
+                    function(parts) sprintf("%sQ%s", parts[3L], parts[2L]),
+                    character(1L))
+
+  vals <- suppressWarnings(as.numeric(col4[data_idx]))
+
+  series <- efo_sheet_series_name(raw, sheet)
+
+  obr_long(
+    period      = periods,
+    period_type = "quarter",
+    series      = series,
+    value       = vals,
+    unit        = default_unit,
+    metric_type = default_metric_type
+  )
+}
+
+# Cross-reference follow-through: a sheet whose only content is a redirect
+# like "See Table 6.2 of our November 2025 Economic and fiscal outlook".
+# Resolves the redirect, fetches the named table from the named vintage's
+# Aggregates workbook, and parses it with parse_fiscal_year_wide.
+follow_cross_reference <- function(path, sheet, refresh = FALSE) {
+  raw <- readxl::read_excel(path, sheet = sheet,
+                            col_names = FALSE, .name_repair = "minimal")
+  txt <- paste(stats::na.omit(as.character(unlist(raw))), collapse = " ")
+  m <- regmatches(
+    txt,
+    regexec(paste0("See Table ([0-9]+\\.[0-9]+[a-z]?) of our ",
+                   "([A-Z][a-z]+) ([0-9]{4})"), txt)
+  )[[1L]]
+  if (length(m) < 4L) return(NULL)
+  target_table <- m[2L]
+  vintage      <- paste(m[3L], m[4L])
+
+  src <- tryCatch(
+    efo_aggregates_source(refresh = refresh, vintage = vintage),
+    error = function(e) NULL
+  )
+  if (is.null(src)) return(NULL)
+
+  data <- parse_fiscal_year_wide(
+    src$path, target_table,
+    default_metric_type = "level",
+    default_unit        = "gbp_bn"
+  )
+  if (is.null(data)) return(NULL)
+
+  list(
+    data         = data,
+    src          = src,
+    target_table = target_table,
+    vintage      = vintage
+  )
+}
+
 # Internal: pick the row above first_data_row most likely to be the header.
 # Score = number of non-empty, non-numeric cells in cols 3:ncol. The row with
 # the highest score becomes the header. This works for sheets where the
@@ -366,28 +510,37 @@ get_efo_table <- function(table_id, vintage = NULL, refresh = FALSE) {
 
   meta <- efo_catalogue_lookup(table_id)
 
-  if (meta$layout == "cross_reference") {
-    cli::cli_warn(c(
-      "EFO table {.val {table_id}} ({meta$title}) is a cross-reference.",
-      "i" = "OBR redirects this to a table in a previous EFO. No data returned."
-    ))
-    return(NULL)
-  }
-
   src <- if (meta$file == "aggregates") {
     efo_aggregates_source(refresh = refresh, vintage = vintage)
   } else {
     efo_economy_source(refresh = refresh, vintage = vintage)
   }
 
-  if (meta$layout == "complex_layout") {
-    cli::cli_warn(c(
-      "EFO table {.val {table_id}} ({meta$title}) has a non-standard layout.",
-      "i" = paste("The package does not parse this table yet.",
-                  "Open the OBR workbook directly or file an issue."),
-      "i" = "https://github.com/charlescoverdale/obr/issues"
+  # Cross-reference: follow the redirect to the previous EFO and return its
+  # equivalent table. Provenance points at the previous vintage; notes
+  # explain the redirect.
+  if (meta$layout == "cross_reference") {
+    redirect <- follow_cross_reference(src$path, table_id, refresh = refresh)
+    if (is.null(redirect)) {
+      cli::cli_warn(c(
+        "EFO table {.val {table_id}} ({meta$title}) is a cross-reference.",
+        "i" = "Could not resolve the redirect to a previous EFO."
+      ))
+      return(NULL)
+    }
+    notes <- sprintf(
+      "Cross-reference: this current-EFO sheet points at Table %s of the %s EFO. Data sourced from there.",
+      redirect$target_table, redirect$vintage
+    )
+    return(new_obr_tbl(
+      data        = redirect$data,
+      publication = "EFO",
+      vintage     = redirect$vintage,
+      source_url  = redirect$src$url,
+      retrieved   = redirect$src$retrieved,
+      file_md5    = redirect$src$file_md5,
+      notes       = notes
     ))
-    return(NULL)
   }
 
   data <- switch(
@@ -411,6 +564,16 @@ get_efo_table <- function(table_id, vintage = NULL, refresh = FALSE) {
     "fiscal_year_wide"    = parse_fiscal_year_wide(
       src$path, table_id,
       meta$default_metric_type, meta$default_unit
+    ),
+    "subsector_matrix"    = parse_subsector_matrix(
+      src$path, table_id,
+      meta$default_metric_type %||% "level",
+      meta$default_unit        %||% "gbp_bn"
+    ),
+    "quarterly_indented"  = parse_quarterly_indented(
+      src$path, table_id,
+      meta$default_metric_type %||% "pct",
+      meta$default_unit        %||% "pct"
     ),
     cli::cli_abort(c(
       "Unknown layout {.val {meta$layout}} for table {.val {table_id}}.",
