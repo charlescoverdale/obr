@@ -1,14 +1,21 @@
 # obr 0.4.0
 
-## Breaking: standard tidy long schema across all data-fetching functions
+## Breaking: standard tidy long schema for the EFO / PFD / HFD / WTR / FSR functions
 
-This release standardises the columns returned by every data-fetching
-function so they can be `rbind()`'d, joined, plotted, and reasoned about
-the same way regardless of which OBR publication produced them. Driven by
-feedback from Ben Northcott (Office for Budget Responsibility) on the
-v0.3.x release.
+This release standardises the columns returned by the data-fetching
+functions backing the Public Finances Databank (PFD), Economic and Fiscal
+Outlook (EFO), Historical Forecasts Database (HFD), Welfare Trends Report
+(WTR), and Fiscal Risks and Sustainability Report (FSR) so they can be
+`rbind()`'d, joined, plotted, and reasoned about the same way regardless
+of which OBR publication produced them. Driven by feedback from Ben
+Northcott (Office for Budget Responsibility) on the v0.3.x release.
 
-All long-format outputs now share the columns:
+The Forecast Revisions Database (`get_forecast_revisions()`) and Policy
+Measures Database (`get_policy_measures()`) keep their existing
+multi-dimensional schemas in v0.4.0; migrating them to the standard
+schema is queued for a later release.
+
+All long-format outputs from the EFO / PFD / HFD / WTR / FSR functions now share the columns:
 
 * `period` - the time period as a character string
 * `period_type` - one of `"fiscal_year"`, `"quarter"`, `"calendar_year"`

@@ -46,7 +46,7 @@ parse_pension_projections <- function(path) {
     cli::cli_warn(c(
       "Could not find expected section headers in FSR sheet C1.2.",
       "i" = "Looked for rows whose second column matches {.val demographic} or {.val triple lock}.",
-      "!" = "OBR may have renamed the sections. Please file an issue at https://github.com/charlescoverdale/issues."
+      "!" = "OBR may have renamed the sections. Please file an issue at https://github.com/charlescoverdale/obr/issues."
     ))
     return(NULL)
   }

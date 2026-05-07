@@ -53,12 +53,22 @@ distributes it as a single Excel file.
 \donttest{
 op <- options(obr.cache_dir = tempdir())
 
-# Every measure scored at the October 2024 Budget
-oct24 <- get_policy_measures()
-oct24[grepl("2024", oct24$event) & oct24$fiscal_year == "2025-26", ]
+# The OBR CDN occasionally rate-limits or returns 403 to repeated
+# requests. tryCatch so the example degrades gracefully if that happens
+# during the CRAN check.
+oct24 <- tryCatch(get_policy_measures(),
+                  error = function(e) NULL)
+if (!is.null(oct24)) {
+  head(oct24[grepl("2024", oct24$event) &
+             oct24$fiscal_year == "2025-26", ])
 
-# All alcohol-duty measures since 2010
-get_policy_measures(type = "tax", search = "alcohol", since = "2010-11")
+  # All alcohol-duty measures since 2010
+  tryCatch(
+    get_policy_measures(type = "tax", search = "alcohol",
+                        since = "2010-11"),
+    error = function(e) NULL
+  )
+}
 
 options(op)
 }

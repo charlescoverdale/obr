@@ -12,7 +12,8 @@
     "output_gap" = function(...) get_efo_economy("output_gap", ...),
     cli::cli_abort(c(
       "Unknown {.arg what} value: {.val {what}}.",
-      "i" = "Use one of: {.val fiscal}, {.val inflation}, {.val labour}, {.val output_gap}."
+      "i" = paste0("Use one of: {.val fiscal}, {.val inflation}, ",
+                   "{.val labour}, {.val output_gap}.")
     ))
   )
 }
@@ -22,6 +23,18 @@
 #' Pulls the same EFO table from two vintages and returns a tidy diff with
 #' a revision column (`value_b - value_a`). Useful for quantifying how the
 #' OBR's view changed between fiscal events.
+#'
+#' @details
+#' Rows are the **inner join** of the two vintages on the schema keys
+#' (`period`, `period_type`, `series`, `metric_type`, `unit`). Periods or
+#' series that are present in only one vintage are silently dropped. If
+#' you need to see what was added or removed between vintages, compare
+#' `obr_efo_vintages()` row counts or call the underlying functions
+#' directly with each vintage and `setdiff()` on the keys.
+#'
+#' Calling the function with `vintage_a == vintage_b` is allowed and
+#' returns an all-zero `revision` column. There is no special handling
+#' beyond that.
 #'
 #' @param vintage_a,vintage_b EFO vintage labels (e.g. `"October 2024"`,
 #'   `"March 2026"`). Use [obr_efo_vintages()] to see all valid labels.
@@ -33,8 +46,7 @@
 #'
 #' @return An `obr_tbl` with the standard v0.4.0 schema columns
 #' (`period`, `period_type`, `series`, `metric_type`, `unit`) plus
-#' `value_a`, `value_b`, and `revision` (`value_b - value_a`). Rows are the
-#' inner join of the two vintages: only periods and series present in both.
+#' `value_a`, `value_b`, and `revision` (`value_b - value_a`).
 #' Provenance points at the second vintage; the first vintage URL is
 #' recorded in the `notes` field.
 #'
@@ -84,7 +96,9 @@ obr_compare_vintages <- function(vintage_a, vintage_b,
     retrieved   = prov_b$retrieved,
     file_md5    = prov_b$file_md5,
     notes       = sprintf(
-      "Vintage diff: %s (a) -> %s (b). revision = value_b - value_a. Earlier vintage URL: %s",
+      paste0("Vintage diff: %s (a) -> %s (b). ",
+             "revision = value_b - value_a. ",
+             "Earlier vintage URL: %s"),
       prov_a$vintage, prov_b$vintage, prov_a$source_url
     )
   )
@@ -163,9 +177,11 @@ obr_actual_vs_forecast <- function(series = c("PSNB", "PSND", "expenditure"),
                                    "series", "unit", "value")]
   act_df <- as.data.frame(actuals)[, c("period", "value")]
 
-  out <- merge(fc_df, act_df, by = "period", suffixes = c("_forecast", "_actual"))
+  out <- merge(fc_df, act_df, by = "period",
+               suffixes = c("_forecast", "_actual"))
   out$error <- out$value_forecast - out$value_actual
-  out <- out[, c("forecast_date", "period", "period_type", "series", "unit",
+  out <- out[, c("forecast_date", "period", "period_type",
+                 "series", "unit",
                  "value_forecast", "value_actual", "error")]
   rownames(out) <- NULL
 
@@ -177,7 +193,9 @@ obr_actual_vs_forecast <- function(series = c("PSNB", "PSND", "expenditure"),
     retrieved   = prov_fc$retrieved,
     file_md5    = prov_fc$file_md5,
     notes       = sprintf(
-      "Forecast vs outturn for %s. error = value_forecast - value_actual. Outturn source: %s",
+      paste0("Forecast vs outturn for %s. ",
+             "error = value_forecast - value_actual. ",
+             "Outturn source: %s"),
       series, prov_act$source_url
     )
   )

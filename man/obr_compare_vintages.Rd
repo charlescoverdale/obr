@@ -25,8 +25,7 @@ exist. Defaults to \code{FALSE}.}
 \value{
 An \code{obr_tbl} with the standard v0.4.0 schema columns
 (\code{period}, \code{period_type}, \code{series}, \code{metric_type}, \code{unit}) plus
-\code{value_a}, \code{value_b}, and \code{revision} (\code{value_b - value_a}). Rows are the
-inner join of the two vintages: only periods and series present in both.
+\code{value_a}, \code{value_b}, and \code{revision} (\code{value_b - value_a}).
 Provenance points at the second vintage; the first vintage URL is
 recorded in the \code{notes} field.
 }
@@ -34,6 +33,18 @@ recorded in the \code{notes} field.
 Pulls the same EFO table from two vintages and returns a tidy diff with
 a revision column (\code{value_b - value_a}). Useful for quantifying how the
 OBR's view changed between fiscal events.
+}
+\details{
+Rows are the \strong{inner join} of the two vintages on the schema keys
+(\code{period}, \code{period_type}, \code{series}, \code{metric_type}, \code{unit}). Periods or
+series that are present in only one vintage are silently dropped. If
+you need to see what was added or removed between vintages, compare
+\code{obr_efo_vintages()} row counts or call the underlying functions
+directly with each vintage and \code{setdiff()} on the keys.
+
+Calling the function with \code{vintage_a == vintage_b} is allowed and
+returns an all-zero \code{revision} column. There is no special handling
+beyond that.
 }
 \examples{
 \donttest{

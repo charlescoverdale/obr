@@ -385,6 +385,20 @@ The OBR's central projection has the state pension rising from 4.6% of GDP today
 
 ---
 
+## Limitations
+
+A few things `obr` deliberately does not do, and a few caveats worth knowing.
+
+- **Forecast coverage is partial**. The EFO databank exposes around 70 detailed-forecast tables across the economy, receipts, expenditure, and sustainability sections. `obr` currently surfaces the headline aggregates (Table 6.5), inflation (sheet 1.7), labour (sheet 1.6), and output gap (sheet 1.14). Receipts by tax, expenditure by function, sector wage / productivity / FX series, and the FSR long-run scenarios are on the roadmap for v0.5.0.
+- **EFO and PFD use the standard v0.4.0 schema; FRD and PMD do not yet.** `get_forecast_revisions()` and `get_policy_measures()` return their existing multi-dimensional schemas (forecast date x revision component, fiscal event x measure x head). Migration to the v0.4.0 layout is queued for a later release.
+- **Vintage table is hardcoded and needs maintenance.** `obr_efo_vintages()` returns a static list of EFOs. When a new EFO publishes, the package needs a release to recognise it as a pinnable vintage. Until then, the dynamic resolver will still find the live file but `obr_pin("November 2026")` will error.
+- **The `classify_metric_type()` heuristic is regex-based.** It correctly handles the OBR's current naming conventions (Index, deflator, inflation, growth, rate). New series with unusual names may default to `metric_type = "level"`; the per-measure default supplied by `get_efo_economy()` corrects this for the inflation sheet but may need tuning if OBR adds a new sheet.
+- **UK only.** The package wraps OBR publications; it does not cover the US Congressional Budget Office, the Australian Parliamentary Budget Office, or other fiscal-watchdog equivalents.
+- **No Python equivalent.** A port to Python is not planned; users wanting the same data in Python should use the OBR's published Excel files directly or contribute a port.
+- **Network access is required on first use.** Cached files persist across sessions but `clear_cache()` or a refresh argument forces a re-download. There is no offline mode.
+
+---
+
 ## Related packages
 
 | Package | Description |

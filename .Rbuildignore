@@ -7,3 +7,4 @@
 ^pkgdown$
 ^V0_3_PLAN\.md$
 ^llms.*\.txt$
+^CITATION\.cff$

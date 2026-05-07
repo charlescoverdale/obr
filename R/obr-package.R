@@ -7,6 +7,6 @@
 #' @concept national debt
 #' @concept UK budget
 #' @concept economic forecasts
-#' @importFrom utils head packageVersion str
+#' @importFrom utils head packageVersion
 #' @importFrom stats aggregate
 "_PACKAGE"

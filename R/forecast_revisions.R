@@ -109,7 +109,7 @@ parse_frd_revisions <- function(path, unit) {
         label <- col1[i]
         if (is.na(label) || !nzchar(label)) next
         if (label == "of which:") next
-        # Skip if this is the start of the next vintage (defensive — covered
+        # Skip if this is the start of the next vintage (defensive: covered
         # by the end_row calculation, but cheap insurance).
         if (grepl("^[A-Z][a-z]+ [0-9]{4}$", label)) next
         vals <- suppressWarnings(

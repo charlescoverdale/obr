@@ -92,3 +92,34 @@ test_that("obr_actual_vs_forecast() preserves HFD provenance", {
   expect_equal(prov$publication, "HFD")
   expect_match(prov$notes, "Outturn source")
 })
+
+test_that("obr_compare_vintages() invariant: revision == value_b - value_a", {
+  # Level 3 invariant test. Holds by construction but worth pinning.
+  skip_on_cran()
+  skip_if_offline()
+
+  diff <- obr_compare_vintages("October 2024", "March 2026", what = "fiscal")
+  expect_equal(diff$revision, diff$value_b - diff$value_a, tolerance = 1e-10)
+})
+
+test_that("obr_compare_vintages() with same vintage returns zero revisions", {
+  # Self-comparison invariant: if a == b, every revision must be exactly 0.
+  skip_on_cran()
+  skip_if_offline()
+
+  diff <- obr_compare_vintages("March 2026", "March 2026", what = "fiscal")
+  expect_gt(nrow(diff), 0)
+  expect_true(all(diff$revision == 0))
+  expect_equal(diff$value_a, diff$value_b)
+})
+
+test_that("obr_actual_vs_forecast() invariant: error == forecast - actual", {
+  # Level 3 invariant. Pin it.
+  skip_on_cran()
+  skip_if_offline()
+
+  eval <- obr_actual_vs_forecast("PSNB")
+  expect_equal(eval$error,
+               eval$value_forecast - eval$value_actual,
+               tolerance = 1e-10)
+})
