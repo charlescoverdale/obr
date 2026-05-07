@@ -109,6 +109,8 @@ obr_provenance(psnb)
 | `list_forecast_series()` | Data frame of available series (no download needed) |
 | `get_forecasts(series)` | Every OBR forecast for a given series, in tidy long format |
 | `obr_forecast_panel(series)` | Wide real-time panel: rows = forecast vintages, columns = fiscal years |
+| `obr_compare_vintages(a, b, what)` | Tidy diff between two vintages of the same EFO table; returns `value_a`, `value_b`, and `revision = value_b - value_a` |
+| `obr_actual_vs_forecast(series)` | Joins HFD forecasts against PFD outturn for the same series; returns `value_forecast`, `value_actual`, and `error` |
 | `get_forecast_revisions(unit)` | EFO-to-EFO PSNB revisions decomposed into policy, classifications, and underlying components |
 
 ### Economic and Fiscal Outlook (EFO)
@@ -144,7 +146,7 @@ obr_provenance(psnb)
 
 | Function | Returns |
 |---|---|
-| `obr_fiscal_rules()` | The three Charter for Budget Responsibility rules (stability, investment, welfare cap), with the OBR's last published headroom against each |
+| `obr_fiscal_rules()` | The three Charter for Budget Responsibility rules (stability, investment, welfare cap) with metric, target description, and source Charter version. Numerical headroom is not shipped (changes at every fiscal event; derive from `get_efo_fiscal()`). |
 
 ### Cache management
 
@@ -153,6 +155,30 @@ obr_provenance(psnb)
 | `clear_cache()` | Deletes all locally cached OBR files |
 
 All download functions accept `refresh = TRUE` to force a fresh download from the OBR website.
+
+### Standard tidy long schema (v0.4.0)
+
+The EFO, PFD, HFD, WTR, and FSR functions all return the same six columns so outputs from different publications can be `rbind()`'d, joined, and plotted the same way:
+
+| Column | Type | Values |
+|---|---|---|
+| `period` | character | `"2024-25"`, `"2025Q1"`, etc. |
+| `period_type` | character | `"fiscal_year"`, `"quarter"`, `"calendar_year"` |
+| `series` | character | The variable name (e.g. `"CPI"`, `"PSNB"`, `"Net borrowing"`) |
+| `metric_type` | character | `"level"`, `"yoy_pct"`, `"index"`, `"pct"`, `"pct_pts"` |
+| `value` | double | The numeric value |
+| `unit` | character | `"gbp_bn"`, `"pct"`, `"index"`, `"count_k"`, etc. |
+
+`get_forecasts()` adds `forecast_date` as a leading column. `get_pension_projections()` adds `scenario_type` as a trailing column. `get_forecast_revisions()` and `get_policy_measures()` use specialised multi-dimensional schemas (migration to the standard layout queued for a later release).
+
+The `metric_type` column resolves a class of bug from earlier versions where, for example, CPI Index values and CPI year-on-year growth values lived in the same `value` column with no machine-readable distinction. See `vignette("efo-forecasts")` for a walkthrough.
+
+### Vignettes
+
+- `vignette("efo-forecasts")`: working with the v0.4.0 schema, splitting Index from YoY, combining EFO with PFD outturn, comparing two vintages.
+- `vignette("vintages")`: pinning to a specific EFO vintage for reproducible analysis.
+- `vignette("forecast-revisions")`: decomposing PSNB revisions across vintages.
+- `vignette("policy-measures")`: working with the Policy Measures Database.
 
 ### Provenance and vintage control
 
@@ -176,13 +202,14 @@ All download functions accept `refresh = TRUE` to force a fresh download from th
 library(obr)
 
 psnb <- get_psnb()
-psnb[psnb$year %in% c("2018-19", "2019-20", "2020-21", "2021-22", "2022-23"), ]
-#>       year  psnb_bn
-#>  2018-19     42.5
-#>  2019-20     57.1
-#>  2020-21    317.8   # ← COVID year
-#>  2021-22    144.8
-#>  2022-23     87.6
+psnb[psnb$period %in% c("2018-19", "2019-20", "2020-21", "2021-22", "2022-23"),
+     c("period", "value", "unit")]
+#>       period   value   unit
+#>     2018-19    42.5  gbp_bn
+#>     2019-20    57.1  gbp_bn
+#>     2020-21   317.8  gbp_bn   # ← COVID year
+#>     2021-22   144.8  gbp_bn
+#>     2022-23    87.6  gbp_bn
 ```
 
 The UK borrowed £318bn in 2020-21 - roughly seven times the pre-pandemic level - to fund furlough, bounce-back loans, and emergency NHS spending.
@@ -195,7 +222,7 @@ The OBR first forecast 2024-25 borrowing at **£37bn** (March 2022). By November
 
 ```r
 psnb_fc <- get_forecasts("PSNB")
-fc_2425 <- psnb_fc[psnb_fc$fiscal_year == "2024-25", c("forecast_date", "value")]
+fc_2425 <- psnb_fc[psnb_fc$period == "2024-25", c("forecast_date", "value")]
 fc_2425
 #>    forecast_date   value
 #>     March 2022    36.5
@@ -218,18 +245,18 @@ The `get_forecasts()` function returns every published forecast across all fisca
 psnb <- get_psnb()
 
 # Years with a surplus (negative PSNB = receipts exceed spending)
-psnb[psnb$psnb_bn < 0, ]
-#>       year  psnb_bn
-#>  1969-70    -0.5
-#>  1970-71    -1.3
-#>  1971-72    -0.1
-#>  1988-89    -9.0
-#>  1989-90    -8.0
-#>  1990-91    -0.1
-#>  1997-98   -12.7
-#>  1998-99   -14.5
-#>  1999-00   -17.9
-#>  2000-01    -0.5
+psnb[psnb$value < 0, c("period", "value")]
+#>       period   value
+#>     1969-70    -0.5
+#>     1970-71    -1.3
+#>     1971-72    -0.1
+#>     1988-89    -9.0
+#>     1989-90    -8.0
+#>     1990-91    -0.1
+#>     1997-98   -12.7
+#>     1998-99   -14.5
+#>     1999-00   -17.9
+#>     2000-01    -0.5
 ```
 
 The UK last ran a surplus in 2000-01. In the 24 years since, the government has borrowed every year. Combine with `get_forecasts("PSNB_pct")` to see whether the OBR projects any future surpluses.
@@ -242,18 +269,18 @@ The UK last ran a surplus in 2000-01. In the 24 years since, the government has 
 receipts <- get_receipts()
 
 # Top tax sources in 2023-24
-r <- receipts[receipts$year == "2023-24", ]
+r <- receipts[receipts$period == "2023-24", ]
 r <- r[order(-r$value), ]
-head(r[, c("series", "value")], 8)
-#>                              series   value
-#>   Public sector current receipts   1101.5
-#>                       Income tax    290.4
-#>                              VAT    183.1
-#>    National insurance contributions 182.4
-#>                    Corporation tax   88.4
-#>                       Council tax   44.9
-#>                         Fuel duty   24.5
-#>                    Stamp duties     18.4
+head(r[, c("series", "value", "unit")], 8)
+#>                              series   value    unit
+#>   Public sector current receipts   1101.5  gbp_bn
+#>                       Income tax    290.4  gbp_bn
+#>                              VAT    183.1  gbp_bn
+#>    National insurance contributions 182.4  gbp_bn
+#>                    Corporation tax   88.4  gbp_bn
+#>                       Council tax   44.9  gbp_bn
+#>                         Fuel duty   24.5  gbp_bn
+#>                    Stamp duties     18.4  gbp_bn
 ```
 
 Income tax, VAT, and National Insurance together account for around 60% of all government receipts. Breaking this down over time reveals long-run shifts - such as the rising share of income tax as fiscal drag pulls more earners into higher bands.
@@ -264,14 +291,14 @@ Income tax, VAT, and National Insurance together account for around 60% of all g
 
 ```r
 efo <- get_efo_fiscal()
-efo[efo$series == "Net borrowing", ]
-#>   fiscal_year        series value_bn
-#>       2025-26 Net borrowing    132.7
-#>       2026-27 Net borrowing    115.5
-#>       2027-28 Net borrowing     96.5
-#>       2028-29 Net borrowing     86.0
-#>       2029-30 Net borrowing     63.4
-#>       2030-31 Net borrowing     59.0
+efo[efo$series == "Net borrowing", c("period", "series", "value", "unit")]
+#>      period        series  value    unit
+#>     2025-26 Net borrowing  132.7  gbp_bn
+#>     2026-27 Net borrowing  115.5  gbp_bn
+#>     2027-28 Net borrowing   96.5  gbp_bn
+#>     2028-29 Net borrowing   86.0  gbp_bn
+#>     2029-30 Net borrowing   63.4  gbp_bn
+#>     2030-31 Net borrowing   59.0  gbp_bn
 ```
 
 The EFO detailed tables also include the full breakdown: current receipts, current expenditure, depreciation, net investment, and net borrowing - enabling you to see exactly how the deficit is projected to narrow.
@@ -285,8 +312,14 @@ Because the OBR revises its forecast at every Budget and Statement, an analysis 
 oct_2024 <- get_efo_fiscal(vintage = "October 2024")
 mar_2026 <- get_efo_fiscal(vintage = "March 2026")
 
-oct_2024[oct_2024$series == "Net borrowing" & oct_2024$fiscal_year == "2027-28", ]
-mar_2026[mar_2026$series == "Net borrowing" & mar_2026$fiscal_year == "2027-28", ]
+oct_2024[oct_2024$series == "Net borrowing" & oct_2024$period == "2027-28", ]
+mar_2026[mar_2026$series == "Net borrowing" & mar_2026$period == "2027-28", ]
+
+# Or in one step, with the v0.4.0 helper:
+obr_compare_vintages("October 2024", "March 2026", what = "fiscal")
+#>   period period_type        series metric_type   unit value_a value_b revision
+#>  2027-28 fiscal_year Net borrowing       level gbp_bn    81.7    96.5     14.8
+#>  ...
 
 # Or pin once and let every subsequent EFO call use that vintage
 obr_pin("October 2024")
@@ -307,22 +340,22 @@ obr_as_of("2024-12-15")
 welfare <- get_welfare_spending()
 # Working-age incapacity spending, last 10 years
 ic <- welfare[welfare$series == "Working-age incapacity benefits spending" &
-              welfare$year >= "2014-15", ]
-ic
-#>        year                                      series value
-#>     2014-15 Working-age incapacity benefits spending  1.44
-#>     2015-16 Working-age incapacity benefits spending  1.33
+              welfare$period >= "2014-15", ]
+ic[, c("period", "series", "value", "unit")]
+#>      period                                   series  value  unit
+#>     2014-15 Working-age incapacity benefits spending   1.44   pct
+#>     2015-16 Working-age incapacity benefits spending   1.33   pct
 #>     ...
-#>     2023-24 Working-age incapacity benefits spending  1.78
-#>     2024-25 Working-age incapacity benefits spending  2.02
-#>     2025-26 Working-age incapacity benefits spending  2.16
+#>     2023-24 Working-age incapacity benefits spending   1.78   pct
+#>     2024-25 Working-age incapacity benefits spending   2.02   pct
+#>     2025-26 Working-age incapacity benefits spending   2.16   pct
 
-# Number of people on incapacity benefits
+# Number of people on incapacity benefits (in thousands)
 cases <- get_incapacity_caseloads()
-cases[cases$series == "Share of working age population", ]
-#>  2008-09   Share of working age population  6.80
-#>  ...
-#>  2023-24   Share of working age population  6.82
+cases[cases$series == "Claimants", c("period", "value", "unit")]
+#>     2008-09  2360  count_k
+#>     ...
+#>     2024-25  3140  count_k
 ```
 
 Incapacity benefit spending and caseloads have risen sharply since the pandemic - a key driver of welfare reform debate in 2025.
@@ -362,23 +395,24 @@ Returns the three Charter for Budget Responsibility rules in force (stability ru
 proj <- get_pension_projections()
 
 # Central demographic projection: pension spending rises from 5% to 7.7% of GDP
+# (FSR uses the standard schema plus a `scenario_type` column.)
 central <- proj[proj$scenario_type == "Demographic scenarios" &
-                proj$scenario == "Central projection", ]
-head(central[, c("fiscal_year", "pct_gdp")], 5)
-#>   fiscal_year pct_gdp
-#>       2023-24    4.56
-#>       2024-25    4.95
-#>       2025-26    5.06
-#>       2026-27    5.13
-#>       2027-28    5.05
+                proj$series == "Central projection", ]
+head(central[, c("period", "value", "unit")], 5)
+#>      period  value  unit
+#>     2023-24   4.56   pct
+#>     2024-25   4.95   pct
+#>     2025-26   5.06   pct
+#>     2026-27   5.13   pct
+#>     2027-28   5.05   pct
 
-tail(central[, c("fiscal_year", "pct_gdp")], 5)
-#>   fiscal_year pct_gdp
-#>       2069-70    7.73
-#>       2070-71    7.82
-#>       2071-72    7.77
-#>       2072-73    7.66
-#>       2073-74    7.65
+tail(central[, c("period", "value", "unit")], 5)
+#>      period  value  unit
+#>     2069-70   7.73   pct
+#>     2070-71   7.82   pct
+#>     2071-72   7.77   pct
+#>     2072-73   7.66   pct
+#>     2073-74   7.65   pct
 ```
 
 The OBR's central projection has the state pension rising from 4.6% of GDP today to 7.7% by 2073-74 as the UK population ages. The FSR also publishes scenarios for higher/lower life expectancy and different triple-lock uprating assumptions.
