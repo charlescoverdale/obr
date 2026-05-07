@@ -57,6 +57,8 @@ fiscal commentary and IFS Green Budget chapters.
 Other forecasts:
 [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md),
 [`list_forecast_series()`](https://charlescoverdale.github.io/obr/reference/list_forecast_series.md),
+[`obr_actual_vs_forecast()`](https://charlescoverdale.github.io/obr/reference/obr_actual_vs_forecast.md),
+[`obr_compare_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_compare_vintages.md),
 [`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
 
 ## Examples
@@ -73,7 +75,7 @@ rev[rev$component %in% c("Total", "Policy",
 #> # obr_tbl: 564 rows x 4 cols
 #> # Source:       OBR Forecast Revisions Database
 #> # URL:          https://obr.uk/download/forecast-revisions-database-march-2025/
-#> # Retrieved:    2026-05-06 19:54:28 UTC
+#> # Retrieved:    2026-05-07 20:02:32 UTC
 #> # File MD5:     88649f739c50
 #> # Package:      obr 0.4.0
 #> # Note:         Decomposition of PSNB forecast revisions in GBP billion.

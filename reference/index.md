@@ -25,6 +25,10 @@ Every OBR forecast since 2010 for key fiscal and economic variables.
   : Get OBR forecast history for a fiscal series
 - [`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
   : Build a wide real-time panel of OBR forecasts
+- [`obr_compare_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_compare_vintages.md)
+  : Compare two EFO vintages
+- [`obr_actual_vs_forecast()`](https://charlescoverdale.github.io/obr/reference/obr_actual_vs_forecast.md)
+  : Pair OBR forecasts with PFD outturn
 - [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md)
   : Get OBR forecast revisions
 

@@ -53,7 +53,7 @@ welfare[welfare$series == "Working-age incapacity benefits spending" &
 #> # obr_tbl: 29 rows x 6 cols
 #> # Source:       OBR Welfare Trends Report, October 2024
 #> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
-#> # Retrieved:    2026-05-06 19:54:38 UTC
+#> # Retrieved:    2026-05-07 20:02:39 UTC
 #> # File MD5:     c587017c08a1
 #> # Package:      obr 0.4.0
 #> 

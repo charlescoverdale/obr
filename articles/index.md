@@ -2,6 +2,8 @@
 
 ### Vignettes
 
+- [Working with EFO
+  forecasts](https://charlescoverdale.github.io/obr/articles/efo-forecasts.md):
 - [Pinning to a specific OBR
   publication](https://charlescoverdale.github.io/obr/articles/vintages.md):
 - [Tracking fiscal policy measures since

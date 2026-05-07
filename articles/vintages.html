@@ -33,7 +33,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/vintages.html">Pinning to a specific OBR publication</a></li>
+<li><a class="dropdown-item" href="../articles/efo-forecasts.html">Working with EFO forecasts</a></li>
+    <li><a class="dropdown-item" href="../articles/vintages.html">Pinning to a specific OBR publication</a></li>
     <li><a class="dropdown-item" href="../articles/policy-measures.html">Tracking fiscal policy measures since 1970</a></li>
     <li><a class="dropdown-item" href="../articles/forecast-revisions.html">Anatomy of a forecast revision</a></li>
   </ul>
@@ -144,9 +145,10 @@ only.</p>
 <span><span class="va">oct24</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_efo_fiscal.html">get_efo_fiscal</a></span><span class="op">(</span>vintage <span class="op">=</span> <span class="st">"October 2024"</span><span class="op">)</span></span>
 <span><span class="va">mar26</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_efo_fiscal.html">get_efo_fiscal</a></span><span class="op">(</span>vintage <span class="op">=</span> <span class="st">"March 2026"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Net borrowing forecast for 2027-28 from each vintage</span></span>
-<span><span class="va">oct24</span><span class="op">[</span><span class="va">oct24</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">oct24</span><span class="op">$</span><span class="va">fiscal_year</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span>
-<span><span class="va">mar26</span><span class="op">[</span><span class="va">mar26</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">mar26</span><span class="op">$</span><span class="va">fiscal_year</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span></code></pre></div>
+<span><span class="co"># Net borrowing forecast for 2027-28 from each vintage. v0.4.0 schema</span></span>
+<span><span class="co"># uses `period` for the time column (with `period_type = "fiscal_year"`).</span></span>
+<span><span class="va">oct24</span><span class="op">[</span><span class="va">oct24</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">oct24</span><span class="op">$</span><span class="va">period</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span>
+<span><span class="va">mar26</span><span class="op">[</span><span class="va">mar26</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">mar26</span><span class="op">$</span><span class="va">period</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span></code></pre></div>
 <p>Cached files are vintage-tagged, so different vintages do not
 overwrite each other in the cache. The <code>vintage = ...</code>
 argument always overrides any pin set with <code><a href="../reference/obr_pin.html">obr_pin()</a></code>.</p>

@@ -86,9 +86,10 @@ These chunks require a network connection and are shown as code only.
 oct24 <- get_efo_fiscal(vintage = "October 2024")
 mar26 <- get_efo_fiscal(vintage = "March 2026")
 
-# Net borrowing forecast for 2027-28 from each vintage
-oct24[oct24$series == "Net borrowing" & oct24$fiscal_year == "2027-28", ]
-mar26[mar26$series == "Net borrowing" & mar26$fiscal_year == "2027-28", ]
+# Net borrowing forecast for 2027-28 from each vintage. v0.4.0 schema
+# uses `period` for the time column (with `period_type = "fiscal_year"`).
+oct24[oct24$series == "Net borrowing" & oct24$period == "2027-28", ]
+mar26[mar26$series == "Net borrowing" & mar26$period == "2027-28", ]
 ```
 
 Cached files are vintage-tagged, so different vintages do not overwrite

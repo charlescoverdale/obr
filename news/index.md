@@ -2,16 +2,26 @@
 
 ## obr 0.4.0
 
-### Breaking: standard tidy long schema across all data-fetching functions
+### Breaking: standard tidy long schema for the EFO / PFD / HFD / WTR / FSR functions
 
-This release standardises the columns returned by every data-fetching
-function so they can be
-[`rbind()`](https://rdrr.io/r/base/cbind.html)’d, joined, plotted, and
-reasoned about the same way regardless of which OBR publication produced
-them. Driven by feedback from Ben Northcott (Office for Budget
-Responsibility) on the v0.3.x release.
+This release standardises the columns returned by the data-fetching
+functions backing the Public Finances Databank (PFD), Economic and
+Fiscal Outlook (EFO), Historical Forecasts Database (HFD), Welfare
+Trends Report (WTR), and Fiscal Risks and Sustainability Report (FSR) so
+they can be [`rbind()`](https://rdrr.io/r/base/cbind.html)’d, joined,
+plotted, and reasoned about the same way regardless of which OBR
+publication produced them. Driven by feedback from Ben Northcott (Office
+for Budget Responsibility) on the v0.3.x release.
 
-All long-format outputs now share the columns:
+The Forecast Revisions Database
+([`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md))
+and Policy Measures Database
+([`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md))
+keep their existing multi-dimensional schemas in v0.4.0; migrating them
+to the standard schema is queued for a later release.
+
+All long-format outputs from the EFO / PFD / HFD / WTR / FSR functions
+now share the columns:
 
 - `period` - the time period as a character string
 - `period_type` - one of `"fiscal_year"`, `"quarter"`, `"calendar_year"`
@@ -74,6 +84,30 @@ format indicating YoY or Index would be useful.”
 - `OBR_PERIOD_TYPES`, `OBR_METRIC_TYPES`, `OBR_UNITS`: controlled
   vocabularies for the schema metadata columns. Internal but documented
   in the package source.
+
+### New: workflow helpers
+
+- `obr_compare_vintages(vintage_a, vintage_b, what)` joins the same EFO
+  table from two vintages on the standard schema and returns a tidy diff
+  with `value_a`, `value_b`, and `revision = value_b - value_a`.
+  Supports `what = "fiscal"` (default), `"inflation"`, `"labour"`, or
+  `"output_gap"`.
+- `obr_actual_vs_forecast(series)` joins the long-format Historical
+  Forecasts Database against PFD outturn for the same series, returning
+  one row per (forecast vintage, fiscal year) with the realised forecast
+  error. Supports `series = "PSNB"`, `"PSND"`, or `"expenditure"`.
+
+Both helpers feed naturally into the kind of forecast-evaluation tables
+the OBR’s own Forecast Evaluation Report uses.
+
+### New: vignette
+
+- [`vignette("efo-forecasts")`](https://charlescoverdale.github.io/obr/articles/efo-forecasts.md)
+  covers the v0.4.0 schema: how to read the Index vs YoY split, how to
+  combine EFO with PFD outturn via the shared schema, and how to compare
+  two vintages. The existing
+  [`vignette("vintages")`](https://charlescoverdale.github.io/obr/articles/vintages.md)
+  is updated for the renamed `period` column.
 
 ## obr 0.3.0
 

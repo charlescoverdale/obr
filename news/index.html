@@ -18,7 +18,8 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/vintages.html">Pinning to a specific OBR publication</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/efo-forecasts.html">Working with EFO forecasts</a></li>
+    <li><a class="dropdown-item" href="../articles/vintages.html">Pinning to a specific OBR publication</a></li>
     <li><a class="dropdown-item" href="../articles/policy-measures.html">Tracking fiscal policy measures since 1970</a></li>
     <li><a class="dropdown-item" href="../articles/forecast-revisions.html">Anatomy of a forecast revision</a></li>
   </ul></li>
@@ -41,9 +42,10 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="obr-040">obr 0.4.0<a class="anchor" aria-label="anchor" href="#obr-040"></a></h2>
 <div class="section level3">
-<h3 id="breaking-standard-tidy-long-schema-across-all-data-fetching-functions-0-4-0">Breaking: standard tidy long schema across all data-fetching functions<a class="anchor" aria-label="anchor" href="#breaking-standard-tidy-long-schema-across-all-data-fetching-functions-0-4-0"></a></h3>
-<p>This release standardises the columns returned by every data-fetching function so they can be <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code>’d, joined, plotted, and reasoned about the same way regardless of which OBR publication produced them. Driven by feedback from Ben Northcott (Office for Budget Responsibility) on the v0.3.x release.</p>
-<p>All long-format outputs now share the columns:</p>
+<h3 id="breaking-standard-tidy-long-schema-for-the-efo--pfd--hfd--wtr--fsr-functions-0-4-0">Breaking: standard tidy long schema for the EFO / PFD / HFD / WTR / FSR functions<a class="anchor" aria-label="anchor" href="#breaking-standard-tidy-long-schema-for-the-efo--pfd--hfd--wtr--fsr-functions-0-4-0"></a></h3>
+<p>This release standardises the columns returned by the data-fetching functions backing the Public Finances Databank (PFD), Economic and Fiscal Outlook (EFO), Historical Forecasts Database (HFD), Welfare Trends Report (WTR), and Fiscal Risks and Sustainability Report (FSR) so they can be <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code>’d, joined, plotted, and reasoned about the same way regardless of which OBR publication produced them. Driven by feedback from Ben Northcott (Office for Budget Responsibility) on the v0.3.x release.</p>
+<p>The Forecast Revisions Database (<code><a href="../reference/get_forecast_revisions.html">get_forecast_revisions()</a></code>) and Policy Measures Database (<code><a href="../reference/get_policy_measures.html">get_policy_measures()</a></code>) keep their existing multi-dimensional schemas in v0.4.0; migrating them to the standard schema is queued for a later release.</p>
+<p>All long-format outputs from the EFO / PFD / HFD / WTR / FSR functions now share the columns:</p>
 <ul><li>
 <code>period</code> - the time period as a character string</li>
 <li>
@@ -101,6 +103,19 @@
 <h3 id="constants-0-4-0">Constants<a class="anchor" aria-label="anchor" href="#constants-0-4-0"></a></h3>
 <ul><li>
 <code>OBR_PERIOD_TYPES</code>, <code>OBR_METRIC_TYPES</code>, <code>OBR_UNITS</code>: controlled vocabularies for the schema metadata columns. Internal but documented in the package source.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-workflow-helpers-0-4-0">New: workflow helpers<a class="anchor" aria-label="anchor" href="#new-workflow-helpers-0-4-0"></a></h3>
+<ul><li>
+<code>obr_compare_vintages(vintage_a, vintage_b, what)</code> joins the same EFO table from two vintages on the standard schema and returns a tidy diff with <code>value_a</code>, <code>value_b</code>, and <code>revision = value_b - value_a</code>. Supports <code>what = "fiscal"</code> (default), <code>"inflation"</code>, <code>"labour"</code>, or <code>"output_gap"</code>.</li>
+<li>
+<code>obr_actual_vs_forecast(series)</code> joins the long-format Historical Forecasts Database against PFD outturn for the same series, returning one row per (forecast vintage, fiscal year) with the realised forecast error. Supports <code>series = "PSNB"</code>, <code>"PSND"</code>, or <code>"expenditure"</code>.</li>
+</ul><p>Both helpers feed naturally into the kind of forecast-evaluation tables the OBR’s own Forecast Evaluation Report uses.</p>
+</div>
+<div class="section level3">
+<h3 id="new-vignette-0-4-0">New: vignette<a class="anchor" aria-label="anchor" href="#new-vignette-0-4-0"></a></h3>
+<ul><li>
+<code><a href="../articles/efo-forecasts.html">vignette("efo-forecasts")</a></code> covers the v0.4.0 schema: how to read the Index vs YoY split, how to combine EFO with PFD outturn via the shared schema, and how to compare two vintages. The existing <code><a href="../articles/vintages.html">vignette("vintages")</a></code> is updated for the renamed <code>period</code> column.</li>
 </ul></div>
 </div>
     <div class="section level2">

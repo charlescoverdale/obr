@@ -90,7 +90,7 @@ inf[inf$series == "CPI", ]
 #> # obr_tbl: 186 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/
-#> # Retrieved:    2026-05-06 19:54:23 UTC
+#> # Retrieved:    2026-05-07 20:02:28 UTC
 #> # File MD5:     da58dba1f8d3
 #> # Package:      obr 0.4.0
 #> 

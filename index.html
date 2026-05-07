@@ -35,7 +35,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/vintages.html">Pinning to a specific OBR publication</a></li>
+<li><a class="dropdown-item" href="articles/efo-forecasts.html">Working with EFO forecasts</a></li>
+    <li><a class="dropdown-item" href="articles/vintages.html">Pinning to a specific OBR publication</a></li>
     <li><a class="dropdown-item" href="articles/policy-measures.html">Tracking fiscal policy measures since 1970</a></li>
     <li><a class="dropdown-item" href="articles/forecast-revisions.html">Anatomy of a forecast revision</a></li>
   </ul>
@@ -225,6 +226,16 @@
 <td>Wide real-time panel: rows = forecast vintages, columns = fiscal years</td>
 </tr>
 <tr>
+<td><code>obr_compare_vintages(a, b, what)</code></td>
+<td>Tidy diff between two vintages of the same EFO table; returns <code>value_a</code>, <code>value_b</code>, and <code>revision = value_b - value_a</code>
+</td>
+</tr>
+<tr>
+<td><code>obr_actual_vs_forecast(series)</code></td>
+<td>Joins HFD forecasts against PFD outturn for the same series; returns <code>value_forecast</code>, <code>value_actual</code>, and <code>error</code>
+</td>
+</tr>
+<tr>
 <td><code>get_forecast_revisions(unit)</code></td>
 <td>EFO-to-EFO PSNB revisions decomposed into policy, classifications, and underlying components</td>
 </tr>
@@ -344,7 +355,7 @@
 </tr></thead>
 <tbody><tr>
 <td><code><a href="reference/obr_fiscal_rules.html">obr_fiscal_rules()</a></code></td>
-<td>The three Charter for Budget Responsibility rules (stability, investment, welfare cap), with the OBR’s last published headroom against each</td>
+<td>The three Charter for Budget Responsibility rules (stability, investment, welfare cap) with metric, target description, and source Charter version. Numerical headroom is not shipped (changes at every fiscal event; derive from <code><a href="reference/get_efo_fiscal.html">get_efo_fiscal()</a></code>).</td>
 </tr></tbody>
 </table>
 </div>
@@ -362,6 +373,77 @@
 </tr></tbody>
 </table>
 <p>All download functions accept <code>refresh = TRUE</code> to force a fresh download from the OBR website.</p>
+</div>
+<div class="section level3">
+<h3 id="standard-tidy-long-schema-v040">Standard tidy long schema (v0.4.0)<a class="anchor" aria-label="anchor" href="#standard-tidy-long-schema-v040"></a>
+</h3>
+<p>The EFO, PFD, HFD, WTR, and FSR functions all return the same six columns so outputs from different publications can be <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code>’d, joined, and plotted the same way:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr>
+<th>Column</th>
+<th>Type</th>
+<th>Values</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>period</code></td>
+<td>character</td>
+<td>
+<code>"2024-25"</code>, <code>"2025Q1"</code>, etc.</td>
+</tr>
+<tr>
+<td><code>period_type</code></td>
+<td>character</td>
+<td>
+<code>"fiscal_year"</code>, <code>"quarter"</code>, <code>"calendar_year"</code>
+</td>
+</tr>
+<tr>
+<td><code>series</code></td>
+<td>character</td>
+<td>The variable name (e.g. <code>"CPI"</code>, <code>"PSNB"</code>, <code>"Net borrowing"</code>)</td>
+</tr>
+<tr>
+<td><code>metric_type</code></td>
+<td>character</td>
+<td>
+<code>"level"</code>, <code>"yoy_pct"</code>, <code>"index"</code>, <code>"pct"</code>, <code>"pct_pts"</code>
+</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>double</td>
+<td>The numeric value</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>character</td>
+<td>
+<code>"gbp_bn"</code>, <code>"pct"</code>, <code>"index"</code>, <code>"count_k"</code>, etc.</td>
+</tr>
+</tbody>
+</table>
+<p><code><a href="reference/get_forecasts.html">get_forecasts()</a></code> adds <code>forecast_date</code> as a leading column. <code><a href="reference/get_pension_projections.html">get_pension_projections()</a></code> adds <code>scenario_type</code> as a trailing column. <code><a href="reference/get_forecast_revisions.html">get_forecast_revisions()</a></code> and <code><a href="reference/get_policy_measures.html">get_policy_measures()</a></code> use specialised multi-dimensional schemas (migration to the standard layout queued for a later release).</p>
+<p>The <code>metric_type</code> column resolves a class of bug from earlier versions where, for example, CPI Index values and CPI year-on-year growth values lived in the same <code>value</code> column with no machine-readable distinction. See <code><a href="articles/efo-forecasts.html">vignette("efo-forecasts")</a></code> for a walkthrough.</p>
+</div>
+<div class="section level3">
+<h3 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
+</h3>
+<ul>
+<li>
+<code><a href="articles/efo-forecasts.html">vignette("efo-forecasts")</a></code>: working with the v0.4.0 schema, splitting Index from YoY, combining EFO with PFD outturn, comparing two vintages.</li>
+<li>
+<code><a href="articles/vintages.html">vignette("vintages")</a></code>: pinning to a specific EFO vintage for reproducible analysis.</li>
+<li>
+<code><a href="articles/forecast-revisions.html">vignette("forecast-revisions")</a></code>: decomposing PSNB revisions across vintages.</li>
+<li>
+<code><a href="articles/policy-measures.html">vignette("policy-measures")</a></code>: working with the Policy Measures Database.</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="provenance-and-vintage-control">Provenance and vintage control<a class="anchor" aria-label="anchor" href="#provenance-and-vintage-control"></a>
@@ -422,13 +504,14 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://charlescoverdale.github.io/obr/">obr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">psnb</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_psnb.html">get_psnb</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">psnb</span><span class="op">[</span><span class="va">psnb</span><span class="op">$</span><span class="va">year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2018-19"</span>, <span class="st">"2019-20"</span>, <span class="st">"2020-21"</span>, <span class="st">"2021-22"</span>, <span class="st">"2022-23"</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;       year  psnb_bn</span></span>
-<span><span class="co">#&gt;  2018-19     42.5</span></span>
-<span><span class="co">#&gt;  2019-20     57.1</span></span>
-<span><span class="co">#&gt;  2020-21    317.8   # ← COVID year</span></span>
-<span><span class="co">#&gt;  2021-22    144.8</span></span>
-<span><span class="co">#&gt;  2022-23     87.6</span></span></code></pre></div>
+<span><span class="va">psnb</span><span class="op">[</span><span class="va">psnb</span><span class="op">$</span><span class="va">period</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2018-19"</span>, <span class="st">"2019-20"</span>, <span class="st">"2020-21"</span>, <span class="st">"2021-22"</span>, <span class="st">"2022-23"</span><span class="op">)</span>,</span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;       period   value   unit</span></span>
+<span><span class="co">#&gt;     2018-19    42.5  gbp_bn</span></span>
+<span><span class="co">#&gt;     2019-20    57.1  gbp_bn</span></span>
+<span><span class="co">#&gt;     2020-21   317.8  gbp_bn   # ← COVID year</span></span>
+<span><span class="co">#&gt;     2021-22   144.8  gbp_bn</span></span>
+<span><span class="co">#&gt;     2022-23    87.6  gbp_bn</span></span></code></pre></div>
 <p>The UK borrowed £318bn in 2020-21 - roughly seven times the pre-pandemic level - to fund furlough, bounce-back loans, and emergency NHS spending.</p>
 <hr>
 </div>
@@ -438,7 +521,7 @@
 <p>The OBR first forecast 2024-25 borrowing at <strong>£37bn</strong> (March 2022). By November 2025, that estimate had risen to <strong>£149bn</strong> - four times the original figure.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">psnb_fc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_forecasts.html">get_forecasts</a></span><span class="op">(</span><span class="st">"PSNB"</span><span class="op">)</span></span>
-<span><span class="va">fc_2425</span> <span class="op">&lt;-</span> <span class="va">psnb_fc</span><span class="op">[</span><span class="va">psnb_fc</span><span class="op">$</span><span class="va">fiscal_year</span> <span class="op">==</span> <span class="st">"2024-25"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"forecast_date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">fc_2425</span> <span class="op">&lt;-</span> <span class="va">psnb_fc</span><span class="op">[</span><span class="va">psnb_fc</span><span class="op">$</span><span class="va">period</span> <span class="op">==</span> <span class="st">"2024-25"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"forecast_date"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">fc_2425</span></span>
 <span><span class="co">#&gt;    forecast_date   value</span></span>
 <span><span class="co">#&gt;     March 2022    36.5</span></span>
@@ -459,18 +542,18 @@
 <code class="sourceCode R"><span><span class="va">psnb</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_psnb.html">get_psnb</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Years with a surplus (negative PSNB = receipts exceed spending)</span></span>
-<span><span class="va">psnb</span><span class="op">[</span><span class="va">psnb</span><span class="op">$</span><span class="va">psnb_bn</span> <span class="op">&lt;</span> <span class="fl">0</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;       year  psnb_bn</span></span>
-<span><span class="co">#&gt;  1969-70    -0.5</span></span>
-<span><span class="co">#&gt;  1970-71    -1.3</span></span>
-<span><span class="co">#&gt;  1971-72    -0.1</span></span>
-<span><span class="co">#&gt;  1988-89    -9.0</span></span>
-<span><span class="co">#&gt;  1989-90    -8.0</span></span>
-<span><span class="co">#&gt;  1990-91    -0.1</span></span>
-<span><span class="co">#&gt;  1997-98   -12.7</span></span>
-<span><span class="co">#&gt;  1998-99   -14.5</span></span>
-<span><span class="co">#&gt;  1999-00   -17.9</span></span>
-<span><span class="co">#&gt;  2000-01    -0.5</span></span></code></pre></div>
+<span><span class="va">psnb</span><span class="op">[</span><span class="va">psnb</span><span class="op">$</span><span class="va">value</span> <span class="op">&lt;</span> <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;       period   value</span></span>
+<span><span class="co">#&gt;     1969-70    -0.5</span></span>
+<span><span class="co">#&gt;     1970-71    -1.3</span></span>
+<span><span class="co">#&gt;     1971-72    -0.1</span></span>
+<span><span class="co">#&gt;     1988-89    -9.0</span></span>
+<span><span class="co">#&gt;     1989-90    -8.0</span></span>
+<span><span class="co">#&gt;     1990-91    -0.1</span></span>
+<span><span class="co">#&gt;     1997-98   -12.7</span></span>
+<span><span class="co">#&gt;     1998-99   -14.5</span></span>
+<span><span class="co">#&gt;     1999-00   -17.9</span></span>
+<span><span class="co">#&gt;     2000-01    -0.5</span></span></code></pre></div>
 <p>The UK last ran a surplus in 2000-01. In the 24 years since, the government has borrowed every year. Combine with <code>get_forecasts("PSNB_pct")</code> to see whether the OBR projects any future surpluses.</p>
 <hr>
 </div>
@@ -481,18 +564,18 @@
 <code class="sourceCode R"><span><span class="va">receipts</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_receipts.html">get_receipts</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Top tax sources in 2023-24</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="va">receipts</span><span class="op">[</span><span class="va">receipts</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="st">"2023-24"</span>, <span class="op">]</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="va">receipts</span><span class="op">[</span><span class="va">receipts</span><span class="op">$</span><span class="va">period</span> <span class="op">==</span> <span class="st">"2023-24"</span>, <span class="op">]</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">r</span><span class="op">$</span><span class="va">value</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">r</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"series"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                              series   value</span></span>
-<span><span class="co">#&gt;   Public sector current receipts   1101.5</span></span>
-<span><span class="co">#&gt;                       Income tax    290.4</span></span>
-<span><span class="co">#&gt;                              VAT    183.1</span></span>
-<span><span class="co">#&gt;    National insurance contributions 182.4</span></span>
-<span><span class="co">#&gt;                    Corporation tax   88.4</span></span>
-<span><span class="co">#&gt;                       Council tax   44.9</span></span>
-<span><span class="co">#&gt;                         Fuel duty   24.5</span></span>
-<span><span class="co">#&gt;                    Stamp duties     18.4</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">r</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"series"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                              series   value    unit</span></span>
+<span><span class="co">#&gt;   Public sector current receipts   1101.5  gbp_bn</span></span>
+<span><span class="co">#&gt;                       Income tax    290.4  gbp_bn</span></span>
+<span><span class="co">#&gt;                              VAT    183.1  gbp_bn</span></span>
+<span><span class="co">#&gt;    National insurance contributions 182.4  gbp_bn</span></span>
+<span><span class="co">#&gt;                    Corporation tax   88.4  gbp_bn</span></span>
+<span><span class="co">#&gt;                       Council tax   44.9  gbp_bn</span></span>
+<span><span class="co">#&gt;                         Fuel duty   24.5  gbp_bn</span></span>
+<span><span class="co">#&gt;                    Stamp duties     18.4  gbp_bn</span></span></code></pre></div>
 <p>Income tax, VAT, and National Insurance together account for around 60% of all government receipts. Breaking this down over time reveals long-run shifts - such as the rising share of income tax as fiscal drag pulls more earners into higher bands.</p>
 <hr>
 </div>
@@ -501,14 +584,14 @@
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">efo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_efo_fiscal.html">get_efo_fiscal</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">efo</span><span class="op">[</span><span class="va">efo</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;   fiscal_year        series value_bn</span></span>
-<span><span class="co">#&gt;       2025-26 Net borrowing    132.7</span></span>
-<span><span class="co">#&gt;       2026-27 Net borrowing    115.5</span></span>
-<span><span class="co">#&gt;       2027-28 Net borrowing     96.5</span></span>
-<span><span class="co">#&gt;       2028-29 Net borrowing     86.0</span></span>
-<span><span class="co">#&gt;       2029-30 Net borrowing     63.4</span></span>
-<span><span class="co">#&gt;       2030-31 Net borrowing     59.0</span></span></code></pre></div>
+<span><span class="va">efo</span><span class="op">[</span><span class="va">efo</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"series"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;      period        series  value    unit</span></span>
+<span><span class="co">#&gt;     2025-26 Net borrowing  132.7  gbp_bn</span></span>
+<span><span class="co">#&gt;     2026-27 Net borrowing  115.5  gbp_bn</span></span>
+<span><span class="co">#&gt;     2027-28 Net borrowing   96.5  gbp_bn</span></span>
+<span><span class="co">#&gt;     2028-29 Net borrowing   86.0  gbp_bn</span></span>
+<span><span class="co">#&gt;     2029-30 Net borrowing   63.4  gbp_bn</span></span>
+<span><span class="co">#&gt;     2030-31 Net borrowing   59.0  gbp_bn</span></span></code></pre></div>
 <p>The EFO detailed tables also include the full breakdown: current receipts, current expenditure, depreciation, net investment, and net borrowing - enabling you to see exactly how the deficit is projected to narrow.</p>
 </div>
 <div class="section level3">
@@ -520,8 +603,14 @@
 <span><span class="va">oct_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_efo_fiscal.html">get_efo_fiscal</a></span><span class="op">(</span>vintage <span class="op">=</span> <span class="st">"October 2024"</span><span class="op">)</span></span>
 <span><span class="va">mar_2026</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_efo_fiscal.html">get_efo_fiscal</a></span><span class="op">(</span>vintage <span class="op">=</span> <span class="st">"March 2026"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">oct_2024</span><span class="op">[</span><span class="va">oct_2024</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">oct_2024</span><span class="op">$</span><span class="va">fiscal_year</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span>
-<span><span class="va">mar_2026</span><span class="op">[</span><span class="va">mar_2026</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">mar_2026</span><span class="op">$</span><span class="va">fiscal_year</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span>
+<span><span class="va">oct_2024</span><span class="op">[</span><span class="va">oct_2024</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">oct_2024</span><span class="op">$</span><span class="va">period</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span>
+<span><span class="va">mar_2026</span><span class="op">[</span><span class="va">mar_2026</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span> <span class="op">&amp;</span> <span class="va">mar_2026</span><span class="op">$</span><span class="va">period</span> <span class="op">==</span> <span class="st">"2027-28"</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Or in one step, with the v0.4.0 helper:</span></span>
+<span><span class="fu"><a href="reference/obr_compare_vintages.html">obr_compare_vintages</a></span><span class="op">(</span><span class="st">"October 2024"</span>, <span class="st">"March 2026"</span>, what <span class="op">=</span> <span class="st">"fiscal"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   period period_type        series metric_type   unit value_a value_b revision</span></span>
+<span><span class="co">#&gt;  2027-28 fiscal_year Net borrowing       level gbp_bn    81.7    96.5     14.8</span></span>
+<span><span class="co">#&gt;  ...</span></span>
 <span></span>
 <span><span class="co"># Or pin once and let every subsequent EFO call use that vintage</span></span>
 <span><span class="fu"><a href="reference/obr_pin.html">obr_pin</a></span><span class="op">(</span><span class="st">"October 2024"</span><span class="op">)</span></span>
@@ -541,22 +630,22 @@
 <code class="sourceCode R"><span><span class="va">welfare</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_welfare_spending.html">get_welfare_spending</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># Working-age incapacity spending, last 10 years</span></span>
 <span><span class="va">ic</span> <span class="op">&lt;-</span> <span class="va">welfare</span><span class="op">[</span><span class="va">welfare</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Working-age incapacity benefits spending"</span> <span class="op">&amp;</span></span>
-<span>              <span class="va">welfare</span><span class="op">$</span><span class="va">year</span> <span class="op">&gt;=</span> <span class="st">"2014-15"</span>, <span class="op">]</span></span>
-<span><span class="va">ic</span></span>
-<span><span class="co">#&gt;        year                                      series value</span></span>
-<span><span class="co">#&gt;     2014-15 Working-age incapacity benefits spending  1.44</span></span>
-<span><span class="co">#&gt;     2015-16 Working-age incapacity benefits spending  1.33</span></span>
+<span>              <span class="va">welfare</span><span class="op">$</span><span class="va">period</span> <span class="op">&gt;=</span> <span class="st">"2014-15"</span>, <span class="op">]</span></span>
+<span><span class="va">ic</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"series"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;      period                                   series  value  unit</span></span>
+<span><span class="co">#&gt;     2014-15 Working-age incapacity benefits spending   1.44   pct</span></span>
+<span><span class="co">#&gt;     2015-16 Working-age incapacity benefits spending   1.33   pct</span></span>
 <span><span class="co">#&gt;     ...</span></span>
-<span><span class="co">#&gt;     2023-24 Working-age incapacity benefits spending  1.78</span></span>
-<span><span class="co">#&gt;     2024-25 Working-age incapacity benefits spending  2.02</span></span>
-<span><span class="co">#&gt;     2025-26 Working-age incapacity benefits spending  2.16</span></span>
+<span><span class="co">#&gt;     2023-24 Working-age incapacity benefits spending   1.78   pct</span></span>
+<span><span class="co">#&gt;     2024-25 Working-age incapacity benefits spending   2.02   pct</span></span>
+<span><span class="co">#&gt;     2025-26 Working-age incapacity benefits spending   2.16   pct</span></span>
 <span></span>
-<span><span class="co"># Number of people on incapacity benefits</span></span>
+<span><span class="co"># Number of people on incapacity benefits (in thousands)</span></span>
 <span><span class="va">cases</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_incapacity_caseloads.html">get_incapacity_caseloads</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">cases</span><span class="op">[</span><span class="va">cases</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Share of working age population"</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;  2008-09   Share of working age population  6.80</span></span>
-<span><span class="co">#&gt;  ...</span></span>
-<span><span class="co">#&gt;  2023-24   Share of working age population  6.82</span></span></code></pre></div>
+<span><span class="va">cases</span><span class="op">[</span><span class="va">cases</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Claimants"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;     2008-09  2360  count_k</span></span>
+<span><span class="co">#&gt;     ...</span></span>
+<span><span class="co">#&gt;     2024-25  3140  count_k</span></span></code></pre></div>
 <p>Incapacity benefit spending and caseloads have risen sharply since the pandemic - a key driver of welfare reform debate in 2025.</p>
 <hr>
 </div>
@@ -590,26 +679,49 @@
 <code class="sourceCode R"><span><span class="va">proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_pension_projections.html">get_pension_projections</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Central demographic projection: pension spending rises from 5% to 7.7% of GDP</span></span>
+<span><span class="co"># (FSR uses the standard schema plus a `scenario_type` column.)</span></span>
 <span><span class="va">central</span> <span class="op">&lt;-</span> <span class="va">proj</span><span class="op">[</span><span class="va">proj</span><span class="op">$</span><span class="va">scenario_type</span> <span class="op">==</span> <span class="st">"Demographic scenarios"</span> <span class="op">&amp;</span></span>
-<span>                <span class="va">proj</span><span class="op">$</span><span class="va">scenario</span> <span class="op">==</span> <span class="st">"Central projection"</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">central</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fiscal_year"</span>, <span class="st">"pct_gdp"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   fiscal_year pct_gdp</span></span>
-<span><span class="co">#&gt;       2023-24    4.56</span></span>
-<span><span class="co">#&gt;       2024-25    4.95</span></span>
-<span><span class="co">#&gt;       2025-26    5.06</span></span>
-<span><span class="co">#&gt;       2026-27    5.13</span></span>
-<span><span class="co">#&gt;       2027-28    5.05</span></span>
+<span>                <span class="va">proj</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Central projection"</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">central</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      period  value  unit</span></span>
+<span><span class="co">#&gt;     2023-24   4.56   pct</span></span>
+<span><span class="co">#&gt;     2024-25   4.95   pct</span></span>
+<span><span class="co">#&gt;     2025-26   5.06   pct</span></span>
+<span><span class="co">#&gt;     2026-27   5.13   pct</span></span>
+<span><span class="co">#&gt;     2027-28   5.05   pct</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">central</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fiscal_year"</span>, <span class="st">"pct_gdp"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   fiscal_year pct_gdp</span></span>
-<span><span class="co">#&gt;       2069-70    7.73</span></span>
-<span><span class="co">#&gt;       2070-71    7.82</span></span>
-<span><span class="co">#&gt;       2071-72    7.77</span></span>
-<span><span class="co">#&gt;       2072-73    7.66</span></span>
-<span><span class="co">#&gt;       2073-74    7.65</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">central</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      period  value  unit</span></span>
+<span><span class="co">#&gt;     2069-70   7.73   pct</span></span>
+<span><span class="co">#&gt;     2070-71   7.82   pct</span></span>
+<span><span class="co">#&gt;     2071-72   7.77   pct</span></span>
+<span><span class="co">#&gt;     2072-73   7.66   pct</span></span>
+<span><span class="co">#&gt;     2073-74   7.65   pct</span></span></code></pre></div>
 <p>The OBR’s central projection has the state pension rising from 4.6% of GDP today to 7.7% by 2073-74 as the UK population ages. The FSR also publishes scenarios for higher/lower life expectancy and different triple-lock uprating assumptions.</p>
 <hr>
 </div>
+</div>
+<div class="section level2">
+<h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
+</h2>
+<p>A few things <code>obr</code> deliberately does not do, and a few caveats worth knowing.</p>
+<ul>
+<li>
+<strong>Forecast coverage is partial</strong>. The EFO databank exposes around 70 detailed-forecast tables across the economy, receipts, expenditure, and sustainability sections. <code>obr</code> currently surfaces the headline aggregates (Table 6.5), inflation (sheet 1.7), labour (sheet 1.6), and output gap (sheet 1.14). Receipts by tax, expenditure by function, sector wage / productivity / FX series, and the FSR long-run scenarios are on the roadmap for v0.5.0.</li>
+<li>
+<strong>EFO and PFD use the standard v0.4.0 schema; FRD and PMD do not yet.</strong> <code><a href="reference/get_forecast_revisions.html">get_forecast_revisions()</a></code> and <code><a href="reference/get_policy_measures.html">get_policy_measures()</a></code> return their existing multi-dimensional schemas (forecast date x revision component, fiscal event x measure x head). Migration to the v0.4.0 layout is queued for a later release.</li>
+<li>
+<strong>Vintage table is hardcoded and needs maintenance.</strong> <code><a href="reference/obr_efo_vintages.html">obr_efo_vintages()</a></code> returns a static list of EFOs. When a new EFO publishes, the package needs a release to recognise it as a pinnable vintage. Until then, the dynamic resolver will still find the live file but <code>obr_pin("November 2026")</code> will error.</li>
+<li>
+<strong>The <code>classify_metric_type()</code> heuristic is regex-based.</strong> It correctly handles the OBR’s current naming conventions (Index, deflator, inflation, growth, rate). New series with unusual names may default to <code>metric_type = "level"</code>; the per-measure default supplied by <code><a href="reference/get_efo_economy.html">get_efo_economy()</a></code> corrects this for the inflation sheet but may need tuning if OBR adds a new sheet.</li>
+<li>
+<strong>UK only.</strong> The package wraps OBR publications; it does not cover the US Congressional Budget Office, the Australian Parliamentary Budget Office, or other fiscal-watchdog equivalents.</li>
+<li>
+<strong>No Python equivalent.</strong> A port to Python is not planned; users wanting the same data in Python should use the OBR’s published Excel files directly or contribute a port.</li>
+<li>
+<strong>Network access is required on first use.</strong> Cached files persist across sessions but <code><a href="reference/clear_cache.html">clear_cache()</a></code> or a refresh argument forces a re-download. There is no offline mode.</li>
+</ul>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="related-packages">Related packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>

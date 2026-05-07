@@ -20,6 +20,8 @@ A data frame with columns `series`, `sheet`, and `description`.
 Other forecasts:
 [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md),
 [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md),
+[`obr_actual_vs_forecast()`](https://charlescoverdale.github.io/obr/reference/obr_actual_vs_forecast.md),
+[`obr_compare_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_compare_vintages.md),
 [`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
 
 ## Examples

@@ -73,6 +73,8 @@ underlying database is recorded in the returned object's provenance.
 Other forecasts:
 [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md),
 [`list_forecast_series()`](https://charlescoverdale.github.io/obr/reference/list_forecast_series.md),
+[`obr_actual_vs_forecast()`](https://charlescoverdale.github.io/obr/reference/obr_actual_vs_forecast.md),
+[`obr_compare_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_compare_vintages.md),
 [`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
 
 ## Examples
@@ -86,7 +88,7 @@ get_forecasts("PSNB")
 #> # obr_tbl: 553 rows x 7 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-06 19:54:30 UTC
+#> # Retrieved:    2026-05-07 20:02:34 UTC
 #> # File MD5:     4312a0cf5075
 #> # Package:      obr 0.4.0
 #> 
@@ -109,7 +111,7 @@ psnb[psnb$period == "2024-25", ]
 #> # obr_tbl: 13 rows x 7 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-06 19:54:30 UTC
+#> # Retrieved:    2026-05-07 20:02:34 UTC
 #> # File MD5:     4312a0cf5075
 #> # Package:      obr 0.4.0
 #> 

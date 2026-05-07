@@ -58,7 +58,9 @@ forecast for any vintage.
 Other forecasts:
 [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md),
 [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md),
-[`list_forecast_series()`](https://charlescoverdale.github.io/obr/reference/list_forecast_series.md)
+[`list_forecast_series()`](https://charlescoverdale.github.io/obr/reference/list_forecast_series.md),
+[`obr_actual_vs_forecast()`](https://charlescoverdale.github.io/obr/reference/obr_actual_vs_forecast.md),
+[`obr_compare_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_compare_vintages.md)
 
 ## Examples
 
@@ -80,7 +82,7 @@ panel[, c("forecast_date", "2024-25")]
 #> # obr_tbl: 104 rows x 2 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-06 19:54:30 UTC
+#> # Retrieved:    2026-05-07 20:02:34 UTC
 #> # File MD5:     4312a0cf5075
 #> # Package:      obr 0.4.0
 #> # Note:         Wide real-time panel for PSNB: rows = forecast vintage, columns = fiscal year.
