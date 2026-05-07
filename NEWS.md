@@ -65,6 +65,28 @@ format indicating YoY or Index would be useful."
   vocabularies for the schema metadata columns. Internal but documented
   in the package source.
 
+## New: workflow helpers
+
+* `obr_compare_vintages(vintage_a, vintage_b, what)` joins the same EFO
+  table from two vintages on the standard schema and returns a tidy diff
+  with `value_a`, `value_b`, and `revision = value_b - value_a`. Supports
+  `what = "fiscal"` (default), `"inflation"`, `"labour"`, or
+  `"output_gap"`.
+* `obr_actual_vs_forecast(series)` joins the long-format Historical
+  Forecasts Database against PFD outturn for the same series, returning
+  one row per (forecast vintage, fiscal year) with the realised forecast
+  error. Supports `series = "PSNB"`, `"PSND"`, or `"expenditure"`.
+
+Both helpers feed naturally into the kind of forecast-evaluation tables
+the OBR's own Forecast Evaluation Report uses.
+
+## New: vignette
+
+* `vignette("efo-forecasts")` covers the v0.4.0 schema: how to read the
+  Index vs YoY split, how to combine EFO with PFD outturn via the shared
+  schema, and how to compare two vintages. The existing `vignette("vintages")`
+  is updated for the renamed `period` column.
+
 # obr 0.3.0
 
 ## New: provenance metadata on every returned object

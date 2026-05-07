@@ -57,6 +57,8 @@ options(op)
 Other forecasts: 
 \code{\link{get_forecast_revisions}()},
 \code{\link{list_forecast_series}()},
+\code{\link{obr_actual_vs_forecast}()},
+\code{\link{obr_compare_vintages}()},
 \code{\link{obr_forecast_panel}()}
 }
 \concept{forecasts}
