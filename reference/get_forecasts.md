@@ -88,9 +88,9 @@ get_forecasts("PSNB")
 #> # obr_tbl: 553 rows x 7 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-07 20:02:34 UTC
+#> # Retrieved:    2026-05-07 20:59:12 UTC
 #> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> 
 #>    forecast_date  period period_type series metric_type value   unit
 #> 1     April 1970 1970-71 fiscal_year   PSNB       level  -0.2 gbp_bn
@@ -111,9 +111,9 @@ psnb[psnb$period == "2024-25", ]
 #> # obr_tbl: 13 rows x 7 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-07 20:02:34 UTC
+#> # Retrieved:    2026-05-07 20:59:12 UTC
 #> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> 
 #>     forecast_date  period period_type series metric_type     value   unit
 #> 499    March 2020 2024-25 fiscal_year   PSNB       level  57.92369 gbp_bn

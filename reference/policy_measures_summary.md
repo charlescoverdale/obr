@@ -66,9 +66,9 @@ policy_measures_summary(pm)
 #> # obr_tbl: 593 rows x 4 cols
 #> # Source:       OBR Policy Measures Database, March 2025
 #> # URL:          https://obr.uk/download/policy-measures-database-march-2025/
-#> # Retrieved:    2026-05-07 20:03:11 UTC
+#> # Retrieved:    2026-05-07 21:00:02 UTC
 #> # File MD5:     a76d78e7a14d
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> # Note:         Summed across measures by event and fiscal year.
 #> 
 #>    type       event fiscal_year   value_mn

@@ -72,13 +72,13 @@ obr_provenance(psnb)
 #> [1] "https://obr.uk/download/public-finances-databank/"
 #> 
 #> $retrieved
-#> [1] "2026-05-07 20:02:30 UTC"
+#> [1] "2026-05-07 20:59:07 UTC"
 #> 
 #> $file_md5
 #> [1] "77a07b6641ca8ef85449de08077a9b87"
 #> 
 #> $package_version
-#> [1] "0.4.0"
+#> [1] "0.5.0"
 #> 
 #> $notes
 #> NULL

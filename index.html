@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -256,17 +256,24 @@
 </tr></thead>
 <tbody>
 <tr>
+<td><code><a href="reference/obr_efo_catalogue.html">obr_efo_catalogue()</a></code></td>
+<td>All 39 detailed-forecast tables this package recognises, with id, section, title, layout, and default <code>metric_type</code> / <code>unit</code>. No download needed.</td>
+</tr>
+<tr>
+<td><code>get_efo_table(id)</code></td>
+<td>Generic fetcher: pass a catalogue id (e.g. <code>"6.13"</code>, <code>"1.19"</code>, <code>"4.1"</code>) and get the parsed contents in the standard v0.4 schema. Covers ~35 tables across receipts, expenditure, debt, GDP, labour, inflation, housing, and household balance sheets.</td>
+</tr>
+<tr>
 <td><code><a href="reference/get_efo_fiscal.html">get_efo_fiscal()</a></code></td>
-<td>Five-year net borrowing component projections from the latest Budget (£bn, annual)</td>
+<td>Net borrowing components (Table 6.5). Convenience wrapper over <code>get_efo_table("6.5")</code>.</td>
 </tr>
 <tr>
 <td><code>get_efo_economy(measure)</code></td>
-<td>Quarterly economic projections: <code>"inflation"</code>, <code>"labour"</code>, or <code>"output_gap"</code>
-</td>
+<td>Quarterly economic projections: <code>"inflation"</code>, <code>"labour"</code>, or <code>"output_gap"</code>. Convenience wrapper over <code><a href="reference/get_efo_table.html">get_efo_table()</a></code>.</td>
 </tr>
 <tr>
 <td><code><a href="reference/list_efo_economy_measures.html">list_efo_economy_measures()</a></code></td>
-<td>Available economy measures (no download needed)</td>
+<td>The three measures available via <code><a href="reference/get_efo_economy.html">get_efo_economy()</a></code> (no download needed).</td>
 </tr>
 </tbody>
 </table>
@@ -698,6 +705,32 @@
 <span><span class="co">#&gt;     2072-73   7.66   pct</span></span>
 <span><span class="co">#&gt;     2073-74   7.65   pct</span></span></code></pre></div>
 <p>The OBR’s central projection has the state pension rising from 4.6% of GDP today to 7.7% by 2073-74 as the UK population ages. The FSR also publishes scenarios for higher/lower life expectancy and different triple-lock uprating assumptions.</p>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_8-browsing-the-full-efo-databank">8. Browsing the full EFO databank<a class="anchor" aria-label="anchor" href="#id_8-browsing-the-full-efo-databank"></a>
+</h3>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Every detailed-forecast table the package recognises</span></span>
+<span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/obr_efo_catalogue.html">obr_efo_catalogue</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cat</span><span class="op">)</span>  <span class="co"># 39 (35 currently parseable, 2 cross-references, 2 complex layouts)</span></span>
+<span></span>
+<span><span class="co"># All Debt-section tables</span></span>
+<span><span class="va">cat</span><span class="op">[</span><span class="va">cat</span><span class="op">$</span><span class="va">section</span> <span class="op">==</span> <span class="st">"Debt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"table_id"</span>, <span class="st">"title"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   table_id                                                 title</span></span>
+<span><span class="co">#&gt;      6.11  Public sector net debt year-on-year changes</span></span>
+<span><span class="co">#&gt;      6.12  Total gross financing</span></span>
+<span><span class="co">#&gt;      6.13  Composition of public sector net debt</span></span>
+<span><span class="co">#&gt;      6.14  Composition of public sector net worth</span></span>
+<span><span class="co">#&gt;      6.16  Central government debt interest by financing component</span></span>
+<span><span class="co">#&gt;      6.17  Outstanding stocks, debt interest payments and effective rates</span></span>
+<span></span>
+<span><span class="co"># Pull any one</span></span>
+<span><span class="fu"><a href="reference/get_efo_table.html">get_efo_table</a></span><span class="op">(</span><span class="st">"6.13"</span><span class="op">)</span>             <span class="co"># composition of net debt, % of GDP</span></span>
+<span><span class="fu"><a href="reference/get_efo_table.html">get_efo_table</a></span><span class="op">(</span><span class="st">"1.19"</span><span class="op">)</span>             <span class="co"># CPI category inflation, quarterly</span></span>
+<span><span class="fu"><a href="reference/get_efo_table.html">get_efo_table</a></span><span class="op">(</span><span class="st">"6.16"</span><span class="op">)</span>             <span class="co"># debt interest by financing component</span></span>
+<span><span class="fu"><a href="reference/get_efo_table.html">get_efo_table</a></span><span class="op">(</span><span class="st">"6.5"</span>, vintage <span class="op">=</span> <span class="st">"October 2024"</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="reference/get_efo_table.html">get_efo_table()</a></code> dispatcher routes each id to a layout-specific parser and returns the standard v0.4 schema. The headline wrappers (<code><a href="reference/get_efo_fiscal.html">get_efo_fiscal()</a></code>, <code><a href="reference/get_efo_economy.html">get_efo_economy()</a></code>) remain as convenience entry points; under the hood they call the dispatcher.</p>
 <hr>
 </div>
 </div>

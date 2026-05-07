@@ -45,9 +45,9 @@ cases[cases$series == "Claimants", ]
 #> # obr_tbl: 16 rows x 6 cols
 #> # Source:       OBR Welfare Trends Report, October 2024
 #> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
-#> # Retrieved:    2026-05-07 20:02:39 UTC
+#> # Retrieved:    2026-05-07 20:59:18 UTC
 #> # File MD5:     c587017c08a1
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> 
 #>     period period_type    series metric_type    value    unit
 #> 1  2008-09 fiscal_year Claimants       level 2588.000 count_k

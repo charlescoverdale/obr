@@ -68,7 +68,9 @@ visible in the printed header.
 
 Other EFO:
 [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
-[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md),
+[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md),
+[`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
 
 ## Examples
 
@@ -82,9 +84,9 @@ efo[efo$series == "Net borrowing", ]
 #> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-05-07 20:02:29 UTC
+#> # Retrieved:    2026-05-07 20:59:06 UTC
 #> # File MD5:     43d7526594ab
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> 
 #>     period period_type        series metric_type     value   unit
 #> 43 2025-26 fiscal_year Net borrowing       level 132.73508 gbp_bn

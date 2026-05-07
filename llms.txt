@@ -165,9 +165,11 @@ obr_provenance(psnb)
 
 | Function | Returns |
 |----|----|
-| [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md) | Five-year net borrowing component projections from the latest Budget (£bn, annual) |
-| `get_efo_economy(measure)` | Quarterly economic projections: `"inflation"`, `"labour"`, or `"output_gap"` |
-| [`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md) | Available economy measures (no download needed) |
+| [`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md) | All 39 detailed-forecast tables this package recognises, with id, section, title, layout, and default `metric_type` / `unit`. No download needed. |
+| `get_efo_table(id)` | Generic fetcher: pass a catalogue id (e.g. `"6.13"`, `"1.19"`, `"4.1"`) and get the parsed contents in the standard v0.4 schema. Covers ~35 tables across receipts, expenditure, debt, GDP, labour, inflation, housing, and household balance sheets. |
+| [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md) | Net borrowing components (Table 6.5). Convenience wrapper over `get_efo_table("6.5")`. |
+| `get_efo_economy(measure)` | Quarterly economic projections: `"inflation"`, `"labour"`, or `"output_gap"`. Convenience wrapper over [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md). |
+| [`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md) | The three measures available via [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md) (no download needed). |
 
 ### Welfare Trends Report (WTR)
 
@@ -531,6 +533,42 @@ triple-lock uprating assumptions.
 
 ------------------------------------------------------------------------
 
+### 8. Browsing the full EFO databank
+
+``` r
+
+# Every detailed-forecast table the package recognises
+cat <- obr_efo_catalogue()
+nrow(cat)  # 39 (35 currently parseable, 2 cross-references, 2 complex layouts)
+
+# All Debt-section tables
+cat[cat$section == "Debt", c("table_id", "title")]
+#>   table_id                                                 title
+#>      6.11  Public sector net debt year-on-year changes
+#>      6.12  Total gross financing
+#>      6.13  Composition of public sector net debt
+#>      6.14  Composition of public sector net worth
+#>      6.16  Central government debt interest by financing component
+#>      6.17  Outstanding stocks, debt interest payments and effective rates
+
+# Pull any one
+get_efo_table("6.13")             # composition of net debt, % of GDP
+get_efo_table("1.19")             # CPI category inflation, quarterly
+get_efo_table("6.16")             # debt interest by financing component
+get_efo_table("6.5", vintage = "October 2024")
+```
+
+The
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md)
+dispatcher routes each id to a layout-specific parser and returns the
+standard v0.4 schema. The headline wrappers
+([`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md),
+[`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md))
+remain as convenience entry points; under the hood they call the
+dispatcher.
+
+------------------------------------------------------------------------
+
 ## Limitations
 
 A few things `obr` deliberately does not do, and a few caveats worth
@@ -667,8 +705,15 @@ Every OBR forecast since 2010 for key fiscal and economic variables.
 
 ## Economic and Fiscal Outlook
 
-Five-year projections from the latest Budget.
+Five-year projections from the latest Budget. The generic
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md)
+plus catalogue exposes 35+ detailed-forecast tables; the headline
+wrappers below remain as convenience entry points.
 
+- [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md)
+  : Get any EFO detailed-forecast table by id
+- [`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
+  : List the EFO detailed-forecast tables this package can fetch
 - [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
   : Get EFO fiscal projections (net borrowing components)
 - [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md)

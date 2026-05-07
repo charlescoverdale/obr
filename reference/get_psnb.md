@@ -47,9 +47,9 @@ tail(psnb)
 #> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Public Finances Databank
 #> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-07 20:02:30 UTC
+#> # Retrieved:    2026-05-07 20:59:07 UTC
 #> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> 
 #>     period period_type series metric_type     value   unit
 #> 75 2020-21 fiscal_year   PSNB       level 393.54689 gbp_bn

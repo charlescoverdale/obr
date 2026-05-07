@@ -76,9 +76,9 @@ tail(central, 10)
 #> # obr_tbl: 10 rows x 7 cols
 #> # Source:       OBR Fiscal Risks and Sustainability Report, July 2025
 #> # URL:          https://obr.uk/download/july-2025-fiscal-risks-and-sustainability-charts-and-tables-executive-summary/
-#> # Retrieved:    2026-05-07 20:02:43 UTC
+#> # Retrieved:    2026-05-07 20:59:24 UTC
 #> # File MD5:     bdf4d8711300
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> 
 #>     period period_type             series metric_type    value unit
 #> 42 2064-65 fiscal_year Central projection         pct 7.240896  pct

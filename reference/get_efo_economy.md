@@ -76,7 +76,9 @@ to see all available measures.
 
 Other EFO:
 [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md),
-[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md),
+[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md),
+[`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
 
 ## Examples
 
@@ -90,9 +92,9 @@ inf[inf$series == "CPI", ]
 #> # obr_tbl: 186 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/
-#> # Retrieved:    2026-05-07 20:02:28 UTC
+#> # Retrieved:    2026-05-07 20:59:05 UTC
 #> # File MD5:     da58dba1f8d3
-#> # Package:      obr 0.4.0
+#> # Package:      obr 0.5.0
 #> 
 #>     period period_type series metric_type    value unit
 #> 183 2008Q1     quarter    CPI     yoy_pct 2.375720  pct

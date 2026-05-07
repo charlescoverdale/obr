@@ -34,8 +34,15 @@ Every OBR forecast since 2010 for key fiscal and economic variables.
 
 ## Economic and Fiscal Outlook
 
-Five-year projections from the latest Budget.
+Five-year projections from the latest Budget. The generic
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md)
+plus catalogue exposes 35+ detailed-forecast tables; the headline
+wrappers below remain as convenience entry points.
 
+- [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md)
+  : Get any EFO detailed-forecast table by id
+- [`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
+  : List the EFO detailed-forecast tables this package can fetch
 - [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
   : Get EFO fiscal projections (net borrowing components)
 - [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md)

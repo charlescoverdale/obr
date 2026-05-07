@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,47 @@
       <small>Source: <a href="https://github.com/charlescoverdale/obr/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="obr-050">obr 0.5.0<a class="anchor" aria-label="anchor" href="#obr-050"></a></h2>
+<div class="section level3">
+<h3 id="full-efo-detailed-forecast-table-coverage-0-5-0">Full EFO detailed-forecast-table coverage<a class="anchor" aria-label="anchor" href="#full-efo-detailed-forecast-table-coverage-0-5-0"></a></h3>
+<p>This release closes the v0.3.x feedback that “the range of forecast lines was fairly limited” by exposing every parsable detailed-forecast table in the EFO Aggregates and Economy workbooks (35 of 39 today, with the remaining 4 marked as cross-reference or non-standard layout). v0.4.x exposed only 4.</p>
+</div>
+<div class="section level3">
+<h3 id="new-get_efo_table-and-obr_efo_catalogue-0-5-0">New: <code>get_efo_table()</code> and <code>obr_efo_catalogue()</code>
+<a class="anchor" aria-label="anchor" href="#new-get_efo_table-and-obr_efo_catalogue-0-5-0"></a></h3>
+<ul><li>
+<code><a href="../reference/obr_efo_catalogue.html">obr_efo_catalogue()</a></code> returns a data frame describing every detailed- forecast table the package can fetch: <code>table_id</code>, <code>file</code>, <code>section</code>, <code>title</code>, <code>layout</code>, default <code>metric_type</code>, default <code>unit</code>. Use this to discover what’s available.</li>
+<li>
+<code>get_efo_table(table_id, vintage, refresh)</code> is the generic dispatcher. Pass any catalogue id (e.g. <code>"6.13"</code>, <code>"1.19"</code>, <code>"6.1"</code>) and get the parsed contents back in the standard v0.4.0 schema (<code>period</code>, <code>period_type</code>, <code>series</code>, <code>metric_type</code>, <code>value</code>, <code>unit</code>).</li>
+</ul><p><code><a href="../reference/get_efo_fiscal.html">get_efo_fiscal()</a></code> and <code><a href="../reference/get_efo_economy.html">get_efo_economy()</a></code> are now thin wrappers over the dispatcher and continue to work unchanged. Series names for the single-series Economy tables (output gap, nominal GDP, electricity price) are preserved via internal overrides so v0.4.x scripts still match.</p>
+</div>
+<div class="section level3">
+<h3 id="new-layouts-handled-0-5-0">New layouts handled<a class="anchor" aria-label="anchor" href="#new-layouts-handled-0-5-0"></a></h3>
+<p>The dispatcher routes each table to one of:</p>
+<ul><li>
+<code>quarterly_wide</code> periods in col 2 (Q1/Q2 strings), series across</li>
+<li>
+<code>quarterly_single</code> periods in col 2, single value column to the right</li>
+<li>
+<code>annual_year_wide</code> calendar years as column headers, series in col 2</li>
+<li>
+<code>annual_period_wide</code> calendar years in col 2 (rows), series across</li>
+<li>
+<code>fiscal_year_wide</code> fiscal years as column headers, series in col 2</li>
+<li>
+<code>cross_reference</code> sheet redirects to a previous EFO; returns NULL with a warning</li>
+<li>
+<code>complex_layout</code> sheet has a non-standard layout the package does not yet parse; returns NULL with a warning</li>
+</ul></div>
+<div class="section level3">
+<h3 id="classifier-hardening-0-5-0">Classifier hardening<a class="anchor" aria-label="anchor" href="#classifier-hardening-0-5-0"></a></h3>
+<p>Tightened <code>classify_metric_type()</code> so the v0.5.0 expanded coverage tags each row correctly:</p>
+<ul><li>
+<code>Index-linked gilts</code> (and similar) is no longer classified as <code>metric_type = "index"</code>. The “index” pattern now requires <code>Index</code> at the end of the series name or an explicit <code>(2015=100)</code> / <code>(2010=100)</code> base-year tag. Net-debt composition (Table 6.13) now correctly tags every row as <code>pct</code>.</li>
+<li>Bare <code>change</code> no longer triggers <code>yoy_pct</code> because OBR uses “change in X” for level differences too (e.g. <code>Adjustment for the change in pension entitlements</code>, in £bn). Explicit YoY signals (<code>growth</code>, <code>inflation</code>, <code>y/y</code>, <code>yoy</code>, <code>year on year</code>, <code>% change</code>, <code>annual %</code>) still trigger.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="obr-040">obr 0.4.0<a class="anchor" aria-label="anchor" href="#obr-040"></a></h2>
 <div class="section level3">

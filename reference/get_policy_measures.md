@@ -95,11 +95,11 @@ oct24 <- tryCatch(get_policy_measures(),
 #> ℹ Downloading policy_measures_database.xlsx from OBR...
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■                            
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 8s for retry backoff ■■■■■■■■■■                      
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 if (!is.null(oct24)) {
   head(oct24[grepl("2024", oct24$event) &
