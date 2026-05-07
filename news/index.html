@@ -42,8 +42,8 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="obr-050">obr 0.5.0<a class="anchor" aria-label="anchor" href="#obr-050"></a></h2>
 <div class="section level3">
-<h3 id="full-efo-detailed-forecast-table-coverage-0-5-0">Full EFO detailed-forecast-table coverage<a class="anchor" aria-label="anchor" href="#full-efo-detailed-forecast-table-coverage-0-5-0"></a></h3>
-<p>This release closes the v0.3.x feedback that “the range of forecast lines was fairly limited” by exposing every parsable detailed-forecast table in the EFO Aggregates and Economy workbooks (35 of 39 today, with the remaining 4 marked as cross-reference or non-standard layout). v0.4.x exposed only 4.</p>
+<h3 id="full-efo-detailed-forecast-table-coverage-of-0-5-0">Full EFO detailed-forecast-table coverage (39 of 39)<a class="anchor" aria-label="anchor" href="#full-efo-detailed-forecast-table-coverage-of-0-5-0"></a></h3>
+<p>This release closes the v0.3.x feedback that “the range of forecast lines was fairly limited” by exposing every detailed-forecast table in the EFO Aggregates and Economy workbooks. v0.4.x exposed 4. v0.5.0 exposes all 39: 35 via standard layout parsers, 2 via bespoke layout parsers (<code>subsector_matrix</code> for Table 6.4, <code>quarterly_indented</code> for Table 6.10), and 2 via cross-reference auto-follow to the previous EFO vintage (Tables 6.11 and 6.15, which OBR redirects to Tables 6.2 and 6.5 of the November 2025 EFO).</p>
 </div>
 <div class="section level3">
 <h3 id="new-get_efo_table-and-obr_efo_catalogue-0-5-0">New: <code>get_efo_table()</code> and <code>obr_efo_catalogue()</code>
@@ -68,9 +68,11 @@
 <li>
 <code>fiscal_year_wide</code> fiscal years as column headers, series in col 2</li>
 <li>
-<code>cross_reference</code> sheet redirects to a previous EFO; returns NULL with a warning</li>
+<code>subsector_matrix</code> single fiscal year, series in col 2, sub-sector in column headers (used for Table 6.4); adds a <code>sub_sector</code> extra column</li>
 <li>
-<code>complex_layout</code> sheet has a non-standard layout the package does not yet parse; returns NULL with a warning</li>
+<code>quarterly_indented</code> “Q1 2016” format periods in col 3, value in col 4, with Outturn/Forecast section markers in col 2 (used for Table 6.10)</li>
+<li>
+<code>cross_reference</code> sheet redirects to a previous EFO; the dispatcher follows the redirect, fetches the named vintage, and returns the linked table with provenance pointing at the previous vintage</li>
 </ul></div>
 <div class="section level3">
 <h3 id="classifier-hardening-0-5-0">Classifier hardening<a class="anchor" aria-label="anchor" href="#classifier-hardening-0-5-0"></a></h3>

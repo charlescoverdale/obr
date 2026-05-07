@@ -2,13 +2,16 @@
 
 ## obr 0.5.0
 
-### Full EFO detailed-forecast-table coverage
+### Full EFO detailed-forecast-table coverage (39 of 39)
 
 This release closes the v0.3.x feedback that “the range of forecast
-lines was fairly limited” by exposing every parsable detailed-forecast
-table in the EFO Aggregates and Economy workbooks (35 of 39 today, with
-the remaining 4 marked as cross-reference or non-standard layout).
-v0.4.x exposed only 4.
+lines was fairly limited” by exposing every detailed-forecast table in
+the EFO Aggregates and Economy workbooks. v0.4.x exposed 4. v0.5.0
+exposes all 39: 35 via standard layout parsers, 2 via bespoke layout
+parsers (`subsector_matrix` for Table 6.4, `quarterly_indented` for
+Table 6.10), and 2 via cross-reference auto-follow to the previous EFO
+vintage (Tables 6.11 and 6.15, which OBR redirects to Tables 6.2 and 6.5
+of the November 2025 EFO).
 
 ### New: `get_efo_table()` and `obr_efo_catalogue()`
 
@@ -39,10 +42,14 @@ The dispatcher routes each table to one of:
 - `annual_year_wide` calendar years as column headers, series in col 2
 - `annual_period_wide` calendar years in col 2 (rows), series across
 - `fiscal_year_wide` fiscal years as column headers, series in col 2
-- `cross_reference` sheet redirects to a previous EFO; returns NULL with
-  a warning
-- `complex_layout` sheet has a non-standard layout the package does not
-  yet parse; returns NULL with a warning
+- `subsector_matrix` single fiscal year, series in col 2, sub-sector in
+  column headers (used for Table 6.4); adds a `sub_sector` extra column
+- `quarterly_indented` “Q1 2016” format periods in col 3, value in col
+  4, with Outturn/Forecast section markers in col 2 (used for Table
+  6.10)
+- `cross_reference` sheet redirects to a previous EFO; the dispatcher
+  follows the redirect, fetches the named vintage, and returns the
+  linked table with provenance pointing at the previous vintage
 
 ### Classifier hardening
 

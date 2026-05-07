@@ -40,16 +40,12 @@ Other public finances:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 receipts <- get_receipts()
-#> Warning: Could not resolve a current Public Finances Databank URL from 1 candidate.
-#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
-#> ! Returned data may be older than expected. Run with internet access, or pin a
-#>   vintage explicitly when that feature ships.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
 #> # obr_tbl: 81 rows x 6 cols
 #> # Source:       OBR Public Finances Databank
 #> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-07 20:59:07 UTC
+#> # Retrieved:    2026-05-07 21:08:38 UTC
 #> # File MD5:     77a07b6641ca
 #> # Package:      obr 0.5.0
 #> 

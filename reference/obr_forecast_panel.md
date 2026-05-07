@@ -82,7 +82,7 @@ panel[, c("forecast_date", "2024-25")]
 #> # obr_tbl: 104 rows x 2 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-07 20:59:12 UTC
+#> # Retrieved:    2026-05-07 21:08:44 UTC
 #> # File MD5:     4312a0cf5075
 #> # Package:      obr 0.5.0
 #> # Note:         Wide real-time panel for PSNB: rows = forecast vintage, columns = fiscal year.
