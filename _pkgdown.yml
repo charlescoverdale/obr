@@ -16,6 +16,7 @@ articles:
   - title: Vignettes
     navbar: ~
     contents:
+      - efo-forecasts
       - vintages
       - policy-measures
       - forecast-revisions
@@ -36,6 +37,8 @@ reference:
       - list_forecast_series
       - get_forecasts
       - obr_forecast_panel
+      - obr_compare_vintages
+      - obr_actual_vs_forecast
       - get_forecast_revisions
 
   - title: Economic and Fiscal Outlook
