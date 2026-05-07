@@ -1,3 +1,57 @@
+# obr 0.5.0
+
+## Full EFO detailed-forecast-table coverage
+
+This release closes the v0.3.x feedback that "the range of forecast lines
+was fairly limited" by exposing every parsable detailed-forecast table in
+the EFO Aggregates and Economy workbooks (35 of 39 today, with the
+remaining 4 marked as cross-reference or non-standard layout). v0.4.x
+exposed only 4.
+
+## New: `get_efo_table()` and `obr_efo_catalogue()`
+
+* `obr_efo_catalogue()` returns a data frame describing every detailed-
+  forecast table the package can fetch: `table_id`, `file`, `section`,
+  `title`, `layout`, default `metric_type`, default `unit`. Use this to
+  discover what's available.
+* `get_efo_table(table_id, vintage, refresh)` is the generic dispatcher.
+  Pass any catalogue id (e.g. `"6.13"`, `"1.19"`, `"6.1"`) and get the
+  parsed contents back in the standard v0.4.0 schema (`period`,
+  `period_type`, `series`, `metric_type`, `value`, `unit`).
+
+`get_efo_fiscal()` and `get_efo_economy()` are now thin wrappers over
+the dispatcher and continue to work unchanged. Series names for the
+single-series Economy tables (output gap, nominal GDP, electricity
+price) are preserved via internal overrides so v0.4.x scripts still
+match.
+
+## New layouts handled
+
+The dispatcher routes each table to one of:
+
+* `quarterly_wide`     periods in col 2 (Q1/Q2 strings), series across
+* `quarterly_single`   periods in col 2, single value column to the right
+* `annual_year_wide`   calendar years as column headers, series in col 2
+* `annual_period_wide` calendar years in col 2 (rows), series across
+* `fiscal_year_wide`   fiscal years as column headers, series in col 2
+* `cross_reference`    sheet redirects to a previous EFO; returns NULL with a warning
+* `complex_layout`     sheet has a non-standard layout the package does not yet parse; returns NULL with a warning
+
+## Classifier hardening
+
+Tightened `classify_metric_type()` so the v0.5.0 expanded coverage tags
+each row correctly:
+
+* `Index-linked gilts` (and similar) is no longer classified as
+  `metric_type = "index"`. The "index" pattern now requires `Index` at
+  the end of the series name or an explicit `(2015=100)` / `(2010=100)`
+  base-year tag. Net-debt composition (Table 6.13) now correctly tags
+  every row as `pct`.
+* Bare `change` no longer triggers `yoy_pct` because OBR uses "change in
+  X" for level differences too (e.g. `Adjustment for the change in pension
+  entitlements`, in £bn). Explicit YoY signals (`growth`, `inflation`,
+  `y/y`, `yoy`, `year on year`, `% change`, `annual %`) still trigger.
+
 # obr 0.4.0
 
 ## Breaking: standard tidy long schema for the EFO / PFD / HFD / WTR / FSR functions

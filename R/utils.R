@@ -215,9 +215,18 @@ classify_metric_type <- function(series) {
   s <- tolower(as.character(series))
   vapply(s, function(x) {
     if (is.na(x) || x == "") return(NA_character_)
-    if (grepl("\\binflation\\b|\\bgrowth\\b|\\bchange\\b|y[-/ ]?o[-/ ]?y|year[ -]on[ -]year|annual\\s*%", x)) {
+    # YoY: explicit growth-rate signals only. Plain "change" is too eager
+    # because OBR uses it for level-difference series too (e.g. "Adjustment
+    # for the change in pension entitlements", which is in £bn).
+    if (grepl(paste0("\\binflation\\b|\\bgrowth\\b|",
+                     "\\by[/-]y\\b|\\byoy\\b|year[ -]on[ -]year|",
+                     "annual\\s*%|%\\s*change"), x)) {
       "yoy_pct"
-    } else if (grepl("\\bindex\\b|\\(2015[ =]100\\)|\\(2010[ =]100\\)", x)) {
+    # Index: "Index" must be a standalone word at end of string, or an
+    # explicit "(2015=100)" / "(2010=100)" base-year tag. "Index-linked
+    # gilts" or "Index of X" must NOT match because the values are levels
+    # in £bn or % of GDP, not index points.
+    } else if (grepl("\\bindex\\s*$|\\(20[12][05][ =]100\\)", x)) {
       "index"
     } else if (grepl("percentage points?|\\bpp\\b", x)) {
       "pct_pts"

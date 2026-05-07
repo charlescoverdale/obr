@@ -299,8 +299,8 @@ list_efo_economy_measures <- function() {
 #' @family EFO
 #' @export
 get_efo_fiscal <- function(refresh = FALSE, vintage = NULL) {
-  src <- efo_aggregates_source(refresh = refresh, vintage = vintage)
-  efo_obr_tbl(parse_efo_fiscal(src$path), src)
+  # v0.5.0: thin wrapper over the generic dispatcher.
+  get_efo_table("6.5", vintage = vintage, refresh = refresh)
 }
 
 #' Get EFO economy projections
@@ -355,22 +355,12 @@ get_efo_fiscal <- function(refresh = FALSE, vintage = NULL) {
 get_efo_economy <- function(measure = c("inflation", "labour", "output_gap"),
                             refresh = FALSE,
                             vintage = NULL) {
+  # v0.5.0: thin wrapper over the generic dispatcher. Per-measure metric
+  # defaults (e.g. inflation = yoy_pct/pct) live in the catalogue.
   measure <- match.arg(measure)
-  src <- efo_economy_source(refresh = refresh, vintage = vintage)
-  data <- if (measure == "output_gap") {
-    parse_efo_output_gap(src$path)
-  } else if (measure == "inflation") {
-    # Sheet 1.7: bare names like "CPI", "RPI" denote annual rates (yoy_pct);
-    # series matching "Index" / "deflator" are overridden to "index" by the
-    # classifier inside the parser.
-    parse_efo_economy_sheet(src$path, "1.7",
-                            default_metric_type = "yoy_pct",
-                            default_unit        = "pct")
-  } else {  # measure == "labour"
-    # Sheet 1.6: mixed - rates (unemployment, participation) are classified
-    # as "pct"; counts (employment) and hours stay as "level" with no
-    # default unit (callers can post-process if they need the specific unit).
-    parse_efo_economy_sheet(src$path, "1.6")
-  }
-  efo_obr_tbl(data, src)
+  table_id <- switch(measure,
+                     "inflation"  = "1.7",
+                     "labour"     = "1.6",
+                     "output_gap" = "1.14")
+  get_efo_table(table_id, vintage = vintage, refresh = refresh)
 }

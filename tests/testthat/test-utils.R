@@ -27,6 +27,17 @@ test_that("classify_metric_type() splits Index from YoY series names", {
   # the inflation sheet parser) supplies a default_metric_type for these.
   expect_equal(classify_metric_type("GDP deflator"),   "level")
   expect_equal(classify_metric_type("Output gap (pp)"), "pct_pts")
+  # v0.5.0: tighter rules so EFO Aggregates Section 6 series classify cleanly.
+  # "Index-linked gilts" should NOT be index (it's a % of GDP value); "Index"
+  # only matches at end of string or with explicit base-year tag.
+  expect_equal(classify_metric_type("Index-linked gilts"), "level")
+  expect_equal(classify_metric_type("CPI (2015=100)"),     "index")
+  # Bare "change" must not trigger yoy_pct: OBR has many "change in X"
+  # series that are level differences in £bn.
+  expect_equal(
+    classify_metric_type("Adjustment for the change in pension entitlements"),
+    "level"
+  )
   # Vectorised
   expect_equal(
     classify_metric_type(c("CPI Index", "CPI inflation", "Net borrowing")),

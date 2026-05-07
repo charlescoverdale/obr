@@ -42,8 +42,12 @@ reference:
       - get_forecast_revisions
 
   - title: Economic and Fiscal Outlook
-    desc: Five-year projections from the latest Budget.
+    desc: Five-year projections from the latest Budget. The generic
+      `get_efo_table()` plus catalogue exposes 35+ detailed-forecast tables;
+      the headline wrappers below remain as convenience entry points.
     contents:
+      - get_efo_table
+      - obr_efo_catalogue
       - get_efo_fiscal
       - get_efo_economy
       - list_efo_economy_measures

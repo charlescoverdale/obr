@@ -56,6 +56,8 @@ options(op)
 \seealso{
 Other EFO: 
 \code{\link{get_efo_economy}()},
-\code{\link{list_efo_economy_measures}()}
+\code{\link{get_efo_table}()},
+\code{\link{list_efo_economy_measures}()},
+\code{\link{obr_efo_catalogue}()}
 }
 \concept{EFO}

@@ -21,6 +21,8 @@ list_efo_economy_measures()
 \seealso{
 Other EFO: 
 \code{\link{get_efo_economy}()},
-\code{\link{get_efo_fiscal}()}
+\code{\link{get_efo_fiscal}()},
+\code{\link{get_efo_table}()},
+\code{\link{obr_efo_catalogue}()}
 }
 \concept{EFO}
