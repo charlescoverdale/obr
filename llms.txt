@@ -183,7 +183,7 @@ obr_provenance(psnb)
 
 | Function | Returns |
 |----|----|
-| [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md) | 50-year state pension spending projections (% GDP) under demographic and triple-lock scenarios |
+| [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md) | **Deprecated in 0.5.1.** The OBR restructured the FSR workbooks in July 2026 and the state pension spending scenarios this returned are no longer published in that form. The series now lives in the FSR Chapter 3 workbook (Chart 3.11); see [obr.uk/frs](https://obr.uk/frs/). |
 
 ### Policy Measures Database (PMD)
 
@@ -225,8 +225,6 @@ the same way:
 
 [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md)
 adds `forecast_date` as a leading column.
-[`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
-adds `scenario_type` as a trailing column.
 [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md)
 and
 [`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)
@@ -461,7 +459,7 @@ pandemic - a key driver of welfare reform debate in 2025.
 
 ------------------------------------------------------------------------
 
-### 7a. Every tax measure in a Budget
+### 7. Every tax measure in a Budget
 
 ``` r
 
@@ -484,7 +482,7 @@ pull a thematic time series, e.g. all alcohol-duty measures since 2010.
 get_policy_measures(type = "tax", search = "alcohol", since = "2010-11")
 ```
 
-### 7b. What does the OBR say about the fiscal rules?
+### 7a. What does the OBR say about the fiscal rules?
 
 ``` r
 
@@ -498,38 +496,6 @@ headroom is not shipped as a constant because it changes at every fiscal
 event; derive it from
 [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
 or consult the EFO press release for the relevant vintage.
-
-### 7. What happens to the state pension bill as the UK ages?
-
-``` r
-
-proj <- get_pension_projections()
-
-# Central demographic projection: pension spending rises from 5% to 7.7% of GDP
-# (FSR uses the standard schema plus a `scenario_type` column.)
-central <- proj[proj$scenario_type == "Demographic scenarios" &
-                proj$series == "Central projection", ]
-head(central[, c("period", "value", "unit")], 5)
-#>      period  value  unit
-#>     2023-24   4.56   pct
-#>     2024-25   4.95   pct
-#>     2025-26   5.06   pct
-#>     2026-27   5.13   pct
-#>     2027-28   5.05   pct
-
-tail(central[, c("period", "value", "unit")], 5)
-#>      period  value  unit
-#>     2069-70   7.73   pct
-#>     2070-71   7.82   pct
-#>     2071-72   7.77   pct
-#>     2072-73   7.66   pct
-#>     2073-74   7.65   pct
-```
-
-The OBR’s central projection has the state pension rising from 4.6% of
-GDP today to 7.7% by 2073-74 as the UK population ages. The FSR also
-publishes scenarios for higher/lower life expectancy and different
-triple-lock uprating assumptions.
 
 ------------------------------------------------------------------------
 
@@ -732,13 +698,6 @@ Incapacity benefit spending and caseloads.
 - [`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.md)
   : Get incapacity benefit caseloads
 
-## Fiscal Risks and Sustainability Report
-
-50-year state pension projections.
-
-- [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
-  : Get long-run state pension spending projections
-
 ## Policy Measures Database
 
 Every UK fiscal-event-scored tax measure since 1970 and spending measure
@@ -794,6 +753,14 @@ Manage locally cached OBR data files.
 
 - [`clear_cache()`](https://charlescoverdale.github.io/obr/reference/clear_cache.md)
   : Clear cached OBR files
+
+## Deprecated
+
+Retired functions kept as stubs for backward compatibility. Scheduled
+for removal in a future release.
+
+- [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
+  : Get long-run state pension spending projections (deprecated)
 
 ## Package
 

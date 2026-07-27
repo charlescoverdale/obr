@@ -40,38 +40,23 @@ Other public finances:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 receipts <- get_receipts()
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Warning: Could not resolve a current Public Finances Databank URL from 1 candidate.
+#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading public_finances_databank.xlsx from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
+#> ✖ HTTP 403 Forbidden.
 receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
-#> # obr_tbl: 81 rows x 6 cols
-#> # Source:       OBR Public Finances Databank
-#> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-07 21:08:38 UTC
-#> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.5.0
-#> 
-#>      period period_type                             series metric_type   value
-#> 379 1999-00 fiscal_year Pay as your earn (PAYE) income tax       level  80.320
-#> 380 2000-01 fiscal_year Pay as your earn (PAYE) income tax       level  89.778
-#> 381 2001-02 fiscal_year Pay as your earn (PAYE) income tax       level  92.128
-#> 382 2002-03 fiscal_year Pay as your earn (PAYE) income tax       level  94.681
-#> 383 2003-04 fiscal_year Pay as your earn (PAYE) income tax       level 100.323
-#> 384 2004-05 fiscal_year Pay as your earn (PAYE) income tax       level 107.546
-#> 385 2005-06 fiscal_year Pay as your earn (PAYE) income tax       level 114.908
-#> 386 2006-07 fiscal_year Pay as your earn (PAYE) income tax       level 123.424
-#> 387 2007-08 fiscal_year Pay as your earn (PAYE) income tax       level 131.866
-#> 388 2008-09 fiscal_year Pay as your earn (PAYE) income tax       level 126.418
-#>       unit
-#> 379 gbp_bn
-#> 380 gbp_bn
-#> 381 gbp_bn
-#> 382 gbp_bn
-#> 383 gbp_bn
-#> 384 gbp_bn
-#> 385 gbp_bn
-#> 386 gbp_bn
-#> 387 gbp_bn
-#> 388 gbp_bn
-#> # ... with 71 more rows
+#> Error: object 'receipts' not found
 options(op)
 # }
 ```

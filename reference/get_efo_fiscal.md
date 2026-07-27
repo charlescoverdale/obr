@@ -78,30 +78,41 @@ Other EFO:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 efo <- get_efo_fiscal()
+#> Warning: Could not resolve a current EFO Aggregates URL from 9 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
 #> ℹ Downloading efo_aggregates.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ✖ HTTP 403 Forbidden.
 efo[efo$series == "Net borrowing", ]
-#> # obr_tbl: 6 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-05-07 21:08:36 UTC
-#> # File MD5:     43d7526594ab
-#> # Package:      obr 0.5.0
-#> 
-#>     period period_type        series metric_type     value   unit
-#> 43 2025-26 fiscal_year Net borrowing       level 132.73508 gbp_bn
-#> 44 2026-27 fiscal_year Net borrowing       level 115.46142 gbp_bn
-#> 45 2027-28 fiscal_year Net borrowing       level  96.46737 gbp_bn
-#> 46 2028-29 fiscal_year Net borrowing       level  86.01563 gbp_bn
-#> 47 2029-30 fiscal_year Net borrowing       level  63.40344 gbp_bn
-#> 48 2030-31 fiscal_year Net borrowing       level  59.01991 gbp_bn
+#> Error: object 'efo' not found
 obr_provenance(efo)$vintage
-#> [1] "March 2026"
+#> Error: object 'efo' not found
 
 # Pin to a specific EFO for reproducibility
 october_2024 <- get_efo_fiscal(vintage = "October 2024")
 #> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■                         
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```

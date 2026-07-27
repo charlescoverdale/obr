@@ -42,22 +42,18 @@ psnb <- get_psnb()
 #> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> ℹ Downloading public_finances_databank.xlsx from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■             
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■                          
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
+#> ✖ HTTP 403 Forbidden.
 tail(psnb)
-#> # obr_tbl: 6 rows x 6 cols
-#> # Source:       OBR Public Finances Databank
-#> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-07 21:08:38 UTC
-#> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.5.0
-#> 
-#>     period period_type series metric_type     value   unit
-#> 75 2020-21 fiscal_year   PSNB       level 393.54689 gbp_bn
-#> 76 2021-22 fiscal_year   PSNB       level 164.22802 gbp_bn
-#> 77 2022-23 fiscal_year   PSNB       level 104.59795 gbp_bn
-#> 78 2023-24 fiscal_year   PSNB       level 100.39440 gbp_bn
-#> 79 2024-25 fiscal_year   PSNB       level  99.57407 gbp_bn
-#> 80 2025-26 fiscal_year   PSNB       level 101.83223 gbp_bn
+#> Error: object 'psnb' not found
 options(op)
 # }
 ```

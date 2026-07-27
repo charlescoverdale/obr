@@ -27,8 +27,6 @@ columns:
 
 [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md)
 adds `forecast_date` as a leading column.
-[`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
-adds `scenario_type` as a trailing column.
 
 The schema is consistent enough that you can
 [`rbind()`](https://rdrr.io/r/base/cbind.html) outputs from different

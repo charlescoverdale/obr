@@ -38,23 +38,22 @@ Other public finances:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 tme <- get_expenditure()
+#> Warning: Could not resolve a current Public Finances Databank URL from 1 candidate.
+#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
 #> ℹ Downloading public_finances_databank.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■             
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■                          
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download <https://obr.uk/download/public-finances-databank/>.
+#> ✖ HTTP 403 Forbidden.
 tail(tme)
-#> # obr_tbl: 6 rows x 6 cols
-#> # Source:       OBR Public Finances Databank
-#> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-05-07 21:08:38 UTC
-#> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.5.0
-#> 
-#>     period period_type series metric_type     value   unit
-#> 75 2020-21 fiscal_year    TME       level 1164.5793 gbp_bn
-#> 76 2021-22 fiscal_year    TME       level 1011.4941 gbp_bn
-#> 77 2022-23 fiscal_year    TME       level  990.4851 gbp_bn
-#> 78 2023-24 fiscal_year    TME       level 1027.3872 gbp_bn
-#> 79 2024-25 fiscal_year    TME       level 1063.9669 gbp_bn
-#> 80 2025-26 fiscal_year    TME       level 1106.0997 gbp_bn
+#> Error: object 'tme' not found
 options(op)
 # }
 ```

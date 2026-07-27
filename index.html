@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Access Office for Budget Responsibility Data • obr</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Access Office for Budget Responsibility Data">
 <meta name="description" content="Provides clean, tidy access to data published by the Office for Budget Responsibility (OBR), the UKs independent fiscal watchdog. Covers the Public Finances Databank (outturn for PSNB, PSND, receipts, and expenditure since 1946), the Historical Official Forecasts Database (every OBR forecast since 2010), the Economic and Fiscal Outlook detailed forecast tables (five-year projections from the latest Budget), the Welfare Trends Report (incapacity benefit spending and caseloads), and the Fiscal Risks and Sustainability Report (50-year state pension projections). All returned objects carry provenance metadata recording the source URL, publication vintage, retrieval time, and file fingerprint, so analyses can be audited and reproduced. Data is downloaded from the OBR on first use and cached locally for subsequent calls. Data is sourced from the OBR' website &lt;https://obr.uk&gt;.">
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -320,7 +320,8 @@
 </tr></thead>
 <tbody><tr>
 <td><code><a href="reference/get_pension_projections.html">get_pension_projections()</a></code></td>
-<td>50-year state pension spending projections (% GDP) under demographic and triple-lock scenarios</td>
+<td>
+<strong>Deprecated in 0.5.1.</strong> The OBR restructured the FSR workbooks in July 2026 and the state pension spending scenarios this returned are no longer published in that form. The series now lives in the FSR Chapter 3 workbook (Chart 3.11); see <a href="https://obr.uk/frs/" class="external-link">obr.uk/frs</a>.</td>
 </tr></tbody>
 </table>
 </div>
@@ -435,7 +436,7 @@
 </tr>
 </tbody>
 </table>
-<p><code><a href="reference/get_forecasts.html">get_forecasts()</a></code> adds <code>forecast_date</code> as a leading column. <code><a href="reference/get_pension_projections.html">get_pension_projections()</a></code> adds <code>scenario_type</code> as a trailing column. <code><a href="reference/get_forecast_revisions.html">get_forecast_revisions()</a></code> and <code><a href="reference/get_policy_measures.html">get_policy_measures()</a></code> use specialised multi-dimensional schemas (migration to the standard layout queued for a later release).</p>
+<p><code><a href="reference/get_forecasts.html">get_forecasts()</a></code> adds <code>forecast_date</code> as a leading column. <code><a href="reference/get_forecast_revisions.html">get_forecast_revisions()</a></code> and <code><a href="reference/get_policy_measures.html">get_policy_measures()</a></code> use specialised multi-dimensional schemas (migration to the standard layout queued for a later release).</p>
 <p>The <code>metric_type</code> column resolves a class of bug from earlier versions where, for example, CPI Index values and CPI year-on-year growth values lived in the same <code>value</code> column with no machine-readable distinction. See <code><a href="articles/efo-forecasts.html">vignette("efo-forecasts")</a></code> for a walkthrough.</p>
 </div>
 <div class="section level3">
@@ -657,7 +658,7 @@
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_7a-every-tax-measure-in-a-budget">7a. Every tax measure in a Budget<a class="anchor" aria-label="anchor" href="#id_7a-every-tax-measure-in-a-budget"></a>
+<h3 id="id_7-every-tax-measure-in-a-budget">7. Every tax measure in a Budget<a class="anchor" aria-label="anchor" href="#id_7-every-tax-measure-in-a-budget"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># All tax measures scored from 2025-26 onwards</span></span>
@@ -673,44 +674,17 @@
 <code class="sourceCode R"><span><span class="fu"><a href="reference/get_policy_measures.html">get_policy_measures</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"tax"</span>, search <span class="op">=</span> <span class="st">"alcohol"</span>, since <span class="op">=</span> <span class="st">"2010-11"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_7b-what-does-the-obr-say-about-the-fiscal-rules">7b. What does the OBR say about the fiscal rules?<a class="anchor" aria-label="anchor" href="#id_7b-what-does-the-obr-say-about-the-fiscal-rules"></a>
+<h3 id="id_7a-what-does-the-obr-say-about-the-fiscal-rules">7a. What does the OBR say about the fiscal rules?<a class="anchor" aria-label="anchor" href="#id_7a-what-does-the-obr-say-about-the-fiscal-rules"></a>
 </h3>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/obr_fiscal_rules.html">obr_fiscal_rules</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Returns the three Charter for Budget Responsibility rules in force (stability rule, investment rule, welfare cap), with their target metric, direction of pass, and the source Charter version. Numerical headroom is not shipped as a constant because it changes at every fiscal event; derive it from <code><a href="reference/get_efo_fiscal.html">get_efo_fiscal()</a></code> or consult the EFO press release for the relevant vintage.</p>
-</div>
-<div class="section level3">
-<h3 id="id_7-what-happens-to-the-state-pension-bill-as-the-uk-ages">7. What happens to the state pension bill as the UK ages?<a class="anchor" aria-label="anchor" href="#id_7-what-happens-to-the-state-pension-bill-as-the-uk-ages"></a>
-</h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_pension_projections.html">get_pension_projections</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Central demographic projection: pension spending rises from 5% to 7.7% of GDP</span></span>
-<span><span class="co"># (FSR uses the standard schema plus a `scenario_type` column.)</span></span>
-<span><span class="va">central</span> <span class="op">&lt;-</span> <span class="va">proj</span><span class="op">[</span><span class="va">proj</span><span class="op">$</span><span class="va">scenario_type</span> <span class="op">==</span> <span class="st">"Demographic scenarios"</span> <span class="op">&amp;</span></span>
-<span>                <span class="va">proj</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Central projection"</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">central</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      period  value  unit</span></span>
-<span><span class="co">#&gt;     2023-24   4.56   pct</span></span>
-<span><span class="co">#&gt;     2024-25   4.95   pct</span></span>
-<span><span class="co">#&gt;     2025-26   5.06   pct</span></span>
-<span><span class="co">#&gt;     2026-27   5.13   pct</span></span>
-<span><span class="co">#&gt;     2027-28   5.05   pct</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">central</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"period"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      period  value  unit</span></span>
-<span><span class="co">#&gt;     2069-70   7.73   pct</span></span>
-<span><span class="co">#&gt;     2070-71   7.82   pct</span></span>
-<span><span class="co">#&gt;     2071-72   7.77   pct</span></span>
-<span><span class="co">#&gt;     2072-73   7.66   pct</span></span>
-<span><span class="co">#&gt;     2073-74   7.65   pct</span></span></code></pre></div>
-<p>The OBR’s central projection has the state pension rising from 4.6% of GDP today to 7.7% by 2073-74 as the UK population ages. The FSR also publishes scenarios for higher/lower life expectancy and different triple-lock uprating assumptions.</p>
 <hr>
 </div>
 <div class="section level3">
 <h3 id="id_8-browsing-the-full-efo-databank">8. Browsing the full EFO databank<a class="anchor" aria-label="anchor" href="#id_8-browsing-the-full-efo-databank"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Every detailed-forecast table the package recognises</span></span>
 <span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/obr_efo_catalogue.html">obr_efo_catalogue</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cat</span><span class="op">)</span>  <span class="co"># 39 (35 currently parseable, 2 cross-references, 2 complex layouts)</span></span>
@@ -875,7 +849,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

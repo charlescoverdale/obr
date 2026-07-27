@@ -65,48 +65,25 @@ eval <- obr_actual_vs_forecast("PSNB")
 #>   <https://obr.uk/download/historical-official-forecasts-database-march-2025/>.
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> Warning: Could not resolve a current Public Finances Databank URL from 1 candidate.
-#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
-#> ! Returned data may be older than expected. Run with internet access, or pin a
-#>   vintage explicitly when that feature ships.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> ℹ Downloading historical_forecasts.xlsx from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/historical-official-forecasts-database-march-2025/>.
+#> ✖ HTTP 403 Forbidden.
 
 # 1-year-ahead forecast errors only:
 # take the forecast vintage closest to the start of each fiscal year
 eval2425 <- eval[eval$period == "2024-25", ]
+#> Error in eval$period: object of type 'closure' is not subsettable
 eval2425[order(eval2425$forecast_date), ]
-#> # obr_tbl: 13 rows x 8 cols
-#> # Source:       OBR Historical Official Forecasts Database, March 2025
-#> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-05-07 21:08:44 UTC
-#> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.5.0
-#> # Note:         Forecast vs outturn for PSNB. error = value_forecast - value_actual. Outturn source: https://obr.uk/download/public-finances-databank/
-#> 
-#>     forecast_date  period period_type series   unit value_forecast value_actual
-#> 509    March 2020 2024-25 fiscal_year   PSNB gbp_bn       57.92369     99.57407
-#> 500    March 2021 2024-25 fiscal_year   PSNB gbp_bn       74.43927     99.57407
-#> 504    March 2022 2024-25 fiscal_year   PSNB gbp_bn       36.52329     99.57407
-#> 502    March 2023 2024-25 fiscal_year   PSNB gbp_bn       85.39792     99.57407
-#> 508    March 2024 2024-25 fiscal_year   PSNB gbp_bn       87.22658     99.57407
-#> 506    March 2025 2024-25 fiscal_year   PSNB gbp_bn      137.32912     99.57407
-#> 511    March 2026 2024-25 fiscal_year   PSNB gbp_bn      152.74200     99.57407
-#> 499 November 2020 2024-25 fiscal_year   PSNB gbp_bn       99.57407     99.57407
-#> 501 November 2022 2024-25 fiscal_year   PSNB gbp_bn       84.32658     99.57407
-#> 507 November 2023 2024-25 fiscal_year   PSNB gbp_bn       84.57033     99.57407
-#>         error
-#> 509 -41.65038
-#> 500 -25.13480
-#> 504 -63.05078
-#> 502 -14.17616
-#> 508 -12.34749
-#> 506  37.75505
-#> 511  53.16793
-#> 499   0.00000
-#> 501 -15.24749
-#> 507 -15.00375
-#> # ... with 3 more rows
+#> Error: object 'eval2425' not found
 options(op)
 # }
 ```

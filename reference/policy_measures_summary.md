@@ -58,28 +58,20 @@ pm <- get_policy_measures(type = "tax", since = "2024-25")
 #>   <https://obr.uk/download/policy-measures-database-march-2025/>.
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> ℹ Downloading policy_measures_database.xlsx from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■■■■                      
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/policy-measures-database-march-2025/>.
+#> ✖ HTTP 403 Forbidden.
 policy_measures_summary(pm)
-#> # obr_tbl: 593 rows x 4 cols
-#> # Source:       OBR Policy Measures Database, March 2025
-#> # URL:          https://obr.uk/download/policy-measures-database-march-2025/
-#> # Retrieved:    2026-05-07 21:09:03 UTC
-#> # File MD5:     a76d78e7a14d
-#> # Package:      obr 0.5.0
-#> # Note:         Summed across measures by event and fiscal year.
-#> 
-#>    type       event fiscal_year   value_mn
-#> 1   tax Autumn 2010     2024-25 1132.04747
-#> 2   tax Autumn 2010     2025-26 1178.59655
-#> 3   tax Autumn 2010     2026-27 1220.80995
-#> 4   tax Autumn 2010     2027-28 1264.38398
-#> 5   tax Autumn 2010     2028-29 1308.29845
-#> 6   tax Autumn 2010     2029-30 1352.99870
-#> 7   tax Autumn 2010     2030-31 1401.28704
-#> 8   tax Autumn 2011     2024-25   21.71078
-#> 9   tax Autumn 2011     2025-26   22.60351
-#> 10  tax Autumn 2011     2026-27   23.41310
-#> # ... with 583 more rows
+#> Error: object 'pm' not found
 options(op)
 # }
 ```

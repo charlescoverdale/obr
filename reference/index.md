@@ -61,13 +61,6 @@ Incapacity benefit spending and caseloads.
 - [`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.md)
   : Get incapacity benefit caseloads
 
-## Fiscal Risks and Sustainability Report
-
-50-year state pension projections.
-
-- [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
-  : Get long-run state pension spending projections
-
 ## Policy Measures Database
 
 Every UK fiscal-event-scored tax measure since 1970 and spending measure
@@ -123,6 +116,14 @@ Manage locally cached OBR data files.
 
 - [`clear_cache()`](https://charlescoverdale.github.io/obr/reference/clear_cache.md)
   : Clear cached OBR files
+
+## Deprecated
+
+Retired functions kept as stubs for backward compatibility. Scheduled
+for removal in a future release.
+
+- [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
+  : Get long-run state pension spending projections (deprecated)
 
 ## Package
 

@@ -71,38 +71,33 @@ Other forecasts:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 diff <- obr_compare_vintages("October 2024", "March 2026")
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Downloading efo_aggregates_march_2026.xlsx from OBR...
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ✔ Saved to cache.
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■                          
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ✖ HTTP 403 Forbidden.
 diff[diff$series == "Net borrowing", ]
-#> # obr_tbl: 5 rows x 8 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-05-07 21:09:12 UTC
-#> # File MD5:     43d7526594ab
-#> # Package:      obr 0.5.0
-#> # Note:         Vintage diff: October 2024 (a) -> March 2026 (b). revision = value_b - value_a. Earlier vintage URL: https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> 
-#>     period period_type        series metric_type   unit   value_a   value_b
-#> 6  2025-26 fiscal_year Net borrowing       level gbp_bn 105.57651 132.73508
-#> 13 2026-27 fiscal_year Net borrowing       level gbp_bn  88.45967 115.46142
-#> 20 2027-28 fiscal_year Net borrowing       level gbp_bn  72.16790  96.46737
-#> 27 2028-29 fiscal_year Net borrowing       level gbp_bn  71.90672  86.01563
-#> 34 2029-30 fiscal_year Net borrowing       level gbp_bn  70.58379  63.40344
-#>     revision
-#> 6  27.158562
-#> 13 27.001754
-#> 20 24.299469
-#> 27 14.108919
-#> 34 -7.180343
+#> Error in diff$series: object of type 'closure' is not subsettable
 
 # Compare the inflation forecast across two vintages
 inf_diff <- obr_compare_vintages("October 2024", "March 2026",
                                  what = "inflation")
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> ℹ Downloading efo_economy_october_2024.xlsx from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■■■                       
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```

@@ -86,39 +86,69 @@ Other EFO:
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 inf <- get_efo_economy("inflation")
+#> Warning: Could not resolve a current EFO Economy URL from 9 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
 #> ℹ Downloading efo_economy.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■                           
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■                
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ✖ HTTP 403 Forbidden.
 inf[inf$series == "CPI", ]
-#> # obr_tbl: 186 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/
-#> # Retrieved:    2026-05-07 21:08:35 UTC
-#> # File MD5:     da58dba1f8d3
-#> # Package:      obr 0.5.0
-#> 
-#>     period period_type series metric_type    value unit
-#> 183 2008Q1     quarter    CPI     yoy_pct 2.375720  pct
-#> 184 2008Q2     quarter    CPI     yoy_pct 3.419723  pct
-#> 185 2008Q3     quarter    CPI     yoy_pct 4.838841  pct
-#> 186 2008Q4     quarter    CPI     yoy_pct 3.824052  pct
-#> 187 2009Q1     quarter    CPI     yoy_pct 3.005551  pct
-#> 188 2009Q2     quarter    CPI     yoy_pct 2.088718  pct
-#> 189 2009Q3     quarter    CPI     yoy_pct 1.489726  pct
-#> 190 2009Q4     quarter    CPI     yoy_pct 2.103189  pct
-#> 191 2010Q1     quarter    CPI     yoy_pct 3.274537  pct
-#> 192 2010Q2     quarter    CPI     yoy_pct 3.456674  pct
-#> # ... with 176 more rows
+#> Error: object 'inf' not found
 
 lab <- get_efo_economy("labour")
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Warning: Could not resolve a current EFO Economy URL from 9 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading efo_economy.xlsx from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■                         
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■             
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ✖ HTTP 403 Forbidden.
 
 # Compare CPI projections from two different EFOs
 inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
 #> ℹ Downloading efo_economy_october_2024.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■■■■                      
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ✖ HTTP 403 Forbidden.
 inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
 #> ℹ Downloading efo_economy_march_2026.xlsx from OBR...
-#> ✔ Saved to cache.
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```
