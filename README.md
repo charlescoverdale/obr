@@ -135,7 +135,7 @@ obr_provenance(psnb)
 
 | Function | Returns |
 |---|---|
-| `get_pension_projections()` | 50-year state pension spending projections (% GDP) under demographic and triple-lock scenarios |
+| `get_pension_projections()` | **Deprecated in 0.5.1.** The OBR restructured the FSR workbooks in July 2026 and the state pension spending scenarios this returned are no longer published in that form. The series now lives in the FSR Chapter 3 workbook (Chart 3.11); see [obr.uk/frs](https://obr.uk/frs/). |
 
 ### Policy Measures Database (PMD)
 
@@ -171,7 +171,7 @@ The EFO, PFD, HFD, WTR, and FSR functions all return the same six columns so out
 | `value` | double | The numeric value |
 | `unit` | character | `"gbp_bn"`, `"pct"`, `"index"`, `"count_k"`, etc. |
 
-`get_forecasts()` adds `forecast_date` as a leading column. `get_pension_projections()` adds `scenario_type` as a trailing column. `get_forecast_revisions()` and `get_policy_measures()` use specialised multi-dimensional schemas (migration to the standard layout queued for a later release).
+`get_forecasts()` adds `forecast_date` as a leading column. `get_forecast_revisions()` and `get_policy_measures()` use specialised multi-dimensional schemas (migration to the standard layout queued for a later release).
 
 The `metric_type` column resolves a class of bug from earlier versions where, for example, CPI Index values and CPI year-on-year growth values lived in the same `value` column with no machine-readable distinction. See `vignette("efo-forecasts")` for a walkthrough.
 
@@ -364,7 +364,7 @@ Incapacity benefit spending and caseloads have risen sharply since the pandemic 
 
 ---
 
-### 7a. Every tax measure in a Budget
+### 7. Every tax measure in a Budget
 
 ```r
 # All tax measures scored from 2025-26 onwards
@@ -383,41 +383,13 @@ The PMD covers every measure scored at a UK fiscal event: 1970 onwards for tax, 
 get_policy_measures(type = "tax", search = "alcohol", since = "2010-11")
 ```
 
-### 7b. What does the OBR say about the fiscal rules?
+### 7a. What does the OBR say about the fiscal rules?
 
 ```r
 obr_fiscal_rules()
 ```
 
 Returns the three Charter for Budget Responsibility rules in force (stability rule, investment rule, welfare cap), with their target metric, direction of pass, and the source Charter version. Numerical headroom is not shipped as a constant because it changes at every fiscal event; derive it from `get_efo_fiscal()` or consult the EFO press release for the relevant vintage.
-
-### 7. What happens to the state pension bill as the UK ages?
-
-```r
-proj <- get_pension_projections()
-
-# Central demographic projection: pension spending rises from 5% to 7.7% of GDP
-# (FSR uses the standard schema plus a `scenario_type` column.)
-central <- proj[proj$scenario_type == "Demographic scenarios" &
-                proj$series == "Central projection", ]
-head(central[, c("period", "value", "unit")], 5)
-#>      period  value  unit
-#>     2023-24   4.56   pct
-#>     2024-25   4.95   pct
-#>     2025-26   5.06   pct
-#>     2026-27   5.13   pct
-#>     2027-28   5.05   pct
-
-tail(central[, c("period", "value", "unit")], 5)
-#>      period  value  unit
-#>     2069-70   7.73   pct
-#>     2070-71   7.82   pct
-#>     2071-72   7.77   pct
-#>     2072-73   7.66   pct
-#>     2073-74   7.65   pct
-```
-
-The OBR's central projection has the state pension rising from 4.6% of GDP today to 7.7% by 2073-74 as the UK population ages. The FSR also publishes scenarios for higher/lower life expectancy and different triple-lock uprating assumptions.
 
 ---
 

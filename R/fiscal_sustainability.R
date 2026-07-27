@@ -1,148 +1,56 @@
-# Fiscal Risks and Sustainability: executive summary charts and tables.
-# URL resolved dynamically; resolver warns if it falls through to the
-# hardcoded fallback.
-FSR_EXEC_FALLBACK <- "https://obr.uk/download/july-2025-fiscal-risks-and-sustainability-charts-and-tables-executive-summary/"
-FSR_EXEC_FILENAME <- "fsr_executive_summary.xlsx"
-
-fsr_exec_source <- function(refresh = FALSE) {
-  obr_get_xlsx(
-    candidates = fsr_url_candidates(),
-    fallback   = FSR_EXEC_FALLBACK,
-    filename   = FSR_EXEC_FILENAME,
-    refresh    = refresh,
-    label      = "Fiscal Risks and Sustainability Report"
-  )
-}
-
-fsr_obr_tbl <- function(data, src) {
-  new_obr_tbl(
-    data        = data,
-    publication = "FSR",
-    vintage     = obr_url_vintage(src$url),
-    source_url  = src$url,
-    retrieved   = src$retrieved,
-    file_md5    = src$file_md5
-  )
-}
-
-# Parse C1.2: state pension spending scenarios.
-# The sheet has two separate sections, each beginning with a section-header
-# row whose col 2 names the section and whose cols 3+ contain fiscal year
-# labels. Data rows have a scenario name in col 2 and projected values
-# (% of GDP) in the same column positions as the fiscal years.
+# Fiscal Risks and Sustainability Report.
 #
-# 0.3.0 fix: section detection now uses fuzzy matching ("demographic" /
-# "triple lock") rather than exact strings, so OBR can rename the section
-# header without silently breaking the parser.
-parse_pension_projections <- function(path) {
-  raw  <- readxl::read_excel(path, sheet = "C1.2",
-                             col_names = FALSE, .name_repair = "minimal")
-  col2 <- as.character(unlist(raw[, 2]))
+# get_pension_projections() was deprecated in 0.5.1. In July 2026 the OBR
+# restructured the FSR workbook set: the executive-summary sheet this
+# function parsed ("C1.2", state pension spending under demographic and
+# triple-lock scenarios) no longer exists. The equivalent series now sits in
+# the Chapter 3 "Long-term spending projections" workbook (Chart 3.11,
+# "State pension spending under alternative uprating assumptions"), with a
+# different scenario structure. The function is kept as a stub so existing
+# scripts do not fail with "object not found"; the download and parsing code
+# has been removed.
 
-  is_demographic <- !is.na(col2) & grepl("demographic", col2, ignore.case = TRUE)
-  is_triple_lock <- !is.na(col2) & grepl("triple lock",  col2, ignore.case = TRUE)
-  section_idx    <- which(is_demographic | is_triple_lock)
-  if (length(section_idx) == 0L) {
-    cli::cli_warn(c(
-      "Could not find expected section headers in FSR sheet C1.2.",
-      "i" = "Looked for rows whose second column matches {.val demographic} or {.val triple lock}.",
-      "!" = "OBR may have renamed the sections. Please file an issue at https://github.com/charlescoverdale/obr/issues."
-    ))
-    return(NULL)
-  }
-
-  section_name <- vapply(section_idx, function(i) {
-    if (is_demographic[i]) "Demographic scenarios" else "Triple lock scenarios"
-  }, character(1))
-
-  result_list <- list()
-
-  for (s_idx in seq_along(section_idx)) {
-    s_row    <- section_idx[s_idx]
-    sec_name <- section_name[s_idx]
-
-    end_row <- if (s_idx < length(section_idx)) {
-      section_idx[s_idx + 1L] - 1L
-    } else {
-      nrow(raw)
-    }
-
-    yr_vals   <- as.character(unlist(raw[s_row, ]))
-    year_cols <- which(grepl("^[0-9]{4}-[0-9]{2}$", yr_vals))
-    if (length(year_cols) == 0L) next
-    fiscal_years <- yr_vals[year_cols]
-
-    for (i in (s_row + 1L):end_row) {
-      if (i > nrow(raw)) break
-      nm <- col2[i]
-      if (is.na(nm) || nm == "") next
-      vals <- suppressWarnings(
-        as.numeric(as.character(unlist(raw[i, year_cols])))
-      )
-      if (all(is.na(vals))) next
-      base <- obr_long(
-        period      = fiscal_years,
-        period_type = "fiscal_year",
-        series      = nm,
-        value       = vals,
-        unit        = "pct",
-        metric_type = "pct"
-      )
-      base$scenario_type <- sec_name
-      result_list[[length(result_list) + 1L]] <- base
-    }
-  }
-
-  if (length(result_list) == 0L) return(NULL)
-  do.call(rbind, result_list)
-}
-
-#' Get long-run state pension spending projections
+#' Get long-run state pension spending projections (deprecated)
 #'
-#' Downloads (and caches) the OBR Fiscal Risks and Sustainability Report
-#' executive summary charts and tables workbook and returns 50-year
-#' projections for state pension spending as a share of GDP, under
-#' alternative demographic and triple-lock uprating scenarios.
+#' @description
+#' **Deprecated since obr 0.5.1.**
 #'
-#' This data is unique to the Fiscal Risks and Sustainability Report and is
-#' not available in any other OBR publication. It illustrates how ageing
-#' demographics and pension uprating rules interact to determine the
-#' long-run cost of the state pension. The exact vintage is recorded in
-#' the returned object's provenance.
+#' In July 2026 the OBR restructured the Fiscal Risks and Sustainability
+#' Report workbook set. The executive-summary sheet this function read
+#' (`C1.2`, state pension spending split into demographic and triple-lock
+#' scenarios) no longer exists, so the function could no longer return data.
 #'
-#' @param refresh Logical. If `TRUE`, re-download even if a cached copy
-#'   exists. Defaults to `FALSE`.
+#' The equivalent series is now published in the FSR Chapter 3 "Long-term
+#' spending projections" workbook, as Chart 3.11 "State pension spending
+#' under alternative uprating assumptions", with a different scenario
+#' structure (triple-lock, CPI, and average-earnings uprating rather than the
+#' old demographic vs triple-lock split). See <https://obr.uk/frs/>.
 #'
-#' @return An `obr_tbl` with the standard v0.4.0 schema plus a
-#' `scenario_type` column to group scenarios:
-#' \describe{
-#'   \item{period}{Fiscal year, e.g. `"2030-31"` (character)}
-#'   \item{period_type}{Always `"fiscal_year"`}
-#'   \item{series}{Scenario name, e.g. `"Central projection"`,
-#'     `"Higher life expectancy"` (character)}
-#'   \item{metric_type}{Always `"pct"`}
-#'   \item{value}{State pension spending as a percentage of GDP (numeric)}
-#'   \item{unit}{Always `"pct"`}
-#'   \item{scenario_type}{Either `"Demographic scenarios"` or
-#'     `"Triple lock scenarios"` (character)}
-#' }
+#' This stub is retained so existing scripts do not error. It emits a
+#' deprecation warning and returns `NULL`. It will be removed in a future
+#' release.
+#'
+#' @param refresh Ignored. Retained so existing calls do not error.
+#'
+#' @return `NULL`, invisibly.
 #'
 #' @examples
-#' \donttest{
-#' op <- options(obr.cache_dir = tempdir())
-#' proj <- get_pension_projections()
-#'
-#' central <- proj[proj$scenario_type == "Demographic scenarios" &
-#'                 proj$series == "Central projection", ]
-#' tail(central, 10)
-#'
-#' dem <- proj[proj$scenario_type == "Demographic scenarios", ]
-#' options(op)
-#' }
+#' # Deprecated since 0.5.1: emits a warning and returns NULL.
+#' suppressWarnings(get_pension_projections())
 #'
 #' @family long-term fiscal
 #' @export
 get_pension_projections <- function(refresh = FALSE) {
-  src <- fsr_exec_source(refresh)
-  fsr_obr_tbl(parse_pension_projections(src$path), src)
+  .Deprecated(
+    msg = paste0(
+      "`get_pension_projections()` is deprecated and now returns NULL.\n",
+      "The OBR restructured the Fiscal Risks and Sustainability Report in ",
+      "July 2026; the state pension spending scenarios this function read ",
+      "(executive-summary sheet 'C1.2') are no longer published in that ",
+      "form. The equivalent series now sits in the FSR Chapter 3 workbook ",
+      "(Chart 3.11, 'State pension spending under alternative uprating ",
+      "assumptions'). See https://obr.uk/frs/."
+    )
+  )
+  invisible(NULL)
 }

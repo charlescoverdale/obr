@@ -236,40 +236,14 @@ options(op)
 
 ---
 
-## `get_pension_projections()`
+## `get_pension_projections()` (deprecated)
 
-**Get long-run state pension spending projections**
-
-Downloads (and caches) the OBR Fiscal Risks and Sustainability Report executive summary charts and tables workbook and returns 50-year projections for state pension spending as a share of GDP, under alternative demographic and triple-lock uprating scenarios.
+**Deprecated in obr 0.5.1.** In July 2026 the OBR restructured the Fiscal Risks and Sustainability Report workbooks. The executive-summary sheet this function read (`C1.2`, state pension spending under demographic and triple-lock scenarios) no longer exists, so the function is retired: it emits a deprecation warning and returns `NULL`. The equivalent series now sits in the FSR Chapter 3 "Long-term spending projections" workbook (Chart 3.11, "State pension spending under alternative uprating assumptions"); see <https://obr.uk/frs/>.
 
 **Usage**
 
 ```r
 get_pension_projections(refresh = FALSE)
-```
-
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
-**Returns**
-
-A data frame with columns: scenario_typeEither `"Demographic scenarios"` or `"Triple lock scenarios"` (character) scenarioScenario name, e.g. `"Central projection"`, `"Higher life expectancy"` (character) fiscal_yearFiscal year, e.g. `"2030-31"` (character) pct_gdpState pension spending as a percentage of GDP (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-proj <- get_pension_projections()
-
-# Central demographic projection over the 50-year horizon
-central <- proj[proj$scenario_type == "Demographic scenarios" &
-                proj$scenario == "Central projection", ]
-tail(central, 10)
-
-# How much more expensive is 'higher life expectancy' vs central?
-dem <- proj[proj$scenario_type == "Demographic scenarios", ]
-options(op)
 ```
 
 ---

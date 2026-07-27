@@ -58,22 +58,6 @@ wtr_url_candidates <- function() {
   candidates
 }
 
-# Build FSR URL candidates.
-fsr_url_candidates <- function() {
-  current_year <- as.integer(format(Sys.Date(), "%Y"))
-  months <- c("july", "march", "october")
-  candidates <- character(0)
-  for (yr in seq(current_year, current_year - 2L)) {
-    for (mn in months) {
-      candidates <- c(candidates, paste0(
-        "https://obr.uk/download/", mn, "-", yr,
-        "-fiscal-risks-and-sustainability-charts-and-tables-executive-summary/"
-      ))
-    }
-  }
-  candidates
-}
-
 # Build Historical Official Forecasts Database URL candidates.
 # OBR sometimes re-uses an older slug across vintages, so we try recent slugs
 # first and fall through to the known-stable slug as a fallback.

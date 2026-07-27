@@ -2,54 +2,37 @@
 % Please edit documentation in R/fiscal_sustainability.R
 \name{get_pension_projections}
 \alias{get_pension_projections}
-\title{Get long-run state pension spending projections}
+\title{Get long-run state pension spending projections (deprecated)}
 \usage{
 get_pension_projections(refresh = FALSE)
 }
 \arguments{
-\item{refresh}{Logical. If \code{TRUE}, re-download even if a cached copy
-exists. Defaults to \code{FALSE}.}
+\item{refresh}{Ignored. Retained so existing calls do not error.}
 }
 \value{
-An \code{obr_tbl} with the standard v0.4.0 schema plus a
-\code{scenario_type} column to group scenarios:
-\describe{
-\item{period}{Fiscal year, e.g. \code{"2030-31"} (character)}
-\item{period_type}{Always \code{"fiscal_year"}}
-\item{series}{Scenario name, e.g. \code{"Central projection"},
-\code{"Higher life expectancy"} (character)}
-\item{metric_type}{Always \code{"pct"}}
-\item{value}{State pension spending as a percentage of GDP (numeric)}
-\item{unit}{Always \code{"pct"}}
-\item{scenario_type}{Either \code{"Demographic scenarios"} or
-\code{"Triple lock scenarios"} (character)}
-}
+\code{NULL}, invisibly.
 }
 \description{
-Downloads (and caches) the OBR Fiscal Risks and Sustainability Report
-executive summary charts and tables workbook and returns 50-year
-projections for state pension spending as a share of GDP, under
-alternative demographic and triple-lock uprating scenarios.
-}
-\details{
-This data is unique to the Fiscal Risks and Sustainability Report and is
-not available in any other OBR publication. It illustrates how ageing
-demographics and pension uprating rules interact to determine the
-long-run cost of the state pension. The exact vintage is recorded in
-the returned object's provenance.
+\strong{Deprecated since obr 0.5.1.}
+
+In July 2026 the OBR restructured the Fiscal Risks and Sustainability
+Report workbook set. The executive-summary sheet this function read
+(\code{C1.2}, state pension spending split into demographic and triple-lock
+scenarios) no longer exists, so the function could no longer return data.
+
+The equivalent series is now published in the FSR Chapter 3 "Long-term
+spending projections" workbook, as Chart 3.11 "State pension spending
+under alternative uprating assumptions", with a different scenario
+structure (triple-lock, CPI, and average-earnings uprating rather than the
+old demographic vs triple-lock split). See \url{https://obr.uk/frs/}.
+
+This stub is retained so existing scripts do not error. It emits a
+deprecation warning and returns \code{NULL}. It will be removed in a future
+release.
 }
 \examples{
-\donttest{
-op <- options(obr.cache_dir = tempdir())
-proj <- get_pension_projections()
-
-central <- proj[proj$scenario_type == "Demographic scenarios" &
-                proj$series == "Central projection", ]
-tail(central, 10)
-
-dem <- proj[proj$scenario_type == "Demographic scenarios", ]
-options(op)
-}
+# Deprecated since 0.5.1: emits a warning and returns NULL.
+suppressWarnings(get_pension_projections())
 
 }
 \concept{long-term fiscal}

@@ -1,3 +1,19 @@
+# obr 0.5.1
+
+## Deprecated
+
+* `get_pension_projections()` is deprecated and now returns `NULL` with a
+  warning. In July 2026 the OBR restructured the Fiscal Risks and
+  Sustainability Report workbook set: the executive-summary sheet this
+  function read (`C1.2`, state pension spending split into demographic and
+  triple-lock scenarios) no longer exists, so a live call errored with
+  `"Sheet 'C1.2' not found"`. The equivalent series is now published in the
+  FSR Chapter 3 "Long-term spending projections" workbook as Chart 3.11
+  ("State pension spending under alternative uprating assumptions"), with a
+  different scenario structure. The stub is retained so existing scripts do
+  not fail with "object not found"; it will be removed in a future release.
+  This resolves the `donttest` check ERROR reported on CRAN for 0.2.5.
+
 # obr 0.5.0
 
 ## Full EFO detailed-forecast-table coverage (39 of 39)

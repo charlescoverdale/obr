@@ -31,7 +31,7 @@ From v0.4.0, every data-fetching function in `obr` returns the same six columns:
 | `value`       | double    | Numeric value                                              |
 | `unit`        | character | `"gbp_bn"`, `"pct"`, `"pct_pts"`, `"index"`, `"count_k"`, etc. |
 
-`get_forecasts()` adds `forecast_date` as a leading column. `get_pension_projections()` adds `scenario_type` as a trailing column.
+`get_forecasts()` adds `forecast_date` as a leading column.
 
 The schema is consistent enough that you can `rbind()` outputs from different functions and still know what each value means.
 

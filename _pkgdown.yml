@@ -59,11 +59,6 @@ reference:
       - get_incapacity_spending
       - get_incapacity_caseloads
 
-  - title: Fiscal Risks and Sustainability Report
-    desc: 50-year state pension projections.
-    contents:
-      - get_pension_projections
-
   - title: Policy Measures Database
     desc: Every UK fiscal-event-scored tax measure since 1970 and spending measure since 2010.
     contents:
@@ -97,6 +92,13 @@ reference:
     desc: Manage locally cached OBR data files.
     contents:
       - clear_cache
+
+  - title: Deprecated
+    desc: >
+      Retired functions kept as stubs for backward compatibility. Scheduled
+      for removal in a future release.
+    contents:
+      - get_pension_projections
 
   - title: "Package"
     contents:
