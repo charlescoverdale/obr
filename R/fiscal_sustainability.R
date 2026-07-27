@@ -24,7 +24,8 @@
 #' spending projections" workbook, as Chart 3.11 "State pension spending
 #' under alternative uprating assumptions", with a different scenario
 #' structure (triple-lock, CPI, and average-earnings uprating rather than the
-#' old demographic vs triple-lock split). See <https://obr.uk/frs/>.
+#' old demographic vs triple-lock split). See
+#' <https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/>.
 #'
 #' This stub is retained so existing scripts do not error. It emits a
 #' deprecation warning and returns `NULL`. It will be removed in a future
@@ -49,7 +50,8 @@ get_pension_projections <- function(refresh = FALSE) {
       "(executive-summary sheet 'C1.2') are no longer published in that ",
       "form. The equivalent series now sits in the FSR Chapter 3 workbook ",
       "(Chart 3.11, 'State pension spending under alternative uprating ",
-      "assumptions'). See https://obr.uk/frs/."
+      "assumptions'). See ",
+      "https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/."
     )
   )
   invisible(NULL)

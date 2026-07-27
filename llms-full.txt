@@ -238,7 +238,7 @@ options(op)
 
 ## `get_pension_projections()` (deprecated)
 
-**Deprecated in obr 0.5.1.** In July 2026 the OBR restructured the Fiscal Risks and Sustainability Report workbooks. The executive-summary sheet this function read (`C1.2`, state pension spending under demographic and triple-lock scenarios) no longer exists, so the function is retired: it emits a deprecation warning and returns `NULL`. The equivalent series now sits in the FSR Chapter 3 "Long-term spending projections" workbook (Chart 3.11, "State pension spending under alternative uprating assumptions"); see <https://obr.uk/frs/>.
+**Deprecated in obr 0.5.1.** In July 2026 the OBR restructured the Fiscal Risks and Sustainability Report workbooks. The executive-summary sheet this function read (`C1.2`, state pension spending under demographic and triple-lock scenarios) no longer exists, so the function is retired: it emits a deprecation warning and returns `NULL`. The equivalent series now sits in the FSR Chapter 3 "Long-term spending projections" workbook (Chart 3.11, "State pension spending under alternative uprating assumptions"); see <https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/>.
 
 **Usage**
 

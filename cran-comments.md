@@ -1,5 +1,13 @@
 # CRAN submission comments — obr 0.5.1
 
+## Resubmission
+
+This is a resubmission of 0.5.1. The incoming pretest flagged one NOTE:
+<https://obr.uk/frs/> returned 301 (from `man/get_pension_projections.Rd`
+and `README.md`). Replaced with the direct target
+<https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/> (200).
+No other changes.
+
 ## Resolving the check ERROR reported for 0.2.5
 
 The 0.2.5 check page listed a `donttest` ERROR (Additional issues): the
