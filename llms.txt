@@ -183,7 +183,7 @@ obr_provenance(psnb)
 
 | Function | Returns |
 |----|----|
-| [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md) | **Deprecated in 0.5.1.** The OBR restructured the FSR workbooks in July 2026 and the state pension spending scenarios this returned are no longer published in that form. The series now lives in the FSR Chapter 3 workbook (Chart 3.11); see [obr.uk/frs](https://obr.uk/frs/). |
+| [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md) | **Deprecated in 0.5.1.** The OBR restructured the FSR workbooks in July 2026 and the state pension spending scenarios this returned are no longer published in that form. The series now lives in the FSR Chapter 3 workbook (Chart 3.11); see [obr.uk/frs](https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/). |
 
 ### Policy Measures Database (PMD)
 

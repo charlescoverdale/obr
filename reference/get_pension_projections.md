@@ -12,7 +12,8 @@ The equivalent series is now published in the FSR Chapter 3 "Long-term
 spending projections" workbook, as Chart 3.11 "State pension spending
 under alternative uprating assumptions", with a different scenario
 structure (triple-lock, CPI, and average-earnings uprating rather than
-the old demographic vs triple-lock split). See <https://obr.uk/frs/>.
+the old demographic vs triple-lock split). See
+<https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/>.
 
 This stub is retained so existing scripts do not error. It emits a
 deprecation warning and returns `NULL`. It will be removed in a future
