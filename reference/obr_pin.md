@@ -21,8 +21,12 @@ obr_pin(vintage = NULL)
 
   Vintage label such as `"October 2024"`. See
   [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md)
-  for the full list. If `NULL`, this function clears the pin (equivalent
-  to calling
+  for the full list. A well-formed label that is not yet in the
+  package's EFO calendar (e.g. a brand-new EFO published after this
+  package version was released) is accepted with a warning: download
+  URLs are then constructed from the OBR's slug convention, so a new EFO
+  can be pinned on publication day. If `NULL`, this function clears the
+  pin (equivalent to calling
   [`obr_unpin()`](https://charlescoverdale.github.io/obr/reference/obr_unpin.md)).
 
 ## Value

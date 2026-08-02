@@ -7,12 +7,7 @@ OBR's view changed between fiscal events.
 ## Usage
 
 ``` r
-obr_compare_vintages(
-  vintage_a,
-  vintage_b,
-  what = c("fiscal", "inflation", "labour", "output_gap"),
-  refresh = FALSE
-)
+obr_compare_vintages(vintage_a, vintage_b, what = "fiscal", refresh = FALSE)
 ```
 
 ## Arguments
@@ -25,9 +20,13 @@ obr_compare_vintages(
 
 - what:
 
-  Which EFO table to compare. One of `"fiscal"` (Table 6.5 aggregates,
-  the default), `"inflation"` (sheet 1.7), `"labour"` (sheet 1.6), or
-  `"output_gap"` (sheet 1.14).
+  Which EFO table to compare. Either one of the named shortcuts
+  `"fiscal"` (Table 6.5, the default), `"inflation"` (sheet 1.7),
+  `"labour"` (sheet 1.6), `"output_gap"` (sheet 1.14), or any table id
+  from
+  [`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
+  (e.g. `"6.13"`, `"1.19"`), so all detailed-forecast tables can be
+  diffed across vintages.
 
 - refresh:
 
@@ -72,12 +71,13 @@ Other forecasts:
 op <- options(obr.cache_dir = tempdir())
 diff <- obr_compare_vintages("October 2024", "March 2026")
 #> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■                  
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■■■■                         
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
@@ -90,13 +90,28 @@ inf_diff <- obr_compare_vintages("October 2024", "March 2026",
                                  what = "inflation")
 #> ℹ Downloading efo_economy_october_2024.xlsx from OBR...
 #> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■■■■                         
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+#> Error: Failed to download
+#> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> ✖ HTTP 403 Forbidden.
+
+# Any catalogue table works too, e.g. debt interest (Table 6.16)
+di_diff <- obr_compare_vintages("November 2025", "March 2026",
+                                what = "6.16")
+#> ℹ Downloading efo_aggregates_november_2025.xlsx from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 8s for retry backoff ■■■■■■■■■■                      
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
-#> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
+#> <https://obr.uk/download/november-2025-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
 #> ✖ HTTP 403 Forbidden.
 options(op)
 # }

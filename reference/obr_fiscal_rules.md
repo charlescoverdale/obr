@@ -4,10 +4,10 @@ Returns a data frame describing the Charter for Budget Responsibility
 fiscal rules currently in force, as encoded in the package at the time
 of release. Numerical headroom against each rule is *not* shipped as a
 constant because it is updated at every fiscal event and would go stale
-within months; users should derive headroom from the current EFO output
-of
-[`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md),
-or consult the OBR's EFO press release for the relevant vintage.
+within months; use
+[`obr_headroom()`](https://charlescoverdale.github.io/obr/reference/obr_headroom.md)
+to derive the stability-rule margin from the current EFO, or consult the
+OBR's EFO press release for the relevant vintage.
 
 ## Usage
 
@@ -64,6 +64,11 @@ numerical rules:
 
 The Budget Responsibility Act 2024 also adds a non-numerical **fiscal
 lock** requiring an OBR forecast for any fiscally significant measure.
+
+## See also
+
+Other fiscal rules:
+[`obr_headroom()`](https://charlescoverdale.github.io/obr/reference/obr_headroom.md)
 
 ## Examples
 

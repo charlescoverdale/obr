@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Access Office for Budget Responsibility Data">
-<meta name="description" content="Provides clean, tidy access to data published by the Office for Budget Responsibility (OBR), the UKs independent fiscal watchdog. Covers the Public Finances Databank (outturn for PSNB, PSND, receipts, and expenditure since 1946), the Historical Official Forecasts Database (every OBR forecast since 2010), the Economic and Fiscal Outlook detailed forecast tables (five-year projections from the latest Budget), the Welfare Trends Report (incapacity benefit spending and caseloads), and the Fiscal Risks and Sustainability Report (50-year state pension projections). All returned objects carry provenance metadata recording the source URL, publication vintage, retrieval time, and file fingerprint, so analyses can be audited and reproduced. Data is downloaded from the OBR on first use and cached locally for subsequent calls. Data is sourced from the OBR' website &lt;https://obr.uk&gt;.">
-<meta property="og:description" content="Provides clean, tidy access to data published by the Office for Budget Responsibility (OBR), the UKs independent fiscal watchdog. Covers the Public Finances Databank (outturn for PSNB, PSND, receipts, and expenditure since 1946), the Historical Official Forecasts Database (every OBR forecast since 2010), the Economic and Fiscal Outlook detailed forecast tables (five-year projections from the latest Budget), the Welfare Trends Report (incapacity benefit spending and caseloads), and the Fiscal Risks and Sustainability Report (50-year state pension projections). All returned objects carry provenance metadata recording the source URL, publication vintage, retrieval time, and file fingerprint, so analyses can be audited and reproduced. Data is downloaded from the OBR on first use and cached locally for subsequent calls. Data is sourced from the OBR' website &lt;https://obr.uk&gt;.">
+<meta name="description" content="Provides clean, tidy access to data published by the Office for Budget Responsibility (OBR), the UKs independent fiscal watchdog. Covers the Public Finances Databank (outturn for PSNB, PSND, receipts, and expenditure since 1946), the Historical Official Forecasts Database (every OBR forecast since 2010), the Economic and Fiscal Outlook detailed forecast tables (five-year projections from the latest Budget), the monthly profiles for the public finances (the OBR forecast apportioned across the months of the fiscal year), the Welfare Trends Report (incapacity benefit spending and caseloads), and the Fiscal Risks and Sustainability Report (50-year state pension projections). All returned objects carry provenance metadata recording the source URL, publication vintage, retrieval time, and file fingerprint, so analyses can be audited and reproduced. Data is downloaded from the OBR on first use and cached locally for subsequent calls. Data is sourced from the OBR' website &lt;https://obr.uk&gt;.">
+<meta property="og:description" content="Provides clean, tidy access to data published by the Office for Budget Responsibility (OBR), the UKs independent fiscal watchdog. Covers the Public Finances Databank (outturn for PSNB, PSND, receipts, and expenditure since 1946), the Historical Official Forecasts Database (every OBR forecast since 2010), the Economic and Fiscal Outlook detailed forecast tables (five-year projections from the latest Budget), the monthly profiles for the public finances (the OBR forecast apportioned across the months of the fiscal year), the Welfare Trends Report (incapacity benefit spending and caseloads), and the Fiscal Risks and Sustainability Report (50-year state pension projections). All returned objects carry provenance metadata recording the source URL, publication vintage, retrieval time, and file fingerprint, so analyses can be audited and reproduced. Data is downloaded from the OBR on first use and cached locally for subsequent calls. Data is sourced from the OBR' website &lt;https://obr.uk&gt;.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,9 +119,14 @@
 <td>Spending trends across the benefits system</td>
 <td>Annual</td>
 </tr>
+<tr>
+<td><a href="https://obr.uk/monthly-public-finances-briefing/" class="external-link">Monthly profiles</a></td>
+<td>The EFO forecast for receipts, spending, and the CGNCR apportioned across the months of the fiscal year, against which each month’s outturn is judged</td>
+<td>Each EFO</td>
+</tr>
 </tbody>
 </table>
-<p>This package covers all five datasets listed above.</p>
+<p>This package covers all six datasets listed above.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -275,6 +280,10 @@
 <td><code><a href="reference/list_efo_economy_measures.html">list_efo_economy_measures()</a></code></td>
 <td>The three measures available via <code><a href="reference/get_efo_economy.html">get_efo_economy()</a></code> (no download needed).</td>
 </tr>
+<tr>
+<td><code><a href="reference/get_monthly_profiles.html">get_monthly_profiles()</a></code></td>
+<td>The EFO forecast apportioned across the twelve months of the fiscal year (receipts and spending profiles, or the CGNCR breakdown). The reference point for “borrowing so far this year vs the OBR profile” in the run-up to a fiscal event.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -361,10 +370,16 @@
 <th>Function</th>
 <th>Returns</th>
 </tr></thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code><a href="reference/obr_fiscal_rules.html">obr_fiscal_rules()</a></code></td>
-<td>The three Charter for Budget Responsibility rules (stability, investment, welfare cap) with metric, target description, and source Charter version. Numerical headroom is not shipped (changes at every fiscal event; derive from <code><a href="reference/get_efo_fiscal.html">get_efo_fiscal()</a></code>).</td>
-</tr></tbody>
+<td>The three Charter for Budget Responsibility rules (stability, investment, welfare cap) with metric, target description, and source Charter version. Numerical headroom is not shipped as a constant (changes at every fiscal event); derive it with <code><a href="reference/obr_headroom.html">obr_headroom()</a></code>.</td>
+</tr>
+<tr>
+<td><code><a href="reference/obr_headroom.html">obr_headroom()</a></code></td>
+<td>The current budget surplus path from EFO Table 6.5: the margin against the stability rule in every forecast year. Pass <code>target_year</code> to flag the year the rule bites on.</td>
+</tr>
+</tbody>
 </table>
 </div>
 <div class="section level3">

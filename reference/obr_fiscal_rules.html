@@ -3,14 +3,14 @@
 fiscal rules currently in force, as encoded in the package at the time
 of release. Numerical headroom against each rule is not shipped as a
 constant because it is updated at every fiscal event and would go stale
-within months; users should derive headroom from the current EFO output
-of get_efo_fiscal(), or consult the OBR's EFO press release for the
+within months; use obr_headroom() to derive the stability-rule margin
+from the current EFO, or consult the OBR's EFO press release for the
 relevant vintage."><meta property="og:description" content="Returns a data frame describing the Charter for Budget Responsibility
 fiscal rules currently in force, as encoded in the package at the time
 of release. Numerical headroom against each rule is not shipped as a
 constant because it is updated at every fiscal event and would go stale
-within months; users should derive headroom from the current EFO output
-of get_efo_fiscal(), or consult the OBR's EFO press release for the
+within months; use obr_headroom() to derive the stability-rule margin
+from the current EFO, or consult the OBR's EFO press release for the
 relevant vintage."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -19,7 +19,7 @@ relevant vintage."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,8 +57,8 @@ relevant vintage."></head><body>
 fiscal rules currently in force, as encoded in the package at the time
 of release. Numerical headroom against each rule is <em>not</em> shipped as a
 constant because it is updated at every fiscal event and would go stale
-within months; users should derive headroom from the current EFO output
-of <code><a href="get_efo_fiscal.html">get_efo_fiscal()</a></code>, or consult the OBR's EFO press release for the
+within months; use <code><a href="obr_headroom.html">obr_headroom()</a></code> to derive the stability-rule margin
+from the current EFO, or consult the OBR's EFO press release for the
 relevant vintage.</p>
     </div>
 
@@ -105,6 +105,11 @@ statutory cap level by the target year.</p></li>
 </ul><p>The Budget Responsibility Act 2024 also adds a non-numerical
 <strong>fiscal lock</strong> requiring an OBR forecast for any fiscally
 significant measure.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other fiscal rules:
+<code><a href="obr_headroom.html">obr_headroom()</a></code></p></div>
     </div>
 
     <div class="section level2">

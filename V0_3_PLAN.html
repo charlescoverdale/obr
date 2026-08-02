@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -284,7 +284,7 @@
 <h3 id="id_43-fiscal-rules--headroom-calculator">4.3 Fiscal rules + headroom calculator<a class="anchor" aria-label="anchor" href="#id_43-fiscal-rules--headroom-calculator"></a></h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/obr_fiscal_rules.html">obr_fiscal_rules</a></span><span class="op">(</span>vintage <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>            <span class="co"># rule definitions for the active charter</span></span>
-<span><span class="fu">obr_headroom</span><span class="op">(</span>rule <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stability"</span>, <span class="st">"investment"</span>, <span class="st">"welfare"</span><span class="op">)</span>, vintage <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/obr_headroom.html">obr_headroom</a></span><span class="op">(</span>rule <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stability"</span>, <span class="st">"investment"</span>, <span class="st">"welfare"</span><span class="op">)</span>, vintage <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="fu">obr_rule_status</span><span class="op">(</span>vintage <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>             <span class="co"># pass / fail / margin per rule</span></span>
 <span><span class="fu">obr_rules_history</span><span class="op">(</span><span class="va">rule</span><span class="op">)</span>                     <span class="co"># headroom path across all forecasts</span></span></code></pre></div>
 <p>Encodes: - Stability rule: current budget surplus/deficit vs Charter rolling target year (year 5 until 2026-27, then year 3) - Investment rule: PSNFL/GDP year-on-year change vs target year - Welfare cap: AME-capped welfare vs cap level (GBP 194.5bn for 2029-30) - Fiscal lock (Budget Responsibility Act 2024): non-numeric, but exposed as <code>obr_fiscal_lock_assessments()</code> for the OBR’s required statements</p>

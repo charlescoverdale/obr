@@ -49,6 +49,8 @@ wrappers below remain as convenience entry points.
   : Get EFO economy projections
 - [`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
   : List available EFO economy measures
+- [`get_monthly_profiles()`](https://charlescoverdale.github.io/obr/reference/get_monthly_profiles.md)
+  : Get the OBR monthly profiles for the public finances
 
 ## Welfare Trends Report
 
@@ -73,10 +75,13 @@ since 2010.
 
 ## Fiscal rules
 
-Charter for Budget Responsibility rule definitions.
+Charter for Budget Responsibility rule definitions and the
+stability-rule margin derived from the latest EFO.
 
 - [`obr_fiscal_rules()`](https://charlescoverdale.github.io/obr/reference/obr_fiscal_rules.md)
   : Get the current UK fiscal rules
+- [`obr_headroom()`](https://charlescoverdale.github.io/obr/reference/obr_headroom.md)
+  : Compute the stability-rule margin from the EFO forecast
 
 ## Vintage layer
 

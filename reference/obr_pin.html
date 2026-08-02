@@ -13,7 +13,7 @@ overwritten or removed via obr_unpin()."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,11 @@ overwritten or removed via <code><a href="obr_unpin.html">obr_unpin()</a></code>
 
 <dl><dt id="arg-vintage">vintage<a class="anchor" aria-label="anchor" href="#arg-vintage"></a></dt>
 <dd><p>Vintage label such as <code>"October 2024"</code>. See
-<code><a href="obr_efo_vintages.html">obr_efo_vintages()</a></code> for the full list. If <code>NULL</code>, this function clears
+<code><a href="obr_efo_vintages.html">obr_efo_vintages()</a></code> for the full list. A well-formed label that is not
+yet in the package's EFO calendar (e.g. a brand-new EFO published after
+this package version was released) is accepted with a warning: download
+URLs are then constructed from the OBR's slug convention, so a new EFO
+can be pinned on publication day. If <code>NULL</code>, this function clears
 the pin (equivalent to calling <code><a href="obr_unpin.html">obr_unpin()</a></code>).</p></dd>
 
 </dl></div>

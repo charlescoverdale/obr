@@ -21,6 +21,7 @@ Other EFO:
 [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
 [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md),
 [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md),
+[`get_monthly_profiles()`](https://charlescoverdale.github.io/obr/reference/get_monthly_profiles.md),
 [`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
 
 ## Examples

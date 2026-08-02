@@ -1,61 +1,82 @@
-# Summarise policy measures by fiscal event
+# Get the OBR monthly profiles for the public finances
 
-Aggregates the measures returned by
-[`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)
-to give the net Exchequer effect (positive = revenue-raising /
-spending-reducing for tax, spending-increasing for spending) by fiscal
-event and fiscal year.
+Downloads (and caches) the monthly profiles workbook the OBR publishes
+alongside each *Economic and Fiscal Outlook*. The profiles apportion the
+full-year EFO forecast for receipts, spending, and the central
+government net cash requirement (CGNCR) across the twelve months of the
+fiscal year, so that each month's ONS/HMT public sector finances outturn
+can be judged against the path implied by the OBR's forecast.
 
 ## Usage
 
 ``` r
-policy_measures_summary(x)
+get_monthly_profiles(
+  sheet = c("profiles", "cgncr"),
+  vintage = NULL,
+  refresh = FALSE
+)
 ```
 
 ## Arguments
 
-- x:
+- sheet:
 
-  An `obr_tbl` returned by
-  [`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md).
+  Which profile table to return. `"profiles"` (the default) returns the
+  receipts and spending profiles; `"cgncr"` returns the central
+  government net cash requirement breakdown.
+
+- vintage:
+
+  Optional EFO vintage label such as `"March 2026"`. If `NULL` (the
+  default), uses any pin set via
+  [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md)
+  or resolves the latest live profiles workbook.
+
+- refresh:
+
+  Logical. If `TRUE`, re-download even if a cached copy exists. Defaults
+  to `FALSE`.
 
 ## Value
 
-An `obr_tbl` with columns:
+An `obr_tbl` with the standard schema columns (`period`, `period_type`,
+`series`, `metric_type`, `value`, `unit`). Monthly rows have
+`period_type = "month"` and `period` in `"YYYY-MM"` format; each series
+also carries one `period_type = "fiscal_year"` row holding the full-year
+EFO forecast the profile sums to. All values are GBP billion.
 
-- type:
+## Details
 
-  `"tax"` or `"spending"`
+This is the reference point used every month in the run-up to a fiscal
+event ("borrowing so far this year vs the OBR profile"). The OBR itself
+publishes a monthly commentary against these profiles; this function
+provides the underlying numbers in tidy long format. Pair with monthly
+outturn data (e.g. from the ONS public sector finances release) to
+compute in-year deviations from profile.
 
-- event:
-
-  Fiscal event
-
-- fiscal_year:
-
-  Fiscal year
-
-- value_mn:
-
-  Sum of the Exchequer effect across all measures scored at that event,
-  in GBP million
-
-Provenance is preserved.
+The profiles workbook is typically published a few weeks after the EFO
+itself. The OBR describes the profiles as broad-brush and illustrative;
+see the Notes sheet of the source workbook.
 
 ## See also
 
-Other policy measures:
-[`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)
+Other EFO:
+[`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
+[`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md),
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md),
+[`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md),
+[`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
 
 ## Examples
 
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-pm <- get_policy_measures(type = "tax", since = "2024-25")
+
+mp <- tryCatch(get_monthly_profiles(), error = function(e) NULL)
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■                  
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
@@ -67,7 +88,7 @@ pm <- get_policy_measures(type = "tax", since = "2024-25")
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■                   
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
@@ -89,53 +110,71 @@ pm <- get_policy_measures(type = "tax", since = "2024-25")
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 4s for retry backoff ■■■■■■■■■■■                     
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■                     
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■                      
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■                      
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Warning: Could not resolve a current Policy Measures Database URL from 16 candidates.
+#> Warning: Could not resolve a current EFO Monthly Profiles URL from 9 candidates.
 #> ℹ Falling back to
-#>   <https://obr.uk/download/policy-measures-database-march-2025/>.
+#>   <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-monthly-profiles/>.
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
-#> ℹ Downloading policy_measures_database.xlsx from OBR...
+#> ℹ Downloading efo_monthly_profiles.xlsx from OBR...
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■                     
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 8s for retry backoff ■■■■                            
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■                    
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-#> Error: Failed to download
-#> <https://obr.uk/download/policy-measures-database-march-2025/>.
-#> ✖ HTTP 403 Forbidden.
-policy_measures_summary(pm)
-#> Error: object 'pm' not found
+if (!is.null(mp)) {
+  # Monthly profile for HMRC cash receipts
+  mp[mp$series == "HMRC cash receipts" & mp$period_type == "month", ]
+}
+
+# CGNCR breakdown by month
+cg <- tryCatch(get_monthly_profiles("cgncr"), error = function(e) NULL)
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■                
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■                
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■                
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Warning: Could not resolve a current EFO Monthly Profiles URL from 9 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-monthly-profiles/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading efo_monthly_profiles.xlsx from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+
 options(op)
 # }
 ```

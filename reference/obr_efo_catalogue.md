@@ -64,6 +64,7 @@ Other EFO:
 [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md),
 [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md),
 [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md),
+[`get_monthly_profiles()`](https://charlescoverdale.github.io/obr/reference/get_monthly_profiles.md),
 [`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.md)
 
 ## Examples
