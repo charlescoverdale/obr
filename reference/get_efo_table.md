@@ -74,34 +74,32 @@ op <- options(obr.cache_dir = tempdir())
 
 # Net borrowing components (same data as get_efo_fiscal())
 get_efo_table("6.5")
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Warning: Could not resolve a current EFO Aggregates URL from 9 candidates.
 #> ℹ Falling back to
@@ -109,11 +107,12 @@ get_efo_table("6.5")
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
 #> ℹ Downloading efo_aggregates.xlsx from OBR...
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■■■■■■■                      
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 8s for retry backoff ■■■■■■■                         
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
@@ -121,39 +120,32 @@ get_efo_table("6.5")
 
 # CPI category inflation by year
 get_efo_table("1.19")
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■                      
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■                      
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■                      
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■                       
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Warning: Could not resolve a current EFO Economy URL from 9 candidates.
 #> ℹ Falling back to
@@ -162,10 +154,10 @@ get_efo_table("1.19")
 #>   vintage explicitly when that feature ships.
 #> ℹ Downloading efo_economy.xlsx from OBR...
 #> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■                    
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 8s for retry backoff ■■■■■■■■■                       
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
@@ -175,39 +167,31 @@ get_efo_table("1.19")
 get_efo_table("6.13")
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■                   
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■                   
+#> Waiting 4s for retry backoff ■■■■■■■■                        
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■                   
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 4s for retry backoff ■■■■■■■■                        
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Warning: Could not resolve a current EFO Aggregates URL from 9 candidates.
 #> ℹ Falling back to
@@ -215,13 +199,11 @@ get_efo_table("6.13")
 #> ! Returned data may be older than expected. Run with internet access, or pin a
 #>   vintage explicitly when that feature ships.
 #> ℹ Downloading efo_aggregates.xlsx from OBR...
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■                     
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■                            
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■                   
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 8s for retry backoff ■■■■■■■■■■                      
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
@@ -230,12 +212,13 @@ get_efo_table("6.13")
 # Pin to a specific vintage
 get_efo_table("6.5", vintage = "October 2024")
 #> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■■■                          
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■               
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.

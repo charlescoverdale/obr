@@ -73,11 +73,11 @@ diff <- obr_compare_vintages("October 2024", "March 2026")
 #> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■                            
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 8s for retry backoff ■■■■■■■■■■                      
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
@@ -89,12 +89,13 @@ diff[diff$series == "Net borrowing", ]
 inf_diff <- obr_compare_vintages("October 2024", "March 2026",
                                  what = "inflation")
 #> ℹ Downloading efo_economy_october_2024.xlsx from OBR...
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■                    
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■■■■                         
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 8s for retry backoff ■■■■                            
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■                  
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-economy/>.
@@ -104,11 +105,12 @@ inf_diff <- obr_compare_vintages("October 2024", "March 2026",
 di_diff <- obr_compare_vintages("November 2025", "March 2026",
                                 what = "6.16")
 #> ℹ Downloading efo_aggregates_november_2025.xlsx from OBR...
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
 #> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 8s for retry backoff ■■■■■■■■■■                      
-#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 8s for retry backoff ■■■■■■                          
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
 #> Waiting 8s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Error: Failed to download
 #> <https://obr.uk/download/november-2025-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
