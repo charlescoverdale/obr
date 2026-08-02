@@ -2,7 +2,10 @@
 # obr_compare_vintages():    diff two EFO vintages on the standard schema.
 # obr_actual_vs_forecast():  pair OBR forecasts with ONS outturn from the PFD.
 
-# Internal: dispatch a "what" key to the underlying data function.
+# Internal: dispatch a "what" key to the underlying data function. Named
+# shortcuts cover the four original v0.4.0 comparisons; any other value is
+# treated as an EFO catalogue table id (v0.6.0), so all 39 detailed-forecast
+# tables can be diffed across vintages.
 .compare_fn <- function(what) {
   switch(
     what,
@@ -10,11 +13,18 @@
     "inflation"  = function(...) get_efo_economy("inflation", ...),
     "labour"     = function(...) get_efo_economy("labour", ...),
     "output_gap" = function(...) get_efo_economy("output_gap", ...),
-    cli::cli_abort(c(
-      "Unknown {.arg what} value: {.val {what}}.",
-      "i" = paste0("Use one of: {.val fiscal}, {.val inflation}, ",
-                   "{.val labour}, {.val output_gap}.")
-    ))
+    {
+      cat_ids <- efo_catalogue_table()$table_id
+      if (!what %in% cat_ids) {
+        cli::cli_abort(c(
+          "Unknown {.arg what} value: {.val {what}}.",
+          "i" = paste0("Use one of {.val fiscal}, {.val inflation}, ",
+                       "{.val labour}, {.val output_gap}, or any table id ",
+                       "from {.fn obr_efo_catalogue} (e.g. {.val 6.13}).")
+        ))
+      }
+      function(...) get_efo_table(what, ...)
+    }
   )
 }
 
@@ -38,9 +48,11 @@
 #'
 #' @param vintage_a,vintage_b EFO vintage labels (e.g. `"October 2024"`,
 #'   `"March 2026"`). Use [obr_efo_vintages()] to see all valid labels.
-#' @param what Which EFO table to compare. One of `"fiscal"` (Table 6.5
-#'   aggregates, the default), `"inflation"` (sheet 1.7), `"labour"`
-#'   (sheet 1.6), or `"output_gap"` (sheet 1.14).
+#' @param what Which EFO table to compare. Either one of the named
+#'   shortcuts `"fiscal"` (Table 6.5, the default), `"inflation"` (sheet
+#'   1.7), `"labour"` (sheet 1.6), `"output_gap"` (sheet 1.14), or any
+#'   table id from [obr_efo_catalogue()] (e.g. `"6.13"`, `"1.19"`), so all
+#'   detailed-forecast tables can be diffed across vintages.
 #' @param refresh Logical. If `TRUE`, re-download even if cached files
 #'   exist. Defaults to `FALSE`.
 #'
@@ -59,25 +71,40 @@
 #' # Compare the inflation forecast across two vintages
 #' inf_diff <- obr_compare_vintages("October 2024", "March 2026",
 #'                                  what = "inflation")
+#'
+#' # Any catalogue table works too, e.g. debt interest (Table 6.16)
+#' di_diff <- obr_compare_vintages("November 2025", "March 2026",
+#'                                 what = "6.16")
 #' options(op)
 #' }
 #'
 #' @family forecasts
 #' @export
 obr_compare_vintages <- function(vintage_a, vintage_b,
-                                 what = c("fiscal", "inflation",
-                                          "labour", "output_gap"),
+                                 what = "fiscal",
                                  refresh = FALSE) {
-  what <- match.arg(what)
-  fn   <- .compare_fn(what)
+  if (!is.character(what) || length(what) != 1L || is.na(what)) {
+    cli::cli_abort("{.arg what} must be a single character string.")
+  }
+  fn <- .compare_fn(what)
 
   a <- fn(vintage = vintage_a, refresh = refresh)
   b <- fn(vintage = vintage_b, refresh = refresh)
+  if (is.null(a) || is.null(b)) {
+    cli::cli_abort(c(
+      "Table {.val {what}} could not be fetched for both vintages.",
+      "i" = "Cross-reference sheets (see {.fn obr_efo_catalogue}) cannot be compared directly."
+    ))
+  }
 
   prov_b  <- obr_provenance(b)
   prov_a  <- obr_provenance(a)
 
   keys <- c("period", "period_type", "series", "metric_type", "unit")
+  # Some tables carry extra identifying columns (e.g. sub_sector for 6.4);
+  # include any that appear in both vintages so the join stays one-to-one.
+  extra <- setdiff(intersect(names(a), names(b)), c(keys, "value"))
+  keys  <- c(keys, extra)
   out  <- merge(
     as.data.frame(a)[, c(keys, "value")],
     as.data.frame(b)[, c(keys, "value")],

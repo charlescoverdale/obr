@@ -14,11 +14,28 @@ obr_resolve_url <- function(url_candidates) {
     resp <- tryCatch(
       httr2::request(url) |>
         httr2::req_user_agent("obr R package (https://github.com/charlescoverdale/obr)") |>
+        httr2::req_throttle(rate = 5 / 10) |>
+        # The OBR CDN sometimes 403s bursts of probes (each vintage probe is
+        # a fresh GET). Those are rate-limit responses, not missing files, so
+        # back off and retry them; genuine 404s fail fast.
+        httr2::req_retry(
+          max_tries    = 3,
+          is_transient = function(resp) {
+            httr2::resp_status(resp) %in% c(403L, 429L, 503L)
+          },
+          backoff      = function(i) min(10, 2 ^ i)
+        ) |>
         httr2::req_error(is_error = function(resp) FALSE) |>
         httr2::req_perform(),
       error = function(e) NULL
     )
     if (!is.null(resp) && httr2::resp_status(resp) < 400L) {
+      # Soft-404 guard: a candidate slug that resolves to an HTML page is a
+      # WordPress error/landing page, not a data file. Only accept responses
+      # whose content type is not text/html.
+      ctype <- tryCatch(httr2::resp_content_type(resp),
+                        error = function(e) NA_character_)
+      if (!is.na(ctype) && grepl("text/html", ctype, fixed = TRUE)) next
       final_url <- tryCatch(httr2::resp_url(resp), error = function(e) url)
       return(list(url = url, final_url = final_url, source = "live"))
     }
@@ -27,9 +44,13 @@ obr_resolve_url <- function(url_candidates) {
 }
 
 # Build EFO URL candidates for recent publication cycles (most recent first).
+# Months are ordered latest-in-year first so that, once an autumn EFO
+# publishes, it wins over that year's spring EFO. With march probed first
+# (the pre-0.6.0 order), the resolver kept returning the spring EFO for the
+# rest of the year: exactly the failure mode a Budget-day user would hit.
 efo_url_candidates <- function(suffix) {
   current_year <- as.integer(format(Sys.Date(), "%Y"))
-  months <- c("march", "october", "november")
+  months <- c("november", "october", "march")
   candidates <- character(0)
   for (yr in seq(current_year, current_year - 2L)) {
     for (mn in months) {
@@ -63,7 +84,7 @@ wtr_url_candidates <- function() {
 # first and fall through to the known-stable slug as a fallback.
 forecasts_url_candidates <- function() {
   current_year <- as.integer(format(Sys.Date(), "%Y"))
-  months <- c("march", "november", "october", "july")
+  months <- c("november", "october", "july", "march")
   candidates <- character(0)
   for (yr in seq(current_year, current_year - 3L)) {
     for (mn in months) {
@@ -185,7 +206,7 @@ resolve_sheet_name <- function(path, primary, fallback_pattern = NULL) {
 # Allowed values for the schema metadata columns.
 # These are the controlled vocabularies that all data-returning functions
 # populate from 0.4.0 onwards.
-OBR_PERIOD_TYPES <- c("fiscal_year", "quarter", "calendar_year")
+OBR_PERIOD_TYPES <- c("fiscal_year", "quarter", "calendar_year", "month")
 OBR_METRIC_TYPES <- c("level", "yoy_pct", "index", "pct", "pct_pts")
 OBR_UNITS        <- c("gbp_bn", "gbp_mn", "pct", "pct_pts", "index",
                       "count_mn", "count_k", "count", "hours", "ratio")

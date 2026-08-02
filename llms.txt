@@ -4,18 +4,22 @@
 
 Full API reference (for agents): https://raw.githubusercontent.com/charlescoverdale/obr/main/llms-full.txt
 
-Version: 0.2.5. License: MIT.
+Version: 0.6.0. License: MIT.
 
 ## Functions
 
 - [`clear_cache()`](https://charlescoverdale.github.io/obr/reference/clear_cache.html): Clear cached OBR files
 - [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.html): Get EFO economy projections
 - [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.html): Get EFO fiscal projections (net borrowing components)
+- [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.html): Get any EFO detailed-forecast table by id
 - [`get_expenditure()`](https://charlescoverdale.github.io/obr/reference/get_expenditure.html): Get Total Managed Expenditure
+- [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.html): Get OBR forecast revisions
 - [`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.html): Get OBR forecast history for a fiscal series
 - [`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.html): Get incapacity benefit caseloads
 - [`get_incapacity_spending()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_spending.html): Get incapacity benefits spending by type
-- [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.html): Deprecated in 0.5.1 (OBR restructured the FSR workbooks in July 2026); returns NULL with a warning
+- [`get_monthly_profiles()`](https://charlescoverdale.github.io/obr/reference/get_monthly_profiles.html): Get the OBR monthly profiles for the public finances
+- [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.html): Get long-run state pension spending projections (deprecated)
+- [`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.html): Get OBR policy measures by fiscal event
 - [`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.html): Get Public Sector Net Borrowing (PSNB)
 - [`get_psnd()`](https://charlescoverdale.github.io/obr/reference/get_psnd.html): Get Public Sector Net Debt (PSND)
 - [`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.html): Get all Public Finances Databank aggregates
@@ -23,10 +27,22 @@ Version: 0.2.5. License: MIT.
 - [`get_welfare_spending()`](https://charlescoverdale.github.io/obr/reference/get_welfare_spending.html): Get working-age welfare spending
 - [`list_efo_economy_measures()`](https://charlescoverdale.github.io/obr/reference/list_efo_economy_measures.html): List available EFO economy measures
 - [`list_forecast_series()`](https://charlescoverdale.github.io/obr/reference/list_forecast_series.html): List available forecast series
+- [`obr_actual_vs_forecast()`](https://charlescoverdale.github.io/obr/reference/obr_actual_vs_forecast.html): Pair OBR forecasts with PFD outturn
+- [`obr_as_of()`](https://charlescoverdale.github.io/obr/reference/obr_as_of.html): Find the OBR publication that was current on a given date
+- [`obr_compare_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_compare_vintages.html): Compare two EFO vintages
+- [`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.html): List the EFO detailed-forecast tables this package can fetch
+- [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.html): List known OBR Economic and Fiscal Outlook vintages
+- [`obr_fiscal_rules()`](https://charlescoverdale.github.io/obr/reference/obr_fiscal_rules.html): Get the current UK fiscal rules
+- [`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.html): Build a wide real-time panel of OBR forecasts
+- [`obr_headroom()`](https://charlescoverdale.github.io/obr/reference/obr_headroom.html): Compute the stability-rule margin from the EFO forecast
+- [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.html): Pin a session-wide OBR EFO vintage
+- [`obr_pinned()`](https://charlescoverdale.github.io/obr/reference/obr_pinned.html): Show the currently pinned OBR EFO vintage
+- [`obr_provenance()`](https://charlescoverdale.github.io/obr/reference/obr_provenance.html): Extract OBR provenance metadata
+- [`obr_unpin()`](https://charlescoverdale.github.io/obr/reference/obr_unpin.html): Clear the pinned OBR EFO vintage
+- [`policy_measures_summary()`](https://charlescoverdale.github.io/obr/reference/policy_measures_summary.html): Summarise policy measures by fiscal event
 
 ## Documentation
 
 - [Full reference](https://charlescoverdale.github.io/obr/reference/)
 - [GitHub](https://github.com/charlescoverdale/obr)
 - [CRAN](https://CRAN.R-project.org/package=obr)
-

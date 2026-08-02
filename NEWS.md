@@ -1,3 +1,49 @@
+# obr 0.6.0
+
+Budget-readiness release ahead of the autumn 2026 fiscal event.
+
+## New: `get_monthly_profiles()`
+
+Wraps the monthly profiles workbook the OBR publishes alongside each EFO:
+the full-year forecast for receipts, spending, and the CGNCR apportioned
+across the twelve months of the fiscal year. These profiles are the
+reference point for judging each month's ONS/HMT public sector finances
+outturn ("borrowing so far this year vs the OBR profile") in the run-up
+to a fiscal event. Monthly rows use the new `period_type = "month"`
+(`period` in `"YYYY-MM"` format); each series also carries a
+`fiscal_year` row with the full-year forecast the profile sums to.
+
+## New: `obr_headroom()`
+
+Returns the current budget surplus path from EFO Table 6.5: the margin
+against the Charter's stability rule ("headroom") in every forecast year.
+Pass `target_year` to flag the year the rule bites on. The target year is
+deliberately not guessed by the package because the Charter's convention
+changes over time; see `obr_fiscal_rules()`.
+
+## Autumn-EFO readiness fixes
+
+* Fixed a URL-resolution bug that would have surfaced on Budget day: the
+  dynamic resolver probed `march-<year>` slugs before `october-<year>` /
+  `november-<year>` within each year, so once an autumn EFO published,
+  the package would have kept silently returning the spring EFO for the
+  rest of the year. Candidates are now probed newest-first. The same fix
+  is applied to the Historical Forecasts Database and Policy Measures
+  Database resolvers.
+* The resolver now rejects candidate URLs that resolve to HTML pages
+  (soft 404s), so a WordPress error page can never be cached as data.
+* `obr_pin()` and `vintage =` arguments now accept a well-formed vintage
+  label that is not yet in the package's EFO calendar (e.g.
+  `"November 2026"` on Budget day, before a package update ships). The
+  download URL is constructed from the OBR's slug convention, with a
+  warning.
+
+## `obr_compare_vintages()` covers all 39 tables
+
+`what` now accepts any table id from `obr_efo_catalogue()` (e.g.
+`"6.16"` to diff the debt interest forecast across two vintages), in
+addition to the four named shortcuts.
+
 # obr 0.5.1
 
 ## Deprecated

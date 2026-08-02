@@ -41,8 +41,8 @@ fiscal_rules_table <- function() {
 #' fiscal rules currently in force, as encoded in the package at the time
 #' of release. Numerical headroom against each rule is *not* shipped as a
 #' constant because it is updated at every fiscal event and would go stale
-#' within months; users should derive headroom from the current EFO output
-#' of [get_efo_fiscal()], or consult the OBR's EFO press release for the
+#' within months; use [obr_headroom()] to derive the stability-rule margin
+#' from the current EFO, or consult the OBR's EFO press release for the
 #' relevant vintage.
 #'
 #' The current Charter (Autumn 2024, with an Autumn 2025 update) sets three

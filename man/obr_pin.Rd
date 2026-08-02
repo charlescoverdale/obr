@@ -8,7 +8,11 @@ obr_pin(vintage = NULL)
 }
 \arguments{
 \item{vintage}{Vintage label such as \code{"October 2024"}. See
-\code{\link[=obr_efo_vintages]{obr_efo_vintages()}} for the full list. If \code{NULL}, this function clears
+\code{\link[=obr_efo_vintages]{obr_efo_vintages()}} for the full list. A well-formed label that is not
+yet in the package's EFO calendar (e.g. a brand-new EFO published after
+this package version was released) is accepted with a warning: download
+URLs are then constructed from the OBR's slug convention, so a new EFO
+can be pinned on publication day. If \code{NULL}, this function clears
 the pin (equivalent to calling \code{\link[=obr_unpin]{obr_unpin()}}).}
 }
 \value{

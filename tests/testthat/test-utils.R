@@ -79,3 +79,16 @@ test_that("obr_long() infers metric_type from series when omitted", {
   )
   expect_equal(out$metric_type, c("index", "yoy_pct"))
 })
+
+test_that("URL candidates probe autumn slugs before spring within a year", {
+  cands <- efo_url_candidates("detailed-forecast-tables-aggregates")
+  yr <- format(Sys.Date(), "%Y")
+  nov <- grep(paste0("november-", yr), cands)
+  oct <- grep(paste0("october-", yr), cands)
+  mar <- grep(paste0("march-", yr), cands)
+  expect_true(nov < oct && oct < mar)
+
+  fc <- forecasts_url_candidates()
+  expect_true(grep(paste0("november-", yr), fc) <
+                grep(paste0("march-", yr), fc))
+})

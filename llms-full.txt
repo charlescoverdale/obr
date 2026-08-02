@@ -1,15 +1,44 @@
 # obr — full API reference
 
-> Provides clean, tidy access to data published by the 'Office for Budget Responsibility' ('OBR'), the UK's independent fiscal watchdog.
+> Tidy access to Office for Budget Responsibility data: the Public Finances Databank, Historical Official Forecasts Database, Economic and Fiscal Outlook detailed forecast tables (39 tables via a generic dispatcher), EFO monthly profiles, Welfare Trends Report, Policy Measures Database, fiscal rules, and a vintage layer for reproducibility. Every returned object is an `obr_tbl`: a data.frame with provenance (source URL, vintage, retrieval time, file MD5) attached.
 
-- Version: 0.2.5
-- Install: `install.packages("obr")`
-- CRAN: https://CRAN.R-project.org/package=obr
-- GitHub: https://github.com/charlescoverdale/obr
-- Reference site: https://charlescoverdale.github.io/obr/
+Version: 0.6.0. License: MIT. Author: Charles Coverdale.
 
-This file is a self-contained reference for LLM agents: every exported
-function with its signature, arguments, return value, and example.
+Standard schema (v0.4.0+): most data functions return columns `period`, `period_type` (fiscal_year / quarter / calendar_year / month), `series`, `metric_type` (level / yoy_pct / index / pct / pct_pts), `value`, `unit` (gbp_bn, pct, ...). Extra identifying columns are documented per function.
+
+## `[.obr_tbl`
+
+**Subset an obr_tbl, preserving provenance**
+
+Standard data.frame subsetting drops the `obr_tbl` class. This method preserves it (and the provenance attributes) when the result is still a data.frame.
+
+**Usage**
+
+```r
+x[i, j]  # standard data.frame subsetting, provenance preserved
+```
+
+**Returns**
+
+An `obr_tbl` if the subset is two-dimensional, otherwise the underlying vector.
+
+---
+
+## `as.data.frame.obr_tbl`
+
+**Coerce an obr_tbl to a plain data.frame**
+
+Strips the provenance attributes and the `obr_tbl` class so the result interacts smoothly with packages that dispatch on `data.frame` directly.
+
+**Usage**
+
+```r
+as.data.frame(x, ...)
+```
+
+**Returns**
+
+A plain `data.frame` with no provenance.
 
 ---
 
@@ -29,49 +58,27 @@ clear_cache()
 
 Invisibly returns `NULL`.
 
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-clear_cache()
-options(op)
-```
-
 ---
 
 ## `get_efo_economy()`
 
 **Get EFO economy projections**
 
-Downloads (and caches) the OBR Economic and Fiscal Outlook Detailed Forecast Tables — Economy file and returns quarterly economic projections for a chosen measure in tidy long format.
+Downloads (and caches) the OBR Economic and Fiscal Outlook Detailed Forecast Tables - Economy file and returns quarterly economic projections for a chosen measure in tidy long format.
 
 **Usage**
 
 ```r
-get_efo_economy(measure = "inflation", refresh = FALSE)
+get_efo_economy(
+  measure = c("inflation", "labour", "output_gap"),
+  refresh = FALSE,
+  vintage = NULL
+)
 ```
-
-**Arguments**
-
-- `measure` — Character. Which economy table to return. One of `"labour"`, `"inflation"`, or `"output_gap"`. Defaults to `"inflation"`.
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
 
 **Returns**
 
-A data frame with columns: periodCalendar quarter, e.g. `"2025Q1"` (character) seriesVariable name, e.g. `"CPI"` (character) valueValue in units appropriate to the series (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-# CPI and RPI since 2008
-inf <- get_efo_economy("inflation")
-inf[inf$series == "CPI", ]
-
-# Labour market
-lab <- get_efo_economy("labour")
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema (columns: `period`, `period_type`, `series`, `metric_type`, `value`, `unit`): periodCalendar quarter, e.g. `"2025Q1"` (character) period_typeAlways `"quarter"` for this function (character) seriesVariable name, e.g. `"CPI"` (character) metric_typeOne of `"index"`, `"yoy_pct"`, `"pct"`, `"level"`, classified from the series name. This is the v0.4.0 fix for the v0.3.x issue where, e.g., CPI Index values and CPI YoY values shared a single `value` column with no machine-readable distinction. valueNumeric value in units described by `unit` unitOne of `"i ...
 
 ---
 
@@ -79,30 +86,35 @@ options(op)
 
 **Get EFO fiscal projections (net borrowing components)**
 
-Downloads (and caches) the OBR Economic and Fiscal Outlook Detailed Forecast Tables — Aggregates file and returns the components of net borrowing (Table 6.5) in tidy long format.
+Downloads (and caches) the OBR Economic and Fiscal Outlook Detailed Forecast Tables - Aggregates file and returns the components of net borrowing (Table 6.5) in tidy long format.
 
 **Usage**
 
 ```r
-get_efo_fiscal(refresh = FALSE)
+get_efo_fiscal(refresh = FALSE, vintage = NULL)
 ```
-
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
 
 **Returns**
 
-A data frame with columns: fiscal_yearFiscal year being forecast, e.g. `"2025-26"` (character) seriesComponent name, e.g. `"Net borrowing"` (character) value_bnProjected value in £GBP billion (numeric)
+An `obr_tbl` with the standard v0.4.0 schema (columns: `period`, `period_type`, `series`, `metric_type`, `value`, `unit`): periodFiscal year being forecast, e.g. `"2025-26"` (character) period_typeAlways `"fiscal_year"` for this function (character) seriesComponent name, e.g. `"Net borrowing"` (character) metric_typeAlways `"level"` for this function (character) valueProjected value (numeric) unitAlways `"gbp_bn"` for this function (character)
 
-**Example**
+---
+
+## `get_efo_table()`
+
+**Get any EFO detailed-forecast table by id**
+
+Generic fetcher that takes an EFO table identifier (e.g. `"6.5"`, `"1.7"`, `"4.1"`) and returns the parsed contents in the standard v0.4.0 schema. Use `` to discover which tables are available.
+
+**Usage**
 
 ```r
-op <- options(obr.cache_dir = tempdir())
-efo <- get_efo_fiscal()
-efo[efo$series == "Net borrowing", ]
-options(op)
+get_efo_table(table_id, vintage = NULL, refresh = FALSE)
 ```
+
+**Returns**
+
+An `obr_tbl` with the standard v0.4.0 schema columns (`period`, `period_type`, `series`, `metric_type`, `value`, `unit`). Returns `NULL` (with a warning) for cross-reference sheets.
 
 ---
 
@@ -110,7 +122,7 @@ options(op)
 
 **Get Total Managed Expenditure**
 
-Downloads (and caches) the OBR Public Finances Databank and returns annual Total Managed Expenditure (TME) in £ billion. TME is the broadest measure of UK government spending.
+Downloads (and caches) the OBR Public Finances Databank and returns annual Total Managed Expenditure (TME) in £GBP billion. TME is the broadest measure of UK government spending.
 
 **Usage**
 
@@ -118,22 +130,27 @@ Downloads (and caches) the OBR Public Finances Databank and returns annual Total
 get_expenditure(refresh = FALSE)
 ```
 
-**Arguments**
+**Returns**
 
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
+An `obr_tbl` with the standard v0.4.0 schema. `series` is `"TME"`, `metric_type` is `"level"`, `unit` is `"gbp_bn"`. See `` for column definitions.
+
+---
+
+## `get_forecast_revisions()`
+
+**Get OBR forecast revisions**
+
+Downloads (and caches) the OBR Forecast Revisions Database, which decomposes each EFO-to-EFO revision in the headline Public Sector Net Borrowing forecast into three top-level components - policy, classifications and one-offs, and underlying (economic determinants) - with sub-components for each.
+
+**Usage**
+
+```r
+get_forecast_revisions(unit = c("gbp_bn", "pct_gdp"), refresh = FALSE)
+```
 
 **Returns**
 
-A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) tme_bnTotal managed expenditure in £ billion (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-tme <- get_expenditure()
-tail(tme)
-options(op)
-```
+An `obr_tbl` with columns: forecast_dateForecast vintage, e.g. `"November 2024"` (character). componentRevision component. Top-level rows are `"Total"`, `"Policy"`, `"Classifications and one-offs"`, and `"Underlying"`. Sub-components carry the OBR's `"of which: ..."` labels (character). fiscal_yearFiscal year being revised, e.g. `"2024-25"` (character). valueRevision value, in GBP billion or per cent of GDP per `unit` (numeric). A positive value indicates an upward revision to PSNB.
 
 ---
 
@@ -149,27 +166,9 @@ Downloads (and caches) the OBR Historical Official Forecasts Database and return
 get_forecasts(series = "PSNB", refresh = FALSE)
 ```
 
-**Arguments**
-
-- `series` — Character. The series to return. Use `list_forecast_series` to see all options. Defaults to `"PSNB"` (Public Sector Net Borrowing in £bn).
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: seriesSeries name as supplied (character) forecast_dateWhen the forecast was published, e.g. `"March 2024"` (character) fiscal_yearThe fiscal year being forecast, e.g. `"2024-25"` (character) valueForecast value (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-# All PSNB forecasts
-get_forecasts("PSNB")
-
-# What did OBR forecast for 2024-25 PSNB at each Budget?
-psnb <- get_forecasts("PSNB")
-psnb[psnb$fiscal_year == "2024-25", ]
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema plus a `forecast_date` column (so each row identifies one fiscal-year value at one fiscal event): forecast_dateWhen the forecast was published, e.g. `"March 2024"` periodFiscal year being forecast, e.g. `"2024-25"` period_typeAlways `"fiscal_year"` seriesSeries name as supplied (character) metric_typeOne of `"level"`, `"pct"`, `"yoy_pct"`, set per series. CPI / GDP / real_GDP are `"yoy_pct"` (rates of change); PSNB / receipts / expenditure are `"level"`; the _pct variants and PSND are `"pct"` (% of GDP). valueNumeric forecast value in the unit descr ...
 
 ---
 
@@ -185,23 +184,9 @@ Downloads (and caches) the OBR Welfare Trends Report charts and tables workbook 
 get_incapacity_caseloads(refresh = FALSE)
 ```
 
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: yearFiscal year, e.g. `"2023-24"` (character) seriesEither `"Claimants"` (thousands) or `"Share of working age population"` (per cent) (character) valueValue in units appropriate to the series (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-cases <- get_incapacity_caseloads()
-# Total claimants
-cases[cases$series == "Claimants", ]
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema. The two series (`"Claimants"` and `"Share of working age population"`) carry different units: claimants are in thousands and the share is a percentage. After calling, the caller may want to overwrite `unit` to `"count_k"` for the claimants series, since the heuristic classifier cannot infer the "thousands" denomination from the series name alone.
 
 ---
 
@@ -217,28 +202,39 @@ Downloads (and caches) the OBR Welfare Trends Report charts and tables workbook 
 get_incapacity_spending(refresh = FALSE)
 ```
 
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: yearFiscal year, e.g. `"2023-24"` (character) seriesBenefit name (character) valueSpending as a percentage of GDP (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-ib <- get_incapacity_spending()
-unique(ib$series)
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema. `series` is the benefit name, values are spending as a percentage of GDP, `metric_type` is `"pct"`, `unit` is `"pct"`. See `` for full column docs.
 
 ---
 
-## `get_pension_projections()` (deprecated)
+## `get_monthly_profiles()`
 
-**Deprecated in obr 0.5.1.** In July 2026 the OBR restructured the Fiscal Risks and Sustainability Report workbooks. The executive-summary sheet this function read (`C1.2`, state pension spending under demographic and triple-lock scenarios) no longer exists, so the function is retired: it emits a deprecation warning and returns `NULL`. The equivalent series now sits in the FSR Chapter 3 "Long-term spending projections" workbook (Chart 3.11, "State pension spending under alternative uprating assumptions"); see <https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/>.
+**Get the OBR monthly profiles for the public finances**
+
+Downloads (and caches) the monthly profiles workbook the OBR publishes alongside each Economic and Fiscal Outlook. The profiles apportion the full-year EFO forecast for receipts, spending, and the central government net cash requirement (CGNCR) across the twelve months of the fiscal year, so that each month's ONS/HMT public sector finances outturn can be judged against the path implied by the OBR's forecast.
+
+**Usage**
+
+```r
+get_monthly_profiles(
+  sheet = c("profiles", "cgncr"),
+  vintage = NULL,
+  refresh = FALSE
+)
+```
+
+**Returns**
+
+An `obr_tbl` with the standard schema columns (`period`, `period_type`, `series`, `metric_type`, `value`, `unit`). Monthly rows have `period_type = "month"` and `period` in `"YYYY-MM"` format; each series also carries one `period_type = "fiscal_year"` row holding the full-year EFO forecast the profile sums to. All values are GBP billion.
+
+---
+
+## `get_pension_projections()`
+
+**Get long-run state pension spending projections (deprecated)**
+
+Deprecated since obr 0.5.1. In July 2026 the OBR restructured the Fiscal Risks and Sustainability Report workbook set. The executive-summary sheet this function read (`C1.2`, state pension spending split into demographic and triple-lock scenarios) no longer exists, so the function could no longer return data. The equivalent series is now published in the FSR Chapter 3 "Long-term spending projections" workbook, as Chart 3.11 "State pension spending under alternative uprating assumptions", with a different scenario structure (triple-lock, CPI, and average-earnings uprating rather than the old demographic vs triple-lock split). See https://obr.uk/frs/fiscal-risks-and-sustainability-july-2026/. This stub is retained so existing scripts do not error. It emits a deprecation warning and returns `NULL`. It will be removed in a future release.
 
 **Usage**
 
@@ -246,13 +242,40 @@ options(op)
 get_pension_projections(refresh = FALSE)
 ```
 
+**Returns**
+
+`NULL`, invisibly.
+
+---
+
+## `get_policy_measures()`
+
+**Get OBR policy measures by fiscal event**
+
+Downloads (and caches) the OBR Policy Measures Database, a single workbook that lists every tax or spending measure scored at a UK fiscal event, with the Exchequer effect in GBP million for each year of the forecast horizon. Tax measures cover 1970 to date; spending measures cover 2010 to date.
+
+**Usage**
+
+```r
+get_policy_measures(
+  type = c("tax", "spending"),
+  search = NULL,
+  since = NULL,
+  refresh = FALSE
+)
+```
+
+**Returns**
+
+An `obr_tbl` with columns: eventFiscal event that scored the measure, e.g. `"Budget 2024"` (character) measurePlain-English description of the measure (character) headTax head (for tax measures) or spending head (character) fiscal_yearFiscal year being scored, e.g. `"2024-25"` (character) value_mnExchequer effect in GBP million. For tax measures, a positive value raises revenue; for spending measures, a positive value increases spending (numeric)
+
 ---
 
 ## `get_psnb()`
 
 **Get Public Sector Net Borrowing (PSNB)**
 
-Downloads (and caches) the OBR Public Finances Databank and returns annual Public Sector Net Borrowing in £ billion. A positive value means the government is borrowing (deficit); a negative value means a surplus.
+Downloads (and caches) the OBR Public Finances Databank and returns annual Public Sector Net Borrowing in £GBP billion. A positive value means the government is borrowing (deficit); a negative value means a surplus.
 
 **Usage**
 
@@ -260,22 +283,9 @@ Downloads (and caches) the OBR Public Finances Databank and returns annual Publi
 get_psnb(refresh = FALSE)
 ```
 
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) psnb_bnPSNB in £ billion (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-psnb <- get_psnb()
-tail(psnb)
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema. `series` is `"PSNB"`, `metric_type` is `"level"`, `unit` is `"gbp_bn"`. See `` for column definitions.
 
 ---
 
@@ -283,7 +293,7 @@ options(op)
 
 **Get Public Sector Net Debt (PSND)**
 
-Downloads (and caches) the OBR Public Finances Databank and returns annual Public Sector Net Debt in £ billion.
+Downloads (and caches) the OBR Public Finances Databank and returns annual Public Sector Net Debt in £GBP billion.
 
 **Usage**
 
@@ -291,22 +301,9 @@ Downloads (and caches) the OBR Public Finances Databank and returns annual Publi
 get_psnd(refresh = FALSE)
 ```
 
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) psnd_bnPSND in £ billion (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-psnd <- get_psnd()
-tail(psnd)
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema. `series` is `"PSND"`, `metric_type` is `"level"`, `unit` is `"gbp_bn"`. See `` for column definitions.
 
 ---
 
@@ -322,22 +319,9 @@ Downloads (and caches) the OBR Public Finances Databank and returns all aggregat
 get_public_finances(refresh = FALSE)
 ```
 
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) seriesSeries name (character) valueValue in £ billion (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-pf <- get_public_finances()
-unique(pf$series)
-options(op)
-```
+An `obr_tbl` (a `data.frame` with attached provenance) with the standard v0.4.0 schema (columns: `period`, `period_type`, `series`, `metric_type`, `value`, `unit`): periodFiscal year (character, e.g. `"2024-25"`) period_typeAlways `"fiscal_year"` for this function seriesSeries name (character) metric_typeUsually `"level"`; ratio or index series get a more specific value derived from the series name valueNumeric value in units described by `unit` unitUsually `"gbp_bn"`; ratios and indices override Use `` to extract source URL, vintage, and retrieval time.
 
 ---
 
@@ -353,23 +337,9 @@ Downloads (and caches) the OBR Public Finances Databank and returns public secto
 get_receipts(refresh = FALSE)
 ```
 
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: yearFiscal year (character, e.g. `"2024-25"`) seriesTax or receipt category (character) valueValue in £ billion (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-receipts <- get_receipts()
-# Filter to income tax
-receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema (columns: `period`, `period_type`, `series`, `metric_type`, `value`, `unit`). `series` is the tax or receipt category, `metric_type` is `"level"`, `unit` is `"gbp_bn"`. See `` for full column docs.
 
 ---
 
@@ -385,24 +355,9 @@ Downloads (and caches) the OBR Welfare Trends Report charts and tables workbook 
 get_welfare_spending(refresh = FALSE)
 ```
 
-**Arguments**
-
-- `refresh` — Logical. If `TRUE`, re-download even if a cached copy exists. Defaults to `FALSE`.
-
 **Returns**
 
-A data frame with columns: yearFiscal year, e.g. `"2023-24"` (character) seriesSpending category: `"Working-age incapacity benefits spending"` or `"Working-age non-incapacity spending"` (character) valueSpending as a percentage of GDP (numeric)
-
-**Example**
-
-```r
-op <- options(obr.cache_dir = tempdir())
-welfare <- get_welfare_spending()
-# Incapacity share since 2000
-welfare[welfare$series == "Working-age incapacity benefits spending" &
-        welfare$year >= "2000-01", ]
-options(op)
-```
+An `obr_tbl` with the standard v0.4.0 schema (columns: `period`, `period_type`, `series`, `metric_type`, `value`, `unit`). Values are spending as a percentage of GDP; `metric_type` is `"pct"`, `unit` is `"pct"`.
 
 ---
 
@@ -410,7 +365,7 @@ options(op)
 
 **List available EFO economy measures**
 
-Returns a data frame of the economy measures available via `get_efo_economy`, showing the `measure` name to pass and a short description of what each covers.
+Returns a data frame of the economy measures available via ``, showing the `measure` name to pass and a short description of what each covers.
 
 **Usage**
 
@@ -422,19 +377,13 @@ list_efo_economy_measures()
 
 A data frame with columns `measure`, `sheet`, and `description`.
 
-**Example**
-
-```r
-list_efo_economy_measures()
-```
-
 ---
 
 ## `list_forecast_series()`
 
 **List available forecast series**
 
-Returns a data frame showing the series names accepted by `get_forecasts`, the corresponding Excel sheet in the OBR Historical Official Forecasts Database, and a plain-English description.
+Returns a data frame showing the series names accepted by ``, the corresponding Excel sheet in the OBR Historical Official Forecasts Database, and a plain-English description.
 
 **Usage**
 
@@ -446,11 +395,282 @@ list_forecast_series()
 
 A data frame with columns `series`, `sheet`, and `description`.
 
-**Example**
+---
+
+## `obr_actual_vs_forecast()`
+
+**Pair OBR forecasts with PFD outturn**
+
+Joins the long-format Historical Forecasts Database for a given series against the Public Finances Databank outturn for the same series. Returns one row per (forecast vintage, fiscal year) where both an OBR forecast value and an ONS outturn value exist, with the forecast error (`value_forecast - value_actual`) computed.
+
+**Usage**
 
 ```r
-list_forecast_series()
+obr_actual_vs_forecast(
+  series = c("PSNB", "PSND", "expenditure"),
+  refresh = FALSE
+)
 ```
+
+**Returns**
+
+An `obr_tbl` with columns `forecast_date`, `period` (fiscal year being forecast), `period_type`, `series`, `unit`, `value_forecast` (from HFD), `value_actual` (from PFD outturn), and `error` (`value_forecast - value_actual`). Provenance points at the HFD; the PFD source URL is recorded in `notes`.
+
+---
+
+## `obr_as_of()`
+
+**Find the OBR publication that was current on a given date**
+
+Returns the most recent EFO that had been published on or before `date`. Useful for reproducing analyses as they would have looked at a given point in time, before subsequent forecast revisions.
+
+**Usage**
+
+```r
+obr_as_of(date, publication = "EFO")
+```
+
+**Returns**
+
+A length-one character vector containing the vintage label, e.g. `"October 2024"`.
+
+---
+
+## `obr_compare_vintages()`
+
+**Compare two EFO vintages**
+
+Pulls the same EFO table from two vintages and returns a tidy diff with a revision column (`value_b - value_a`). Useful for quantifying how the OBR's view changed between fiscal events.
+
+**Usage**
+
+```r
+obr_compare_vintages(vintage_a, vintage_b, what = "fiscal", refresh = FALSE)
+```
+
+**Returns**
+
+An `obr_tbl` with the standard v0.4.0 schema columns (`period`, `period_type`, `series`, `metric_type`, `unit`) plus `value_a`, `value_b`, and `revision` (`value_b - value_a`). Provenance points at the second vintage; the first vintage URL is recorded in the `notes` field.
+
+---
+
+## `obr_efo_catalogue()`
+
+**List the EFO detailed-forecast tables this package can fetch**
+
+Returns a data frame describing every Detailed Forecast Table in the OBR Economic and Fiscal Outlook (Aggregates and Economy workbooks) that `` knows how to parse.
+
+**Usage**
+
+```r
+obr_efo_catalogue()
+```
+
+**Returns**
+
+A data frame with columns: table_idThe EFO table identifier (e.g. `"6.5"`, `"1.7"`). fileWhich EFO workbook the table sits in: `"aggregates"` or `"economy"`. sectionTheme tag (e.g. `"GDP"`, `"Labour"`, `"Debt"`). titleHuman-readable title taken from the OBR contents page. layoutLayout family the parser uses: `"quarterly_wide"`, `"quarterly_single"`, `"annual_year_wide"`, `"fiscal_year_wide"`, or `"cross_reference"`. default_metric_typeDefault `metric_type` applied to series whose name does not signal otherwise. `NA` lets the heuristic decide per row. default_unitDefault `unit` for the same.
+
+---
+
+## `obr_efo_vintages()`
+
+**List known OBR Economic and Fiscal Outlook vintages**
+
+Returns a data frame of every EFO published since the OBR was created in June 2010, with publication dates and the URL slug used in the OBR's download links. Use this to look up which vintages can be pinned via `` or passed to vintage = arguments on `` and ``.
+
+**Usage**
+
+```r
+obr_efo_vintages()
+```
+
+**Returns**
+
+A data frame with columns: publicationAlways `"EFO"`. vintageVintage label, e.g. `"March 2026"`. datePublication date of the EFO (Date). slugURL slug used by the OBR for that vintage's download pages.
+
+---
+
+## `obr_fiscal_rules()`
+
+**Get the current UK fiscal rules**
+
+Returns a data frame describing the Charter for Budget Responsibility fiscal rules currently in force, as encoded in the package at the time of release. Numerical headroom against each rule is not shipped as a constant because it is updated at every fiscal event and would go stale within months; users should derive headroom from the current EFO output of ``, or consult the OBR's EFO press release for the relevant vintage.
+
+**Usage**
+
+```r
+obr_fiscal_rules()
+```
+
+**Returns**
+
+A data frame with columns: ruleShort rule code: `"stability"`, `"investment"`, `"welfare_cap"`. metricThe metric the rule binds on. target_descriptionPlain-English target. target_year_ruleHow the target year is set under the Charter. direction_of_passSign convention for headroom. source_charterCharter version that defines the rule. source_actAct of Parliament backing the rule.
+
+---
+
+## `obr_forecast_panel()`
+
+**Build a wide real-time panel of OBR forecasts**
+
+Takes the long-format Historical Forecasts Database output of `` and pivots it to a wide panel with one row per forecast vintage (e.g. `"March 2024"`) and one column per fiscal year being forecast (e.g. `"2024-25"`). The first column is the forecast vintage; remaining columns are numeric forecast values.
+
+**Usage**
+
+```r
+obr_forecast_panel(
+  series = "PSNB",
+  refresh = FALSE,
+  order_chronologically = TRUE
+)
+```
+
+**Returns**
+
+An `obr_tbl` whose first column (`forecast_date`) is character and whose remaining columns are numeric forecast values, one per fiscal year. Provenance is inherited from the underlying call to `` and a `notes` field describes the panel.
+
+---
+
+## `obr_headroom()`
+
+**Compute the stability-rule margin from the EFO forecast**
+
+Returns the current budget surplus for every year of an EFO forecast, derived from Table 6.5 (Components of net borrowing). Under the Charter for Budget Responsibility's stability rule the current budget must be in balance or surplus by the target year, so the value in the target year is the margin, or "headroom", against the rule: positive means the rule is met with room to spare, negative means it is missed.
+
+**Usage**
+
+```r
+obr_headroom(vintage = NULL, target_year = NULL, refresh = FALSE)
+```
+
+**Returns**
+
+An `obr_tbl` with the standard schema columns (`period`, `period_type`, `series`, `metric_type`, `value`, `unit`), where `series` is `"Current budget surplus"` and `value` is in GBP billion (positive = surplus = headroom under the stability rule). If `target_year` is supplied, an additional logical `is_target_year` column is included.
+
+---
+
+## `obr_pin()`
+
+**Pin a session-wide OBR EFO vintage**
+
+Sets the EFO vintage that `` and `` will use when called without an explicit vintage = argument. The pin is stored as the option `obr.efo_vintage` and lasts for the R session unless overwritten or removed via ``.
+
+**Usage**
+
+```r
+obr_pin(vintage = NULL)
+```
+
+**Returns**
+
+Invisibly returns the pinned vintage string, or `NULL` after clearing.
+
+---
+
+## `obr_pinned()`
+
+**Show the currently pinned OBR EFO vintage**
+
+Returns the vintage string currently active via ``, or `NULL` if no pin is set.
+
+**Usage**
+
+```r
+obr_pinned()
+```
+
+**Returns**
+
+Either a length-one character vector or `NULL`.
+
+---
+
+## `obr_provenance()`
+
+**Extract OBR provenance metadata**
+
+Returns the provenance list attached to an `obr_tbl`: the OBR publication it came from, the publication vintage, the source URL, retrieval time, file fingerprint, and package version.
+
+**Usage**
+
+```r
+obr_provenance(x)
+```
+
+**Returns**
+
+A named list of provenance fields, or `NULL` if no provenance is attached. Fields: publicationShort code: `"PFD"`, `"HFD"`, `"EFO"`, `"WTR"`, `"FSR"`, `"PMD"`. vintagePublication vintage label, e.g. `"March 2026"`. source_urlCanonical OBR download URL the data came from. retrieved`POSIXct` timestamp of when the file was downloaded or last validated in the cache. file_md5MD5 fingerprint of the underlying spreadsheet. package_version`obr` package version that produced the object. notesOptional free-text notes, or `NULL`.
+
+---
+
+## `obr_unpin()`
+
+**Clear the pinned OBR EFO vintage**
+
+Removes any pin set by ``. After unpinning, `` and `` revert to resolving the most recent live EFO via the dynamic URL resolver.
+
+**Usage**
+
+```r
+obr_unpin()
+```
+
+**Returns**
+
+Invisibly returns the previously pinned vintage (or `NULL` if no pin was set).
+
+---
+
+## `policy_measures_summary()`
+
+**Summarise policy measures by fiscal event**
+
+Aggregates the measures returned by `` to give the net Exchequer effect (positive = revenue-raising / spending-reducing for tax, spending-increasing for spending) by fiscal event and fiscal year.
+
+**Usage**
+
+```r
+policy_measures_summary(x)
+```
+
+**Returns**
+
+An `obr_tbl` with columns: type`"tax"` or `"spending"` eventFiscal event fiscal_yearFiscal year value_mnSum of the Exchequer effect across all measures scored at that event, in GBP million Provenance is preserved.
+
+---
+
+## `print.obr_tbl`
+
+**Print an obr_tbl**
+
+Prints the data with a provenance header that names the OBR publication, vintage, source URL, retrieval time, and underlying file fingerprint.
+
+**Usage**
+
+```r
+print(x, n = 10L, ...)
+```
+
+**Returns**
+
+The input, returned invisibly.
+
+---
+
+## `summary.obr_tbl`
+
+**Summary of an obr_tbl**
+
+Returns the full provenance card and a structural summary of the data.
+
+**Usage**
+
+```r
+summary(object, ...)
+```
+
+**Returns**
+
+Invisibly returns the provenance list.
 
 ---
 

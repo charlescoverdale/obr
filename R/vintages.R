@@ -62,15 +62,35 @@ efo_vintage_table <- function() {
   )
 }
 
-# Build a download URL for a given EFO vintage and table suffix.
+# TRUE if a label looks like an EFO vintage ("November 2026") even when it
+# is not (yet) in the hardcoded calendar. Lets users pin a brand-new EFO on
+# publication day, before a package release adds it to the table.
+is_wellformed_vintage <- function(vintage) {
+  is.character(vintage) && length(vintage) == 1L && !is.na(vintage) &&
+    grepl(paste0("^(January|February|March|April|May|June|July|August|",
+                 "September|October|November|December) [0-9]{4}$"), vintage)
+}
+
+# Build a download URL for a given EFO vintage and table suffix. Vintages
+# outside the hardcoded calendar are accepted if well-formed: the slug is
+# constructed by the OBR's naming convention, with a warning.
 efo_url_for_vintage <- function(vintage, suffix) {
   v <- efo_vintage_table()
   match <- v[v$vintage == vintage, , drop = FALSE]
   if (nrow(match) == 0L) {
-    cli::cli_abort(c(
-      "Unknown EFO vintage {.val {vintage}}.",
-      "i" = "Run {.fn obr_efo_vintages} to see all known vintages."
+    if (!is_wellformed_vintage(vintage)) {
+      cli::cli_abort(c(
+        "Unknown EFO vintage {.val {vintage}}.",
+        "i" = "Run {.fn obr_efo_vintages} to see all known vintages, or pass a label like {.val November 2026}."
+      ))
+    }
+    cli::cli_warn(c(
+      "{.val {vintage}} is not in this version's EFO calendar.",
+      "i" = "Constructing the download URL from the OBR's slug convention. This works on publication day for a brand-new EFO, but will 404 if no such EFO exists."
     ))
+    slug <- paste0(tolower(gsub(" ", "-", vintage)),
+                   "-economic-and-fiscal-outlook")
+    return(sprintf("https://obr.uk/download/%s-%s/", slug, suffix))
   }
   sprintf("https://obr.uk/download/%s-%s/", match$slug[1L], suffix)
 }
@@ -163,7 +183,11 @@ obr_as_of <- function(date, publication = "EFO") {
 #' overwritten or removed via [obr_unpin()].
 #'
 #' @param vintage Vintage label such as `"October 2024"`. See
-#'   [obr_efo_vintages()] for the full list. If `NULL`, this function clears
+#'   [obr_efo_vintages()] for the full list. A well-formed label that is not
+#'   yet in the package's EFO calendar (e.g. a brand-new EFO published after
+#'   this package version was released) is accepted with a warning: download
+#'   URLs are then constructed from the OBR's slug convention, so a new EFO
+#'   can be pinned on publication day. If `NULL`, this function clears
 #'   the pin (equivalent to calling [obr_unpin()]).
 #'
 #' @return Invisibly returns the pinned vintage string, or `NULL` after
@@ -186,9 +210,15 @@ obr_pin <- function(vintage = NULL) {
   }
   v <- efo_vintage_table()
   if (!vintage %in% v$vintage) {
-    cli::cli_abort(c(
-      "Unknown EFO vintage {.val {vintage}}.",
-      "i" = "Run {.fn obr_efo_vintages} to see all known vintages."
+    if (!is_wellformed_vintage(vintage)) {
+      cli::cli_abort(c(
+        "Unknown EFO vintage {.val {vintage}}.",
+        "i" = "Run {.fn obr_efo_vintages} to see all known vintages."
+      ))
+    }
+    cli::cli_warn(c(
+      "{.val {vintage}} is not in this version's EFO calendar.",
+      "i" = "Pinning it anyway; download URLs will be constructed from the OBR's slug convention. Useful on publication day for a brand-new EFO."
     ))
   }
   options(obr.efo_vintage = vintage)

@@ -1,7 +1,7 @@
 test_that("obr_compare_vintages() errors on unknown 'what'", {
   expect_error(
     obr_compare_vintages("October 2024", "March 2026", what = "NOT_A_TABLE"),
-    regexp = "should be one of"
+    regexp = "Unknown"
   )
 })
 
@@ -122,4 +122,14 @@ test_that("obr_actual_vs_forecast() invariant: error == forecast - actual", {
   expect_equal(eval$error,
                eval$value_forecast - eval$value_actual,
                tolerance = 1e-10)
+})
+
+test_that("obr_compare_vintages() accepts catalogue table ids and rejects junk", {
+  expect_error(obr_compare_vintages("March 2025", "March 2026", what = "99.99"),
+               regexp = "Unknown .*what")
+  expect_error(obr_compare_vintages("March 2025", "March 2026", what = 6.5),
+               regexp = "single character")
+  # A catalogue id resolves to a fetcher without error (no network here)
+  fn <- .compare_fn("6.13")
+  expect_true(is.function(fn))
 })

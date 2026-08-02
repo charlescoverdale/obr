@@ -13,7 +13,7 @@ PMD_FILENAME <- "policy_measures_database.xlsx"
 # fallback after probing the most recent slugs.
 pmd_url_candidates <- function() {
   current_year <- as.integer(format(Sys.Date(), "%Y"))
-  months <- c("march", "november", "october", "july")
+  months <- c("november", "october", "july", "march")
   candidates <- character(0)
   for (yr in seq(current_year, current_year - 3L)) {
     for (mn in months) {

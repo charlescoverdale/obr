@@ -41,6 +41,7 @@ obr_publication_label <- function(code) {
     PFD = "Public Finances Databank",
     HFD = "Historical Official Forecasts Database",
     EFO = "Economic and Fiscal Outlook",
+    "EFO-MP" = "EFO Monthly Profiles",
     WTR = "Welfare Trends Report",
     FSR = "Fiscal Risks and Sustainability Report",
     PMD = "Policy Measures Database",

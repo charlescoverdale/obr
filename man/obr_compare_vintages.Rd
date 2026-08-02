@@ -4,20 +4,17 @@
 \alias{obr_compare_vintages}
 \title{Compare two EFO vintages}
 \usage{
-obr_compare_vintages(
-  vintage_a,
-  vintage_b,
-  what = c("fiscal", "inflation", "labour", "output_gap"),
-  refresh = FALSE
-)
+obr_compare_vintages(vintage_a, vintage_b, what = "fiscal", refresh = FALSE)
 }
 \arguments{
 \item{vintage_a, vintage_b}{EFO vintage labels (e.g. \code{"October 2024"},
 \code{"March 2026"}). Use \code{\link[=obr_efo_vintages]{obr_efo_vintages()}} to see all valid labels.}
 
-\item{what}{Which EFO table to compare. One of \code{"fiscal"} (Table 6.5
-aggregates, the default), \code{"inflation"} (sheet 1.7), \code{"labour"}
-(sheet 1.6), or \code{"output_gap"} (sheet 1.14).}
+\item{what}{Which EFO table to compare. Either one of the named
+shortcuts \code{"fiscal"} (Table 6.5, the default), \code{"inflation"} (sheet
+1.7), \code{"labour"} (sheet 1.6), \code{"output_gap"} (sheet 1.14), or any
+table id from \code{\link[=obr_efo_catalogue]{obr_efo_catalogue()}} (e.g. \code{"6.13"}, \code{"1.19"}), so all
+detailed-forecast tables can be diffed across vintages.}
 
 \item{refresh}{Logical. If \code{TRUE}, re-download even if cached files
 exist. Defaults to \code{FALSE}.}
@@ -55,6 +52,10 @@ diff[diff$series == "Net borrowing", ]
 # Compare the inflation forecast across two vintages
 inf_diff <- obr_compare_vintages("October 2024", "March 2026",
                                  what = "inflation")
+
+# Any catalogue table works too, e.g. debt interest (Table 6.16)
+di_diff <- obr_compare_vintages("November 2025", "March 2026",
+                                what = "6.16")
 options(op)
 }
 

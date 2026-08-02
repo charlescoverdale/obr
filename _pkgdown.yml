@@ -51,6 +51,7 @@ reference:
       - get_efo_fiscal
       - get_efo_economy
       - list_efo_economy_measures
+      - get_monthly_profiles
 
   - title: Welfare Trends Report
     desc: Incapacity benefit spending and caseloads.
@@ -66,9 +67,11 @@ reference:
       - policy_measures_summary
 
   - title: Fiscal rules
-    desc: Charter for Budget Responsibility rule definitions.
+    desc: Charter for Budget Responsibility rule definitions and the
+      stability-rule margin derived from the latest EFO.
     contents:
       - obr_fiscal_rules
+      - obr_headroom
 
   - title: Vintage layer
     desc: Pin analyses to a specific OBR Economic and Fiscal Outlook for reproducibility.

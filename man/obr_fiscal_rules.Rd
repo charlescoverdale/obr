@@ -23,8 +23,8 @@ Returns a data frame describing the Charter for Budget Responsibility
 fiscal rules currently in force, as encoded in the package at the time
 of release. Numerical headroom against each rule is \emph{not} shipped as a
 constant because it is updated at every fiscal event and would go stale
-within months; users should derive headroom from the current EFO output
-of \code{\link[=get_efo_fiscal]{get_efo_fiscal()}}, or consult the OBR's EFO press release for the
+within months; use \code{\link[=obr_headroom]{obr_headroom()}} to derive the stability-rule margin
+from the current EFO, or consult the OBR's EFO press release for the
 relevant vintage.
 }
 \details{
@@ -46,5 +46,9 @@ significant measure.
 \examples{
 obr_fiscal_rules()
 
+}
+\seealso{
+Other fiscal rules: 
+\code{\link{obr_headroom}()}
 }
 \concept{fiscal rules}

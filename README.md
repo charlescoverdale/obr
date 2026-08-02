@@ -35,8 +35,9 @@ devtools::install_github("charlescoverdale/obr")
 | [Economic and Fiscal Outlook](https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/) | The flagship publication at each Budget - detailed projections across 5 years | Each Budget / Autumn Statement |
 | [Fiscal Sustainability Report](https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics | Annual |
 | [Welfare Trends Report](https://obr.uk/wtr/welfare-trends-report-october-2024/) | Spending trends across the benefits system | Annual |
+| [Monthly profiles](https://obr.uk/monthly-public-finances-briefing/) | The EFO forecast for receipts, spending, and the CGNCR apportioned across the months of the fiscal year, against which each month's outturn is judged | Each EFO |
 
-This package covers all five datasets listed above.
+This package covers all six datasets listed above.
 
 ---
 
@@ -122,6 +123,7 @@ obr_provenance(psnb)
 | `get_efo_fiscal()` | Net borrowing components (Table 6.5). Convenience wrapper over `get_efo_table("6.5")`. |
 | `get_efo_economy(measure)` | Quarterly economic projections: `"inflation"`, `"labour"`, or `"output_gap"`. Convenience wrapper over `get_efo_table()`. |
 | `list_efo_economy_measures()` | The three measures available via `get_efo_economy()` (no download needed). |
+| `get_monthly_profiles()` | The EFO forecast apportioned across the twelve months of the fiscal year (receipts and spending profiles, or the CGNCR breakdown). The reference point for "borrowing so far this year vs the OBR profile" in the run-up to a fiscal event. |
 
 ### Welfare Trends Report (WTR)
 
@@ -148,7 +150,8 @@ obr_provenance(psnb)
 
 | Function | Returns |
 |---|---|
-| `obr_fiscal_rules()` | The three Charter for Budget Responsibility rules (stability, investment, welfare cap) with metric, target description, and source Charter version. Numerical headroom is not shipped (changes at every fiscal event; derive from `get_efo_fiscal()`). |
+| `obr_fiscal_rules()` | The three Charter for Budget Responsibility rules (stability, investment, welfare cap) with metric, target description, and source Charter version. Numerical headroom is not shipped as a constant (changes at every fiscal event); derive it with `obr_headroom()`. |
+| `obr_headroom()` | The current budget surplus path from EFO Table 6.5: the margin against the stability rule in every forecast year. Pass `target_year` to flag the year the rule bites on. |
 
 ### Cache management
 

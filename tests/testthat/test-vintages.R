@@ -112,3 +112,27 @@ test_that("get_efo_fiscal(vintage = ...) downloads the pinned vintage", {
   expect_equal(prov$vintage, "March 2026")
   expect_match(prov$source_url, "march-2026-economic-and-fiscal-outlook")
 })
+
+test_that("efo_url_for_vintage() constructs slugs for well-formed unknown vintages", {
+  expect_warning(
+    url <- efo_url_for_vintage("November 2026", "detailed-forecast-tables-aggregates"),
+    regexp = "not in this version's EFO calendar"
+  )
+  expect_equal(
+    url,
+    "https://obr.uk/download/november-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/"
+  )
+  expect_error(
+    efo_url_for_vintage("Nonsense 2026", "detailed-forecast-tables-aggregates"),
+    regexp = "Unknown EFO vintage"
+  )
+})
+
+test_that("obr_pin() accepts a well-formed unknown vintage with a warning", {
+  on.exit(options(obr.efo_vintage = NULL), add = TRUE)
+  expect_warning(obr_pin("November 2026"),
+                 regexp = "not in this version's EFO calendar")
+  expect_equal(obr_pinned(), "November 2026")
+  obr_unpin()
+  expect_error(obr_pin("NotAMonth 2026"), regexp = "Unknown EFO vintage")
+})
