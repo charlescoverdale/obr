@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,12 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.6.0" id="obr-060">obr 0.6.0<a class="anchor" aria-label="anchor" href="#obr-060"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.6.1" id="obr-061">obr 0.6.1<a class="anchor" aria-label="anchor" href="#obr-061"></a></h2>
+<p>Patch release fixing the test ERROR reported on the CRAN macOS check flavours for 0.6.0.</p>
+<p><code><a href="../reference/get_policy_measures.html">get_policy_measures()</a></code> validated its <code>search</code> and <code>since</code> arguments only after downloading the Policy Measures Database. The argument-validation tests therefore needed the network, and failed on the macOS builders when obr.uk returned HTTP 403. Both arguments are now checked before any download happens, so malformed input fails fast and offline, and no workbook is fetched for a call that cannot succeed.</p>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.0" id="obr-060">obr 0.6.0<a class="anchor" aria-label="anchor" href="#obr-060"></a></h2><p class="text-muted">CRAN release: 2026-08-02</p>
 <p>Budget-readiness release ahead of the autumn 2026 fiscal event.</p>
 <div class="section level3">
 <h3 id="new-get_monthly_profiles-0-6-0">New: <code>get_monthly_profiles()</code>
