@@ -1,47 +1,39 @@
-# CRAN submission comments — obr 0.6.0
+# CRAN submission comments — obr 0.6.1
 
-## Apology for the quick succession after 0.5.1
+## Reason for this submission
 
-0.5.1 was accepted earlier than the normal release cadence would suggest
-because it fixed the `donttest` ERROR reported for 0.2.5 (deadline
-2026-08-21). This submission, 0.6.0, is the planned feature release. It
-is submitted promptly for a time-sensitive reason: the OBR has been
-commissioned to produce the forecast for the UK's autumn Budget, and
-this release fixes a URL-resolution bug that would surface on Budget
-day (see below) as well as adding the pre-Budget monitoring datasets
-users need in the run-up. I intend to return to a normal 1-2 month
-cadence after this release.
+This patch fixes the test ERROR reported for 0.6.0 on the four macOS
+check flavours (r-release-macos-arm64, r-release-macos-x86_64,
+r-oldrel-macos-arm64, r-oldrel-macos-x86_64) in the 2026-08-15 check
+run. My apologies for the quick succession after 0.6.0.
 
-## Summary of this submission
+## The failure and the fix
 
-**Bug fix (time-sensitive).** The dynamic URL resolver probed
-`march-<year>` publication slugs before `october-<year>` /
-`november-<year>` within each year. Once the OBR publishes its autumn
-*Economic and Fiscal Outlook*, the resolver would keep silently
-returning the spring edition for the rest of the year. Candidates are
-now probed newest-first; the resolver also rejects `text/html`
-responses (soft 404s) and retries 403s, which the OBR CDN uses for
-rate limiting rather than missing files.
+`get_policy_measures()` validated its `search` and `since` arguments
+only after downloading the Policy Measures Database workbook. Two
+argument-validation tests deliberately carry no `skip_on_cran()`,
+because checking that malformed input is rejected should not need the
+network. They nonetheless triggered a download, and failed on the macOS
+builders when obr.uk answered HTTP 403:
 
-**New functionality.**
+```
+Error ('test-policy-measures.R:11:3'): errors on bad search/since
+Error: Failed to download <https://obr.uk/download/policy-measures-database-march-2025/>.
+x HTTP 403 Forbidden.
+```
 
-* `get_monthly_profiles()`: the monthly profiles workbook the OBR
-  publishes alongside each EFO (receipts, spending, and CGNCR
-  apportioned across the twelve months of the fiscal year), in the
-  package's standard tidy schema with a new `period_type = "month"`.
-* `obr_headroom()`: the current budget surplus path derived from EFO
-  Table 6.5, the margin against the Charter for Budget Responsibility
-  stability rule.
-* `obr_compare_vintages()` now accepts any of the 39 catalogue table
-  ids, not just four named shortcuts.
-* `obr_pin()` accepts a well-formed vintage label not yet in the
-  package's EFO calendar (e.g. a brand-new EFO on publication day),
-  constructing the download URL from the OBR's slug convention, with a
-  warning.
+Both arguments are now validated before any download is attempted, so
+the tests pass with no network access, and a call that cannot succeed
+no longer fetches a workbook first. I verified the fix by blocking
+outbound network access and confirming all three validation errors are
+raised offline.
 
-No breaking changes. New behaviour is additive; all existing function
-signatures are unchanged except `obr_compare_vintages()`'s `what`
-argument, which now accepts a superset of its previous values.
+I audited the rest of the package for the same inverted order. Every
+other exported function already validates its arguments before its
+first network call, so no other change was required.
+
+No user-facing behaviour changes beyond malformed calls failing sooner.
+No changes to function signatures, return values, or data.
 
 ## R CMD check results
 
@@ -50,9 +42,8 @@ argument, which now accepts a superset of its previous values.
 ## Test suite
 
 Network-dependent tests are wrapped in `skip_on_cran()` and
-`skip_if_offline()`. New parser and dispatch logic is additionally
-covered by offline unit tests (URL candidate ordering, month-to-period
-mapping, slug construction, argument validation).
+`skip_if_offline()`. The argument-validation tests are intentionally not
+skipped, and now genuinely run offline.
 
 ## Notes on data access
 

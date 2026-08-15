@@ -152,6 +152,14 @@ get_policy_measures <- function(type = c("tax", "spending"),
                                 since  = NULL,
                                 refresh = FALSE) {
   type <- match.arg(type, several.ok = TRUE)
+  if (!is.null(search) && (!is.character(search) || length(search) != 1L)) {
+    cli::cli_abort("{.arg search} must be a single character string.")
+  }
+  if (!is.null(since) &&
+      (!is.character(since) || length(since) != 1L ||
+       !grepl("^[0-9]{4}-[0-9]{2}$", since))) {
+    cli::cli_abort("{.arg since} must be a fiscal-year string like {.val 2020-21}.")
+  }
 
   src <- pmd_source(refresh)
 
@@ -172,18 +180,11 @@ get_policy_measures <- function(type = c("tax", "spending"),
   data <- data[, c("type", "event", "measure", "head", "fiscal_year", "value_mn")]
 
   if (!is.null(search)) {
-    if (!is.character(search) || length(search) != 1L) {
-      cli::cli_abort("{.arg search} must be a single character string.")
-    }
     keep <- grepl(search, data$measure, ignore.case = TRUE) |
             grepl(search, data$head,    ignore.case = TRUE)
     data <- data[keep, ]
   }
   if (!is.null(since)) {
-    if (!is.character(since) || length(since) != 1L ||
-        !grepl("^[0-9]{4}-[0-9]{2}$", since)) {
-      cli::cli_abort("{.arg since} must be a fiscal-year string like {.val 2020-21}.")
-    }
     data <- data[data$fiscal_year >= since, ]
   }
   rownames(data) <- NULL

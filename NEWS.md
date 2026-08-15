@@ -1,3 +1,15 @@
+# obr 0.6.1
+
+Patch release fixing the test ERROR reported on the CRAN macOS check
+flavours for 0.6.0.
+
+`get_policy_measures()` validated its `search` and `since` arguments only
+after downloading the Policy Measures Database. The argument-validation
+tests therefore needed the network, and failed on the macOS builders when
+obr.uk returned HTTP 403. Both arguments are now checked before any
+download happens, so malformed input fails fast and offline, and no
+workbook is fetched for a call that cannot succeed.
+
 # obr 0.6.0
 
 Budget-readiness release ahead of the autumn 2026 fiscal event.
