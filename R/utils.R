@@ -20,6 +20,14 @@ obr_resolve_url <- function(url_candidates) {
         # back off and retry them; genuine 404s fail fast.
         httr2::req_retry(
           max_tries    = 3,
+          # Cap the total time spent retrying. On a machine the CDN refuses
+          # outright, every probe would otherwise sit through the full
+          # backoff before failing, and a vintage lookup probes several
+          # URLs. Measured against a always-403 endpoint, a refused request
+          # costs 15.2s uncapped and 6.6s at this setting. Caps of 8 or
+          # above make no difference: the natural 2+4+8 backoff finishes
+          # inside them.
+          max_seconds  = 5,
           is_transient = function(resp) {
             httr2::resp_status(resp) %in% c(403L, 429L, 503L)
           },
@@ -128,6 +136,10 @@ obr_fetch <- function(url, filename, refresh = FALSE) {
         # returns 403 to legitimate requests when probing many URLs in quick
         # succession; backing off and retrying typically clears it.
         max_tries    = 4,
+        # See the note on the probe request above. Same budget: a larger
+        # one measured no better, because the uncapped backoff already
+        # completes within it.
+        max_seconds  = 5,
         is_transient = function(resp) {
           httr2::resp_status(resp) %in% c(403L, 429L, 503L)
         },

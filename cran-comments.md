@@ -46,6 +46,21 @@ I verified that every generated example still parses: all 32 Rd files
 with examples were extracted with `tools::Rd2ex(commentDonttest = FALSE)`
 and passed to `parse()` without error.
 
+## Retry time is now bounded
+
+The deeper cause of the archived failure was that the package treats a
+403 from obr.uk as transient and retries it. That is correct for a user
+hitting the CDN's rate limiting, and wrong for a build machine the CDN
+refuses outright: every request sat through the full backoff before
+failing. `try()` stops that being an ERROR but leaves it slow, and the
+package consuming your build time is the problem I need to fix, not just
+the ERROR.
+
+Both retry blocks now set `max_seconds = 5`. Measured against an
+always-403 endpoint, a refused request costs 15.2s uncapped and 6.6s
+capped; caps of 8 seconds or more measured no better because the natural
+2 + 4 + 8 backoff completes inside them. Normal downloads are unaffected.
+
 ## On release cadence
 
 The 0.5.1 and 0.6.0 submissions came six days apart, which drew a "Days
