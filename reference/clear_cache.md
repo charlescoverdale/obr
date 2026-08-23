@@ -19,8 +19,8 @@ Invisibly returns `NULL`.
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 clear_cache()
-#> Warning: cannot remove file '/tmp/RtmpOHinTY/bslib-e9b2b13fa612f50d23e4850d93d60d01', reason 'Directory not empty'
-#> Warning: cannot remove file '/tmp/RtmpOHinTY/downlit', reason 'Directory not empty'
+#> Warning: cannot remove file '/tmp/RtmpnbB3BI/bslib-e9b2b13fa612f50d23e4850d93d60d01', reason 'Directory not empty'
+#> Warning: cannot remove file '/tmp/RtmpnbB3BI/downlit', reason 'Directory not empty'
 #> Removed 4 cached files.
 options(op)
 # }

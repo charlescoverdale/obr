@@ -87,6 +87,8 @@ try({
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> ℹ Downloading efo_aggregates_november_2025.xlsx from OBR...
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ✔ Saved to cache.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 options(op)

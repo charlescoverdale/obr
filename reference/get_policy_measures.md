@@ -96,6 +96,8 @@ oct24 <- tryCatch(get_policy_measures(),
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Downloading policy_measures_database.xlsx from OBR...
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ✔ Saved to cache.
 if (!is.null(oct24)) {
   head(oct24[grepl("2024", oct24$event) &
@@ -110,6 +112,9 @@ if (!is.null(oct24)) {
 }
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
@@ -119,7 +124,7 @@ if (!is.null(oct24)) {
 #> # obr_tbl: 1141 rows x 6 cols
 #> # Source:       OBR Policy Measures Database
 #> # URL:          https://obr.uk/download/policy-measures-database-march-2025/
-#> # Retrieved:    2026-08-23 17:37:14 UTC
+#> # Retrieved:    2026-08-23 18:06:34 UTC
 #> # File MD5:     a76d78e7a14d
 #> # Package:      obr 0.6.2
 #> 

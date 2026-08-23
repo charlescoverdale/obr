@@ -69,14 +69,13 @@ op <- options(obr.cache_dir = tempdir())
 hr <- tryCatch(obr_headroom(), error = function(e) NULL)
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 if (!is.null(hr)) hr
 #> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-23 17:35:40 UTC
+#> # Retrieved:    2026-08-23 18:04:59 UTC
 #> # File MD5:     5b5eeaf79b96
 #> # Package:      obr 0.6.2
 #> # Note:         Derived from EFO Table 6.5: value = -(Current budget deficit). Positive = surplus = margin against the Charter stability rule.
@@ -94,14 +93,12 @@ hr <- tryCatch(obr_headroom(target_year = "2029-30"),
                error = function(e) NULL)
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 if (!is.null(hr)) hr[hr$is_target_year, ]
 #> # obr_tbl: 1 rows x 7 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-23 17:35:40 UTC
+#> # Retrieved:    2026-08-23 18:04:59 UTC
 #> # File MD5:     5b5eeaf79b96
 #> # Package:      obr 0.6.2
 #> # Note:         Derived from EFO Table 6.5: value = -(Current budget deficit). Positive = surplus = margin against the Charter stability rule. Target year flagged: 2029-30.

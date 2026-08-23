@@ -18,6 +18,26 @@ the network, and failed on the macOS builders when obr.uk returned HTTP
 malformed input fails fast and offline, and no workbook is fetched for a
 call that cannot succeed.
 
+### Retry time is now bounded
+
+`req_retry()` treats a 403 from obr.uk as transient, which is right for
+a real user hitting the CDN’s rate limiting, but wrong for a machine the
+CDN refuses outright: every request sat through the full 2 + 4 + 8
+second backoff before failing. Wrapping the examples in
+[`try()`](https://rdrr.io/r/base/try.html) stopped that being an ERROR
+but left it slow, and the package being slow on CRAN’s builders is what
+started this.
+
+Both retry blocks now set `max_seconds = 5`. Measured against an
+always-403 endpoint, a refused request costs 15.2s uncapped and 6.6s at
+this setting. Caps of 8 seconds or above measured no better, because the
+uncapped backoff already completes inside them. A genuine transient 403
+still recovers, and a normal download is unaffected:
+[`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md)
+and
+[`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
+both return in around 2 seconds.
+
 ### DESCRIPTION no longer advertises the FSR pension projections
 
 The package Description still listed “the Fiscal Risks and

@@ -92,7 +92,7 @@ try({
 #> # obr_tbl: 56 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, October 2024
 #> # URL:          https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-23 17:35:41 UTC
+#> # Retrieved:    2026-08-23 18:04:59 UTC
 #> # File MD5:     e647b168d466
 #> # Package:      obr 0.6.2
 #> 
