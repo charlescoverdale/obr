@@ -28,9 +28,11 @@ The exact vintage is recorded in the returned object's provenance.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-welfare <- get_welfare_spending()
-welfare[welfare$series == "Working-age incapacity benefits spending" &
-        welfare$period >= "2000-01", ]
+try({
+  welfare <- get_welfare_spending()
+  welfare[welfare$series == "Working-age incapacity benefits spending" &
+  welfare$period >= "2000-01", ]
+})
 options(op)
 }
 

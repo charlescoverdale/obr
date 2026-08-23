@@ -45,19 +45,20 @@ as thin wrappers over this dispatcher.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
+try({
 
-# Net borrowing components (same data as get_efo_fiscal())
-get_efo_table("6.5")
+  # Net borrowing components (same data as get_efo_fiscal())
+  get_efo_table("6.5")
 
-# CPI category inflation by year
-get_efo_table("1.19")
+  # CPI category inflation by year
+  get_efo_table("1.19")
 
-# Composition of public sector net debt
-get_efo_table("6.13")
+  # Composition of public sector net debt
+  get_efo_table("6.13")
 
-# Pin to a specific vintage
-get_efo_table("6.5", vintage = "October 2024")
-
+  # Pin to a specific vintage
+  get_efo_table("6.5", vintage = "October 2024")
+})
 options(op)
 }
 

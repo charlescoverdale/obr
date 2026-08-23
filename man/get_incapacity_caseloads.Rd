@@ -27,8 +27,10 @@ of the working-age population.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-cases <- get_incapacity_caseloads()
-cases[cases$series == "Claimants", ]
+try({
+  cases <- get_incapacity_caseloads()
+  cases[cases$series == "Claimants", ]
+})
 options(op)
 }
 

@@ -18,8 +18,10 @@ the dynamic URL resolver.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-obr_pin("March 2025")
-obr_unpin()
+try({
+  obr_pin("March 2025")
+  obr_unpin()
+})
 options(op)
 }
 

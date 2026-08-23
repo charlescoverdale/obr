@@ -164,10 +164,12 @@ parse_frd_revisions <- function(path, unit) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' rev <- get_forecast_revisions()
-#' # Top-level revisions only
-#' rev[rev$component %in% c("Total", "Policy",
-#'                          "Classifications and one-offs", "Underlying"), ]
+#' try({
+#'   rev <- get_forecast_revisions()
+#'   # Top-level revisions only
+#'   rev[rev$component %in% c("Total", "Policy",
+#'   "Classifications and one-offs", "Underlying"), ]
+#' })
 #' options(op)
 #' }
 #'

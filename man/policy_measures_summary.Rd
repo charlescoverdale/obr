@@ -28,8 +28,10 @@ tax, spending-increasing for spending) by fiscal event and fiscal year.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-pm <- get_policy_measures(type = "tax", since = "2024-25")
-policy_measures_summary(pm)
+try({
+  pm <- get_policy_measures(type = "tax", since = "2024-25")
+  policy_measures_summary(pm)
+})
 options(op)
 }
 

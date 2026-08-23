@@ -43,12 +43,14 @@ visible in the printed header.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-efo <- get_efo_fiscal()
-efo[efo$series == "Net borrowing", ]
-obr_provenance(efo)$vintage
+try({
+  efo <- get_efo_fiscal()
+  efo[efo$series == "Net borrowing", ]
+  obr_provenance(efo)$vintage
 
-# Pin to a specific EFO for reproducibility
-october_2024 <- get_efo_fiscal(vintage = "October 2024")
+  # Pin to a specific EFO for reproducibility
+  october_2024 <- get_efo_fiscal(vintage = "October 2024")
+})
 options(op)
 }
 

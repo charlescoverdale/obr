@@ -94,9 +94,11 @@ parse_wtr_chart <- function(path, sheet, unit_default = "pct") {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' welfare <- get_welfare_spending()
-#' welfare[welfare$series == "Working-age incapacity benefits spending" &
-#'         welfare$period >= "2000-01", ]
+#' try({
+#'   welfare <- get_welfare_spending()
+#'   welfare[welfare$series == "Working-age incapacity benefits spending" &
+#'   welfare$period >= "2000-01", ]
+#' })
 #' options(op)
 #' }
 #'
@@ -128,8 +130,10 @@ get_welfare_spending <- function(refresh = FALSE) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' ib <- get_incapacity_spending()
-#' unique(ib$series)
+#' try({
+#'   ib <- get_incapacity_spending()
+#'   unique(ib$series)
+#' })
 #' options(op)
 #' }
 #'
@@ -160,8 +164,10 @@ get_incapacity_spending <- function(refresh = FALSE) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' cases <- get_incapacity_caseloads()
-#' cases[cases$series == "Claimants", ]
+#' try({
+#'   cases <- get_incapacity_caseloads()
+#'   cases[cases$series == "Claimants", ]
+#' })
 #' options(op)
 #' }
 #'

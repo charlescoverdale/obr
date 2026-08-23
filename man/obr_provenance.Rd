@@ -31,8 +31,10 @@ file fingerprint, and package version.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-psnb <- get_psnb()
-obr_provenance(psnb)
+try({
+  psnb <- get_psnb()
+  obr_provenance(psnb)
+})
 options(op)
 }
 

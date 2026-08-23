@@ -137,9 +137,11 @@ pfd_obr_tbl <- function(data, src) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' pf <- get_public_finances()
-#' unique(pf$series)
-#' obr_provenance(pf)
+#' try({
+#'   pf <- get_public_finances()
+#'   unique(pf$series)
+#'   obr_provenance(pf)
+#' })
 #' options(op)
 #' }
 #'
@@ -167,8 +169,10 @@ get_public_finances <- function(refresh = FALSE) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' psnb <- get_psnb()
-#' tail(psnb)
+#' try({
+#'   psnb <- get_psnb()
+#'   tail(psnb)
+#' })
 #' options(op)
 #' }
 #'
@@ -198,8 +202,10 @@ get_psnb <- function(refresh = FALSE) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' psnd <- get_psnd()
-#' tail(psnd)
+#' try({
+#'   psnd <- get_psnd()
+#'   tail(psnd)
+#' })
 #' options(op)
 #' }
 #'
@@ -230,8 +236,10 @@ get_psnd <- function(refresh = FALSE) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' tme <- get_expenditure()
-#' tail(tme)
+#' try({
+#'   tme <- get_expenditure()
+#'   tail(tme)
+#' })
 #' options(op)
 #' }
 #'
@@ -263,8 +271,10 @@ get_expenditure <- function(refresh = FALSE) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' receipts <- get_receipts()
-#' receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
+#' try({
+#'   receipts <- get_receipts()
+#'   receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
+#' })
 #' options(op)
 #' }
 #'

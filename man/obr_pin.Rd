@@ -28,9 +28,11 @@ overwritten or removed via \code{\link[=obr_unpin]{obr_unpin()}}.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-obr_pin("October 2024")
-obr_pinned()
-obr_unpin()
+try({
+  obr_pin("October 2024")
+  obr_pinned()
+  obr_unpin()
+})
 options(op)
 }
 

@@ -41,12 +41,14 @@ packages and will error.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-eval <- obr_actual_vs_forecast("PSNB")
+try({
+  eval <- obr_actual_vs_forecast("PSNB")
 
-# 1-year-ahead forecast errors only:
-# take the forecast vintage closest to the start of each fiscal year
-eval2425 <- eval[eval$period == "2024-25", ]
-eval2425[order(eval2425$forecast_date), ]
+  # 1-year-ahead forecast errors only:
+  # take the forecast vintage closest to the start of each fiscal year
+  eval2425 <- eval[eval$period == "2024-25", ]
+  eval2425[order(eval2425$forecast_date), ]
+})
 options(op)
 }
 

@@ -46,16 +46,18 @@ beyond that.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-diff <- obr_compare_vintages("October 2024", "March 2026")
-diff[diff$series == "Net borrowing", ]
+try({
+  diff <- obr_compare_vintages("October 2024", "March 2026")
+  diff[diff$series == "Net borrowing", ]
 
-# Compare the inflation forecast across two vintages
-inf_diff <- obr_compare_vintages("October 2024", "March 2026",
-                                 what = "inflation")
+  # Compare the inflation forecast across two vintages
+  inf_diff <- obr_compare_vintages("October 2024", "March 2026",
+  what = "inflation")
 
-# Any catalogue table works too, e.g. debt interest (Table 6.16)
-di_diff <- obr_compare_vintages("November 2025", "March 2026",
-                                what = "6.16")
+  # Any catalogue table works too, e.g. debt interest (Table 6.16)
+  di_diff <- obr_compare_vintages("November 2025", "March 2026",
+  what = "6.16")
+})
 options(op)
 }
 

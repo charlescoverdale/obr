@@ -24,8 +24,10 @@ in tidy long format. Coverage begins in 1999-00.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-receipts <- get_receipts()
-receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
+try({
+  receipts <- get_receipts()
+  receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
+})
 options(op)
 }
 

@@ -196,9 +196,11 @@ obr_as_of <- function(date, publication = "EFO") {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' obr_pin("October 2024")
-#' obr_pinned()
-#' obr_unpin()
+#' try({
+#'   obr_pin("October 2024")
+#'   obr_pinned()
+#'   obr_unpin()
+#' })
 #' options(op)
 #' }
 #'
@@ -238,8 +240,10 @@ obr_pin <- function(vintage = NULL) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' obr_pin("March 2025")
-#' obr_unpin()
+#' try({
+#'   obr_pin("March 2025")
+#'   obr_unpin()
+#' })
 #' options(op)
 #' }
 #'

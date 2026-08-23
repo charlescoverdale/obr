@@ -213,8 +213,10 @@ get_policy_measures <- function(type = c("tax", "spending"),
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' pm <- get_policy_measures(type = "tax", since = "2024-25")
-#' policy_measures_summary(pm)
+#' try({
+#'   pm <- get_policy_measures(type = "tax", since = "2024-25")
+#'   policy_measures_summary(pm)
+#' })
 #' options(op)
 #' }
 #'

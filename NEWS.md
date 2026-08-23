@@ -1,3 +1,40 @@
+# obr 0.6.2
+
+Recovery release. obr was archived from CRAN on 2026-08-22 because the
+test ERROR reported for 0.6.0 was not corrected before the 2026-08-21
+deadline. This release carries the 0.6.1 fix, which was prepared on
+2026-08-15 but never submitted, and hardens the examples against the
+same underlying cause.
+
+## The archived failure, and the fix carried over from 0.6.1
+
+`get_policy_measures()` validated its `search` and `since` arguments only
+after downloading the Policy Measures Database. The argument-validation
+tests therefore needed the network, and failed on the macOS builders when
+obr.uk returned HTTP 403. Both arguments are now checked before any
+download happens, so malformed input fails fast and offline, and no
+workbook is fetched for a call that cannot succeed.
+
+## Examples hardened against an unreachable obr.uk
+
+Every unguarded `\donttest{}` example that makes a network call is now
+wrapped in `try()`, so an unreachable or rate-limited obr.uk produces a
+printed condition rather than an example ERROR. That covers 20 of the 24
+`\donttest{}` blocks. The other four are already safe: three
+(`obr_headroom()`, `get_monthly_profiles()`, and one of the
+`get_policy_measures()` examples) already guard their calls with
+`tryCatch()`, and `clear_cache()` touches only the local cache.
+
+This is the same class of failure that produced the `donttest` ERROR
+reported against 0.2.5. obr.uk returns HTTP 403 to the CRAN build
+machines as a rate-limiting measure rather than as a genuine "not found",
+and the package retries those, so an example that cannot reach the site
+spends its retry budget and then fails. Wrapping in `try()` means the
+retry budget is still spent but the check no longer errors.
+
+The `options(op)` cache-directory restore stays outside the `try()`, so
+it runs whether or not the download succeeded.
+
 # obr 0.6.1
 
 Patch release fixing the test ERROR reported on the CRAN macOS check

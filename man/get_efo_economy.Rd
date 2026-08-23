@@ -50,14 +50,16 @@ Data run from 2008 Q1 through the current forecast horizon. Use
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-inf <- get_efo_economy("inflation")
-inf[inf$series == "CPI", ]
+try({
+  inf <- get_efo_economy("inflation")
+  inf[inf$series == "CPI", ]
 
-lab <- get_efo_economy("labour")
+  lab <- get_efo_economy("labour")
 
-# Compare CPI projections from two different EFOs
-inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
-inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
+  # Compare CPI projections from two different EFOs
+  inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
+  inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
+})
 options(op)
 }
 

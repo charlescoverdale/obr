@@ -287,12 +287,14 @@ list_efo_economy_measures <- function() {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' efo <- get_efo_fiscal()
-#' efo[efo$series == "Net borrowing", ]
-#' obr_provenance(efo)$vintage
+#' try({
+#'   efo <- get_efo_fiscal()
+#'   efo[efo$series == "Net borrowing", ]
+#'   obr_provenance(efo)$vintage
 #'
-#' # Pin to a specific EFO for reproducibility
-#' october_2024 <- get_efo_fiscal(vintage = "October 2024")
+#'   # Pin to a specific EFO for reproducibility
+#'   october_2024 <- get_efo_fiscal(vintage = "October 2024")
+#' })
 #' options(op)
 #' }
 #'
@@ -339,14 +341,16 @@ get_efo_fiscal <- function(refresh = FALSE, vintage = NULL) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' inf <- get_efo_economy("inflation")
-#' inf[inf$series == "CPI", ]
+#' try({
+#'   inf <- get_efo_economy("inflation")
+#'   inf[inf$series == "CPI", ]
 #'
-#' lab <- get_efo_economy("labour")
+#'   lab <- get_efo_economy("labour")
 #'
-#' # Compare CPI projections from two different EFOs
-#' inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
-#' inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
+#'   # Compare CPI projections from two different EFOs
+#'   inf_oct24 <- get_efo_economy("inflation", vintage = "October 2024")
+#'   inf_mar26 <- get_efo_economy("inflation", vintage = "March 2026")
+#' })
 #' options(op)
 #' }
 #'

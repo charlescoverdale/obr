@@ -22,8 +22,10 @@ annual Public Sector Net Debt in \enc{£}{GBP} billion.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-psnd <- get_psnd()
-tail(psnd)
+try({
+  psnd <- get_psnd()
+  tail(psnd)
+})
 options(op)
 }
 

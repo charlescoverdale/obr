@@ -65,16 +65,18 @@
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' diff <- obr_compare_vintages("October 2024", "March 2026")
-#' diff[diff$series == "Net borrowing", ]
+#' try({
+#'   diff <- obr_compare_vintages("October 2024", "March 2026")
+#'   diff[diff$series == "Net borrowing", ]
 #'
-#' # Compare the inflation forecast across two vintages
-#' inf_diff <- obr_compare_vintages("October 2024", "March 2026",
-#'                                  what = "inflation")
+#'   # Compare the inflation forecast across two vintages
+#'   inf_diff <- obr_compare_vintages("October 2024", "March 2026",
+#'   what = "inflation")
 #'
-#' # Any catalogue table works too, e.g. debt interest (Table 6.16)
-#' di_diff <- obr_compare_vintages("November 2025", "March 2026",
-#'                                 what = "6.16")
+#'   # Any catalogue table works too, e.g. debt interest (Table 6.16)
+#'   di_diff <- obr_compare_vintages("November 2025", "March 2026",
+#'   what = "6.16")
+#' })
 #' options(op)
 #' }
 #'
@@ -171,12 +173,14 @@ obr_compare_vintages <- function(vintage_a, vintage_b,
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' eval <- obr_actual_vs_forecast("PSNB")
+#' try({
+#'   eval <- obr_actual_vs_forecast("PSNB")
 #'
-#' # 1-year-ahead forecast errors only:
-#' # take the forecast vintage closest to the start of each fiscal year
-#' eval2425 <- eval[eval$period == "2024-25", ]
-#' eval2425[order(eval2425$forecast_date), ]
+#'   # 1-year-ahead forecast errors only:
+#'   # take the forecast vintage closest to the start of each fiscal year
+#'   eval2425 <- eval[eval$period == "2024-25", ]
+#'   eval2425[order(eval2425$forecast_date), ]
+#' })
 #' options(op)
 #' }
 #'

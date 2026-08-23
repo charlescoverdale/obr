@@ -125,10 +125,12 @@ list_forecast_series <- function() {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' get_forecasts("PSNB")
+#' try({
+#'   get_forecasts("PSNB")
 #'
-#' psnb <- get_forecasts("PSNB")
-#' psnb[psnb$period == "2024-25", ]
+#'   psnb <- get_forecasts("PSNB")
+#'   psnb[psnb$period == "2024-25", ]
+#' })
 #' options(op)
 #' }
 #'

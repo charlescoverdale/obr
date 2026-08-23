@@ -47,9 +47,11 @@ forecast_date_to_index <- function(date_str) {
 #' @examples
 #' \donttest{
 #' op <- options(obr.cache_dir = tempdir())
-#' panel <- obr_forecast_panel("PSNB")
-#' # PSNB forecast for 2024-25 across every vintage
-#' panel[, c("forecast_date", "2024-25")]
+#' try({
+#'   panel <- obr_forecast_panel("PSNB")
+#'   # PSNB forecast for 2024-25 across every vintage
+#'   panel[, c("forecast_date", "2024-25")]
+#' })
 #' options(op)
 #' }
 #'

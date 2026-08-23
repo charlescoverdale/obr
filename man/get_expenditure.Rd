@@ -23,8 +23,10 @@ the broadest measure of UK government spending.
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())
-tme <- get_expenditure()
-tail(tme)
+try({
+  tme <- get_expenditure()
+  tail(tme)
+})
 options(op)
 }
 
