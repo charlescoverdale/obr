@@ -82,34 +82,17 @@ Other forecasts:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-get_forecasts("PSNB")
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+try({
+  get_forecasts("PSNB")
+
+  psnb <- get_forecasts("PSNB")
+  psnb[psnb$period == "2024-25", ]
+})
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Downloading historical_forecasts.xlsx from OBR...
 #> ✔ Saved to cache.
-#> # obr_tbl: 553 rows x 7 cols
-#> # Source:       OBR Historical Official Forecasts Database, March 2025
-#> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-08-15 10:24:08 UTC
-#> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.6.1
-#> 
-#>    forecast_date  period period_type series metric_type value   unit
-#> 1     April 1970 1970-71 fiscal_year   PSNB       level  -0.2 gbp_bn
-#> 2     March 1971 1970-71 fiscal_year   PSNB       level   0.6 gbp_bn
-#> 3     March 1971 1971-72 fiscal_year   PSNB       level   1.2 gbp_bn
-#> 4     March 1972 1971-72 fiscal_year   PSNB       level   1.3 gbp_bn
-#> 5     March 1972 1972-73 fiscal_year   PSNB       level   3.4 gbp_bn
-#> 6     March 1973 1972-73 fiscal_year   PSNB       level   2.9 gbp_bn
-#> 7     March 1973 1973-74 fiscal_year   PSNB       level   4.4 gbp_bn
-#> 8     March 1974 1973-74 fiscal_year   PSNB       level   4.3 gbp_bn
-#> 9     March 1974 1974-75 fiscal_year   PSNB       level   2.7 gbp_bn
-#> 10    April 1975 1974-75 fiscal_year   PSNB       level   7.6 gbp_bn
-#> # ... with 543 more rows
-
-psnb <- get_forecasts("PSNB")
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
@@ -117,13 +100,12 @@ psnb <- get_forecasts("PSNB")
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-psnb[psnb$period == "2024-25", ]
 #> # obr_tbl: 13 rows x 7 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-08-15 10:24:08 UTC
+#> # Retrieved:    2026-08-23 17:35:55 UTC
 #> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> 
 #>     forecast_date  period period_type series metric_type     value   unit
 #> 499    March 2020 2024-25 fiscal_year   PSNB       level  57.92369 gbp_bn

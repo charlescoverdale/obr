@@ -1,5 +1,63 @@
 # Changelog
 
+## obr 0.6.2
+
+Recovery release. obr was archived from CRAN on 2026-08-22 because the
+test ERROR reported for 0.6.0 was not corrected before the 2026-08-21
+deadline. This release carries the 0.6.1 fix, which was prepared on
+2026-08-15 but never submitted, and hardens the examples against the
+same underlying cause.
+
+### The archived failure, and the fix carried over from 0.6.1
+
+[`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)
+validated its `search` and `since` arguments only after downloading the
+Policy Measures Database. The argument-validation tests therefore needed
+the network, and failed on the macOS builders when obr.uk returned HTTP
+403. Both arguments are now checked before any download happens, so
+malformed input fails fast and offline, and no workbook is fetched for a
+call that cannot succeed.
+
+### DESCRIPTION no longer advertises the FSR pension projections
+
+The package Description still listed “the Fiscal Risks and
+Sustainability Report (50-year state pension projections)” among the
+sources covered.
+[`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
+has been deprecated since 0.5.1 and returns NULL, so that clause has
+been wrong since then and shipped to CRAN in 0.6.0. Removed. The README
+limitation covering the same ground has been rewritten: it described the
+v0.4.x state, in which only 4 EFO detailed-forecast tables were exposed,
+when v0.5.0 took that to all 39.
+
+### Examples hardened against an unreachable obr.uk
+
+Every unguarded `\donttest{}` example that makes a network call is now
+wrapped in [`try()`](https://rdrr.io/r/base/try.html), so an unreachable
+or rate-limited obr.uk produces a printed condition rather than an
+example ERROR. That covers 20 of the 24 `\donttest{}` blocks. The other
+four are already safe: three
+([`obr_headroom()`](https://charlescoverdale.github.io/obr/reference/obr_headroom.md),
+[`get_monthly_profiles()`](https://charlescoverdale.github.io/obr/reference/get_monthly_profiles.md),
+and one of the
+[`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)
+examples) already guard their calls with
+[`tryCatch()`](https://rdrr.io/r/base/conditions.html), and
+[`clear_cache()`](https://charlescoverdale.github.io/obr/reference/clear_cache.md)
+touches only the local cache.
+
+This is the same class of failure that produced the `donttest` ERROR
+reported against 0.2.5. obr.uk returns HTTP 403 to the CRAN build
+machines as a rate-limiting measure rather than as a genuine “not
+found”, and the package retries those, so an example that cannot reach
+the site spends its retry budget and then fails. Wrapping in
+[`try()`](https://rdrr.io/r/base/try.html) means the retry budget is
+still spent but the check no longer errors.
+
+The `options(op)` cache-directory restore stays outside the
+[`try()`](https://rdrr.io/r/base/try.html), so it runs whether or not
+the download succeeded.
+
 ## obr 0.6.1
 
 Patch release fixing the test ERROR reported on the CRAN macOS check

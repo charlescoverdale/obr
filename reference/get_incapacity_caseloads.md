@@ -38,22 +38,26 @@ Other welfare:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-cases <- get_incapacity_caseloads()
+try({
+  cases <- get_incapacity_caseloads()
+  cases[cases$series == "Claimants", ]
+})
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Downloading welfare_trends.xlsx from OBR...
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ✔ Saved to cache.
-cases[cases$series == "Claimants", ]
 #> # obr_tbl: 16 rows x 6 cols
 #> # Source:       OBR Welfare Trends Report, October 2024
 #> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
-#> # Retrieved:    2026-08-15 10:24:40 UTC
+#> # Retrieved:    2026-08-23 17:36:27 UTC
 #> # File MD5:     c587017c08a1
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> 
 #>     period period_type    series metric_type    value    unit
 #> 1  2008-09 fiscal_year Claimants       level 2588.000 count_k

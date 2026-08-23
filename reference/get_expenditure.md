@@ -37,16 +37,18 @@ Other public finances:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-tme <- get_expenditure()
+try({
+  tme <- get_expenditure()
+  tail(tme)
+})
 #> ℹ Downloading public_finances_databank.xlsx from OBR...
 #> ✔ Saved to cache.
-tail(tme)
 #> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Public Finances Databank
 #> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-08-15 10:23:55 UTC
+#> # Retrieved:    2026-08-23 17:35:45 UTC
 #> # File MD5:     77a07b6641ca
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> 
 #>     period period_type series metric_type     value   unit
 #> 75 2020-21 fiscal_year    TME       level 1164.5793 gbp_bn

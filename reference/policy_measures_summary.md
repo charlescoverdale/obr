@@ -52,7 +52,10 @@ Other policy measures:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-pm <- get_policy_measures(type = "tax", since = "2024-25")
+try({
+  pm <- get_policy_measures(type = "tax", since = "2024-25")
+  policy_measures_summary(pm)
+})
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
@@ -64,13 +67,12 @@ pm <- get_policy_measures(type = "tax", since = "2024-25")
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-policy_measures_summary(pm)
 #> # obr_tbl: 593 rows x 4 cols
 #> # Source:       OBR Policy Measures Database
 #> # URL:          https://obr.uk/download/policy-measures-database-march-2025/
-#> # Retrieved:    2026-08-15 10:25:26 UTC
+#> # Retrieved:    2026-08-23 17:37:14 UTC
 #> # File MD5:     a76d78e7a14d
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> # Note:         Summed across measures by event and fiscal year.
 #> 
 #>    type       event fiscal_year   value_mn

@@ -69,44 +69,24 @@ Other forecasts:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-diff <- obr_compare_vintages("October 2024", "March 2026")
+try({
+  diff <- obr_compare_vintages("October 2024", "March 2026")
+  diff[diff$series == "Net borrowing", ]
+
+  # Compare the inflation forecast across two vintages
+  inf_diff <- obr_compare_vintages("October 2024", "March 2026",
+  what = "inflation")
+
+  # Any catalogue table works too, e.g. debt interest (Table 6.16)
+  di_diff <- obr_compare_vintages("November 2025", "March 2026",
+  what = "6.16")
+})
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> ℹ Downloading efo_aggregates_march_2026.xlsx from OBR...
 #> ✔ Saved to cache.
-diff[diff$series == "Net borrowing", ]
-#> # obr_tbl: 5 rows x 8 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-15 10:26:24 UTC
-#> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.1
-#> # Note:         Vintage diff: October 2024 (a) -> March 2026 (b). revision = value_b - value_a. Earlier vintage URL: https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> 
-#>     period period_type        series metric_type   unit   value_a   value_b
-#> 6  2025-26 fiscal_year Net borrowing       level gbp_bn 105.57651 132.73508
-#> 13 2026-27 fiscal_year Net borrowing       level gbp_bn  88.45967 115.46142
-#> 20 2027-28 fiscal_year Net borrowing       level gbp_bn  72.16790  96.46737
-#> 27 2028-29 fiscal_year Net borrowing       level gbp_bn  71.90672  86.01563
-#> 34 2029-30 fiscal_year Net borrowing       level gbp_bn  70.58379  63.40344
-#>     revision
-#> 6  27.158562
-#> 13 27.001754
-#> 20 24.299469
-#> 27 14.108919
-#> 34 -7.180343
-
-# Compare the inflation forecast across two vintages
-inf_diff <- obr_compare_vintages("October 2024", "March 2026",
-                                 what = "inflation")
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-
-# Any catalogue table works too, e.g. debt interest (Table 6.16)
-di_diff <- obr_compare_vintages("November 2025", "March 2026",
-                                what = "6.16")
 #> ℹ Downloading efo_aggregates_november_2025.xlsx from OBR...
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ✔ Saved to cache.
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 options(op)

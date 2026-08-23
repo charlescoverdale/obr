@@ -55,11 +55,11 @@ attached. Fields:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-psnb <- get_psnb()
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+try({
+  psnb <- get_psnb()
+  obr_provenance(psnb)
+})
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-obr_provenance(psnb)
 #> $publication
 #> [1] "PFD"
 #> 
@@ -70,13 +70,13 @@ obr_provenance(psnb)
 #> [1] "https://obr.uk/download/public-finances-databank/"
 #> 
 #> $retrieved
-#> [1] "2026-08-15 10:23:55 UTC"
+#> [1] "2026-08-23 17:35:45 UTC"
 #> 
 #> $file_md5
 #> [1] "77a07b6641ca8ef85449de08077a9b87"
 #> 
 #> $package_version
-#> [1] "0.6.1"
+#> [1] "0.6.2"
 #> 
 #> $notes
 #> NULL

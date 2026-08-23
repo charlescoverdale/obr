@@ -78,29 +78,16 @@ Other EFO:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-efo <- get_efo_fiscal()
+try({
+  efo <- get_efo_fiscal()
+  efo[efo$series == "Net borrowing", ]
+  obr_provenance(efo)$vintage
+
+  # Pin to a specific EFO for reproducibility
+  october_2024 <- get_efo_fiscal(vintage = "October 2024")
+})
 #> ℹ Downloading efo_aggregates.xlsx from OBR...
 #> ✔ Saved to cache.
-efo[efo$series == "Net borrowing", ]
-#> # obr_tbl: 6 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-15 10:23:52 UTC
-#> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.1
-#> 
-#>     period period_type        series metric_type     value   unit
-#> 43 2025-26 fiscal_year Net borrowing       level 132.73508 gbp_bn
-#> 44 2026-27 fiscal_year Net borrowing       level 115.46142 gbp_bn
-#> 45 2027-28 fiscal_year Net borrowing       level  96.46737 gbp_bn
-#> 46 2028-29 fiscal_year Net borrowing       level  86.01563 gbp_bn
-#> 47 2029-30 fiscal_year Net borrowing       level  63.40344 gbp_bn
-#> 48 2030-31 fiscal_year Net borrowing       level  59.01991 gbp_bn
-obr_provenance(efo)$vintage
-#> [1] "March 2026"
-
-# Pin to a specific EFO for reproducibility
-october_2024 <- get_efo_fiscal(vintage = "October 2024")
 #> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
 #> ✔ Saved to cache.
 options(op)

@@ -58,31 +58,32 @@ Other forecasts:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-eval <- obr_actual_vs_forecast("PSNB")
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+try({
+  eval <- obr_actual_vs_forecast("PSNB")
 
-# 1-year-ahead forecast errors only:
-# take the forecast vintage closest to the start of each fiscal year
-eval2425 <- eval[eval$period == "2024-25", ]
-eval2425[order(eval2425$forecast_date), ]
+  # 1-year-ahead forecast errors only:
+  # take the forecast vintage closest to the start of each fiscal year
+  eval2425 <- eval[eval$period == "2024-25", ]
+  eval2425[order(eval2425$forecast_date), ]
+})
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> # obr_tbl: 13 rows x 8 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-08-15 10:24:08 UTC
+#> # Retrieved:    2026-08-23 17:35:55 UTC
 #> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> # Note:         Forecast vs outturn for PSNB. error = value_forecast - value_actual. Outturn source: https://obr.uk/download/public-finances-databank/
 #> 
 #>     forecast_date  period period_type series   unit value_forecast value_actual

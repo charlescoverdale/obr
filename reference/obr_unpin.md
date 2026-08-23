@@ -33,9 +33,11 @@ Other vintage:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-obr_pin("March 2025")
+try({
+  obr_pin("March 2025")
+  obr_unpin()
+})
 #> ✔ Pinned EFO to "March 2025".
-obr_unpin()
 #> ✔ Unpinned EFO (was "March 2025").
 options(op)
 # }

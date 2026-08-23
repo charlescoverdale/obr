@@ -71,96 +71,30 @@ Other EFO:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
+try({
 
-# Net borrowing components (same data as get_efo_fiscal())
-get_efo_table("6.5")
+  # Net borrowing components (same data as get_efo_fiscal())
+  get_efo_table("6.5")
+
+  # CPI category inflation by year
+  get_efo_table("1.19")
+
+  # Composition of public sector net debt
+  get_efo_table("6.13")
+
+  # Pin to a specific vintage
+  get_efo_table("6.5", vintage = "October 2024")
+})
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> # obr_tbl: 48 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-15 10:23:52 UTC
-#> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.1
-#> 
-#>     period period_type              series metric_type    value   unit
-#> 1  2025-26 fiscal_year    Current receipts       level 1235.253 gbp_bn
-#> 2  2026-27 fiscal_year    Current receipts       level 1303.793 gbp_bn
-#> 3  2027-28 fiscal_year    Current receipts       level 1375.408 gbp_bn
-#> 4  2028-29 fiscal_year    Current receipts       level 1427.438 gbp_bn
-#> 5  2029-30 fiscal_year    Current receipts       level 1491.944 gbp_bn
-#> 6  2030-31 fiscal_year    Current receipts       level 1551.485 gbp_bn
-#> 7  2025-26 fiscal_year Current expenditure       level 1211.485 gbp_bn
-#> 8  2026-27 fiscal_year Current expenditure       level 1260.266 gbp_bn
-#> 9  2027-28 fiscal_year Current expenditure       level 1299.180 gbp_bn
-#> 10 2028-29 fiscal_year Current expenditure       level 1340.119 gbp_bn
-#> # ... with 38 more rows
-
-# CPI category inflation by year
-get_efo_table("1.19")
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> # obr_tbl: 245 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/
-#> # Retrieved:    2026-08-15 10:23:50 UTC
-#> # File MD5:     da58dba1f8d3
-#> # Package:      obr 0.6.1
-#> 
-#>    period period_type                      series metric_type      value unit
-#> 1  2019Q1     quarter Food, beverages and tobacco     yoy_pct 2.02147714  pct
-#> 2  2019Q2     quarter Food, beverages and tobacco     yoy_pct 1.79552314  pct
-#> 3  2019Q3     quarter Food, beverages and tobacco     yoy_pct 2.10170705  pct
-#> 4  2019Q4     quarter Food, beverages and tobacco     yoy_pct 1.85312851  pct
-#> 5  2020Q1     quarter Food, beverages and tobacco     yoy_pct 1.26399562  pct
-#> 6  2020Q2     quarter Food, beverages and tobacco     yoy_pct 1.68885403  pct
-#> 7  2020Q3     quarter Food, beverages and tobacco     yoy_pct 0.86752929  pct
-#> 8  2020Q4     quarter Food, beverages and tobacco     yoy_pct 0.34913717  pct
-#> 9  2021Q1     quarter Food, beverages and tobacco     yoy_pct 0.11016879  pct
-#> 10 2021Q2     quarter Food, beverages and tobacco     yoy_pct 0.01870086  pct
-#> # ... with 235 more rows
-
-# Composition of public sector net debt
-get_efo_table("6.13")
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> # obr_tbl: 175 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-15 10:23:52 UTC
-#> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.1
-#> 
-#>     period period_type                                     series metric_type
-#> 1  2024-25 fiscal_year Public sector debt liabilities, ex BoE (a)         pct
-#> 2  2025-26 fiscal_year Public sector debt liabilities, ex BoE (a)         pct
-#> 3  2026-27 fiscal_year Public sector debt liabilities, ex BoE (a)         pct
-#> 4  2027-28 fiscal_year Public sector debt liabilities, ex BoE (a)         pct
-#> 5  2028-29 fiscal_year Public sector debt liabilities, ex BoE (a)         pct
-#> 6  2029-30 fiscal_year Public sector debt liabilities, ex BoE (a)         pct
-#> 7  2030-31 fiscal_year Public sector debt liabilities, ex BoE (a)         pct
-#> 8  2024-25 fiscal_year                         Central government         pct
-#> 9  2025-26 fiscal_year                         Central government         pct
-#> 10 2026-27 fiscal_year                         Central government         pct
-#>        value unit
-#> 1   96.09720  pct
-#> 2   99.24287  pct
-#> 3  100.39931  pct
-#> 4  101.32878  pct
-#> 5  102.01492  pct
-#> 6  101.85901  pct
-#> 7  101.40423  pct
-#> 8   96.61700  pct
-#> 9   99.77216  pct
-#> 10 100.94374  pct
-#> # ... with 165 more rows
-
-# Pin to a specific vintage
-get_efo_table("6.5", vintage = "October 2024")
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> # obr_tbl: 56 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, October 2024
 #> # URL:          https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-15 10:23:52 UTC
+#> # Retrieved:    2026-08-23 17:35:41 UTC
 #> # File MD5:     e647b168d466
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> 
 #>     period period_type              series metric_type    value   unit
 #> 1  2023-24 fiscal_year    Current receipts       level 1100.811 gbp_bn
@@ -174,7 +108,6 @@ get_efo_table("6.5", vintage = "October 2024")
 #> 9  2024-25 fiscal_year Current expenditure       level 1134.438 gbp_bn
 #> 10 2025-26 fiscal_year Current expenditure       level 1182.846 gbp_bn
 #> # ... with 46 more rows
-
 options(op)
 # }
 ```

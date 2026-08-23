@@ -543,13 +543,17 @@ dispatcher.
 A few things `obr` deliberately does not do, and a few caveats worth
 knowing.
 
-- **Forecast coverage is partial**. The EFO databank exposes around 70
-  detailed-forecast tables across the economy, receipts, expenditure,
-  and sustainability sections. `obr` currently surfaces the headline
-  aggregates (Table 6.5), inflation (sheet 1.7), labour (sheet 1.6), and
-  output gap (sheet 1.14). Receipts by tax, expenditure by function,
-  sector wage / productivity / FX series, and the FSR long-run scenarios
-  are on the roadmap for v0.5.0.
+- **Fiscal Risks and Sustainability coverage is thin.** The EFO
+  detailed-forecast tables are complete: v0.5.0 closed the last gaps and
+  `obr` now reaches all 39 in the Aggregates and Economy workbooks,
+  discoverable through
+  [`obr_efo_catalogue()`](https://charlescoverdale.github.io/obr/reference/obr_efo_catalogue.md)
+  and fetchable with
+  [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md).
+  The FSR long-run projections are the exception.
+  [`get_pension_projections()`](https://charlescoverdale.github.io/obr/reference/get_pension_projections.md)
+  was deprecated in v0.5.1 after the OBR restructured the FSR workbooks
+  in July 2026, and nothing has replaced it yet.
 - **EFO and PFD use the standard v0.4.0 schema; FRD and PMD do not
   yet.**
   [`get_forecast_revisions()`](https://charlescoverdale.github.io/obr/reference/get_forecast_revisions.md)

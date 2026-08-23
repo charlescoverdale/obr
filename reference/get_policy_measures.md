@@ -91,9 +91,11 @@ oct24 <- tryCatch(get_policy_measures(),
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Downloading policy_measures_database.xlsx from OBR...
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> ℹ Downloading policy_measures_database.xlsx from OBR...
 #> ✔ Saved to cache.
 if (!is.null(oct24)) {
   head(oct24[grepl("2024", oct24$event) &
@@ -108,7 +110,6 @@ if (!is.null(oct24)) {
 }
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
@@ -118,9 +119,9 @@ if (!is.null(oct24)) {
 #> # obr_tbl: 1141 rows x 6 cols
 #> # Source:       OBR Policy Measures Database
 #> # URL:          https://obr.uk/download/policy-measures-database-march-2025/
-#> # Retrieved:    2026-08-15 10:25:26 UTC
+#> # Retrieved:    2026-08-23 17:37:14 UTC
 #> # File MD5:     a76d78e7a14d
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> 
 #>    type       event                           measure         head fiscal_year
 #> 1   tax Budget 1974 Alterations in rates of beer duty Alcohol duty     2010-11

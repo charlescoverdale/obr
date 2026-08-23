@@ -76,9 +76,9 @@ if (!is.null(hr)) hr
 #> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-15 10:23:52 UTC
+#> # Retrieved:    2026-08-23 17:35:40 UTC
 #> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> # Note:         Derived from EFO Table 6.5: value = -(Current budget deficit). Positive = surplus = margin against the Charter stability rule.
 #> 
 #>    period period_type                 series metric_type      value   unit
@@ -101,9 +101,9 @@ if (!is.null(hr)) hr[hr$is_target_year, ]
 #> # obr_tbl: 1 rows x 7 cols
 #> # Source:       OBR Economic and Fiscal Outlook, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-08-15 10:23:52 UTC
+#> # Retrieved:    2026-08-23 17:35:40 UTC
 #> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> # Note:         Derived from EFO Table 6.5: value = -(Current budget deficit). Positive = surplus = margin against the Charter stability rule. Target year flagged: 2029-30.
 #> 
 #>    period period_type                 series metric_type    value   unit

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,24 @@
       <small>Source: <a href="https://github.com/charlescoverdale/obr/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.2" id="obr-062">obr 0.6.2<a class="anchor" aria-label="anchor" href="#obr-062"></a></h2>
+<p>Recovery release. obr was archived from CRAN on 2026-08-22 because the test ERROR reported for 0.6.0 was not corrected before the 2026-08-21 deadline. This release carries the 0.6.1 fix, which was prepared on 2026-08-15 but never submitted, and hardens the examples against the same underlying cause.</p>
+<div class="section level3">
+<h3 id="the-archived-failure-and-the-fix-carried-over-from-0-6-2">The archived failure, and the fix carried over from 0.6.1<a class="anchor" aria-label="anchor" href="#the-archived-failure-and-the-fix-carried-over-from-0-6-2"></a></h3>
+<p><code><a href="../reference/get_policy_measures.html">get_policy_measures()</a></code> validated its <code>search</code> and <code>since</code> arguments only after downloading the Policy Measures Database. The argument-validation tests therefore needed the network, and failed on the macOS builders when obr.uk returned HTTP 403. Both arguments are now checked before any download happens, so malformed input fails fast and offline, and no workbook is fetched for a call that cannot succeed.</p>
+</div>
+<div class="section level3">
+<h3 id="description-no-longer-advertises-the-fsr-pension-projections-0-6-2">DESCRIPTION no longer advertises the FSR pension projections<a class="anchor" aria-label="anchor" href="#description-no-longer-advertises-the-fsr-pension-projections-0-6-2"></a></h3>
+<p>The package Description still listed “the Fiscal Risks and Sustainability Report (50-year state pension projections)” among the sources covered. <code><a href="../reference/get_pension_projections.html">get_pension_projections()</a></code> has been deprecated since 0.5.1 and returns NULL, so that clause has been wrong since then and shipped to CRAN in 0.6.0. Removed. The README limitation covering the same ground has been rewritten: it described the v0.4.x state, in which only 4 EFO detailed-forecast tables were exposed, when v0.5.0 took that to all 39.</p>
+</div>
+<div class="section level3">
+<h3 id="examples-hardened-against-an-unreachable-obruk-0-6-2">Examples hardened against an unreachable obr.uk<a class="anchor" aria-label="anchor" href="#examples-hardened-against-an-unreachable-obruk-0-6-2"></a></h3>
+<p>Every unguarded <code>\donttest{}</code> example that makes a network call is now wrapped in <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code>, so an unreachable or rate-limited obr.uk produces a printed condition rather than an example ERROR. That covers 20 of the 24 <code>\donttest{}</code> blocks. The other four are already safe: three (<code><a href="../reference/obr_headroom.html">obr_headroom()</a></code>, <code><a href="../reference/get_monthly_profiles.html">get_monthly_profiles()</a></code>, and one of the <code><a href="../reference/get_policy_measures.html">get_policy_measures()</a></code> examples) already guard their calls with <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>, and <code><a href="../reference/clear_cache.html">clear_cache()</a></code> touches only the local cache.</p>
+<p>This is the same class of failure that produced the <code>donttest</code> ERROR reported against 0.2.5. obr.uk returns HTTP 403 to the CRAN build machines as a rate-limiting measure rather than as a genuine “not found”, and the package retries those, so an example that cannot reach the site spends its retry budget and then fails. Wrapping in <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code> means the retry budget is still spent but the check no longer errors.</p>
+<p>The <code>options(op)</code> cache-directory restore stays outside the <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code>, so it runs whether or not the download succeeded.</p>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.1" id="obr-061">obr 0.6.1<a class="anchor" aria-label="anchor" href="#obr-061"></a></h2>
 <p>Patch release fixing the test ERROR reported on the CRAN macOS check flavours for 0.6.0.</p>

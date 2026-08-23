@@ -42,17 +42,19 @@ Other welfare:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-ib <- get_incapacity_spending()
+try({
+  ib <- get_incapacity_spending()
+  unique(ib$series)
+})
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-unique(ib$series)
 #> [1] "Employment and support allowance (excluding assessment phase)"
 #> [2] "Incapacity benefit"                                           
 #> [3] "Invalidity benefit"                                           

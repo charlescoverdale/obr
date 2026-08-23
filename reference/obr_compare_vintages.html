@@ -11,7 +11,7 @@ OBR's view changed between fiscal events."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">obr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,44 +111,24 @@ beyond that.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>obr.cache_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">diff</span> <span class="op">&lt;-</span> <span class="fu">obr_compare_vintages</span><span class="op">(</span><span class="st">"October 2024"</span>, <span class="st">"March 2026"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">diff</span> <span class="op">&lt;-</span> <span class="fu">obr_compare_vintages</span><span class="op">(</span><span class="st">"October 2024"</span>, <span class="st">"March 2026"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">diff</span><span class="op">[</span><span class="va">diff</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Compare the inflation forecast across two vintages</span></span></span>
+<span class="r-in"><span>  <span class="va">inf_diff</span> <span class="op">&lt;-</span> <span class="fu">obr_compare_vintages</span><span class="op">(</span><span class="st">"October 2024"</span>, <span class="st">"March 2026"</span>,</span></span>
+<span class="r-in"><span>  what <span class="op">=</span> <span class="st">"inflation"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Any catalogue table works too, e.g. debt interest (Table 6.16)</span></span></span>
+<span class="r-in"><span>  <span class="va">di_diff</span> <span class="op">&lt;-</span> <span class="fu">obr_compare_vintages</span><span class="op">(</span><span class="st">"November 2025"</span>, <span class="st">"March 2026"</span>,</span></span>
+<span class="r-in"><span>  what <span class="op">=</span> <span class="st">"6.16"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading <span style="color: #0000BB;">efo_aggregates_march_2026.xlsx</span> from OBR...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Saved to cache.</span>
-<span class="r-in"><span><span class="va">diff</span><span class="op">[</span><span class="va">diff</span><span class="op">$</span><span class="va">series</span> <span class="op">==</span> <span class="st">"Net borrowing"</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # obr_tbl: 5 rows x 8 cols</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Source:       OBR Economic and Fiscal Outlook, March 2026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Retrieved:    2026-08-15 10:26:24 UTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # File MD5:     5b5eeaf79b96</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Package:      obr 0.6.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Note:         Vintage diff: October 2024 (a) -&gt; March 2026 (b). revision = value_b - value_a. Earlier vintage URL: https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     period period_type        series metric_type   unit   value_a   value_b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  2025-26 fiscal_year Net borrowing       level gbp_bn 105.57651 132.73508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 2026-27 fiscal_year Net borrowing       level gbp_bn  88.45967 115.46142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 2027-28 fiscal_year Net borrowing       level gbp_bn  72.16790  96.46737</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2028-29 fiscal_year Net borrowing       level gbp_bn  71.90672  86.01563</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34 2029-30 fiscal_year Net borrowing       level gbp_bn  70.58379  63.40344</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     revision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  27.158562</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 27.001754</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 24.299469</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 14.108919</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34 -7.180343</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Compare the inflation forecast across two vintages</span></span></span>
-<span class="r-in"><span><span class="va">inf_diff</span> <span class="op">&lt;-</span> <span class="fu">obr_compare_vintages</span><span class="op">(</span><span class="st">"October 2024"</span>, <span class="st">"March 2026"</span>,</span></span>
-<span class="r-in"><span>                                 what <span class="op">=</span> <span class="st">"inflation"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Any catalogue table works too, e.g. debt interest (Table 6.16)</span></span></span>
-<span class="r-in"><span><span class="va">di_diff</span> <span class="op">&lt;-</span> <span class="fu">obr_compare_vintages</span><span class="op">(</span><span class="st">"November 2025"</span>, <span class="st">"March 2026"</span>,</span></span>
-<span class="r-in"><span>                                what <span class="op">=</span> <span class="st">"6.16"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading <span style="color: #0000BB;">efo_aggregates_november_2025.xlsx</span> from OBR...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Waiting 2s for throttling delay <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Waiting 2s for throttling delay <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Saved to cache.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading from cache. Use `refresh = TRUE` to re-download.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>

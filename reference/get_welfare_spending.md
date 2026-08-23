@@ -41,7 +41,13 @@ Other welfare:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-welfare <- get_welfare_spending()
+try({
+  welfare <- get_welfare_spending()
+  welfare[welfare$series == "Working-age incapacity benefits spending" &
+  welfare$period >= "2000-01", ]
+})
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
@@ -49,14 +55,12 @@ welfare <- get_welfare_spending()
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-welfare[welfare$series == "Working-age incapacity benefits spending" &
-        welfare$period >= "2000-01", ]
 #> # obr_tbl: 29 rows x 6 cols
 #> # Source:       OBR Welfare Trends Report, October 2024
 #> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
-#> # Retrieved:    2026-08-15 10:24:40 UTC
+#> # Retrieved:    2026-08-23 17:36:27 UTC
 #> # File MD5:     c587017c08a1
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> 
 #>     period period_type                                   series metric_type
 #> 23 2000-01 fiscal_year Working-age incapacity benefits spending       level

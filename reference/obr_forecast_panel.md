@@ -67,11 +67,11 @@ Other forecasts:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-panel <- obr_forecast_panel("PSNB")
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+try({
+  panel <- obr_forecast_panel("PSNB")
+  # PSNB forecast for 2024-25 across every vintage
+  panel[, c("forecast_date", "2024-25")]
+})
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
@@ -81,14 +81,12 @@ panel <- obr_forecast_panel("PSNB")
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> Warning: multiple rows match for period=1996-97: first taken
 #> Warning: multiple rows match for period=1997-98: first taken
-# PSNB forecast for 2024-25 across every vintage
-panel[, c("forecast_date", "2024-25")]
 #> # obr_tbl: 104 rows x 2 cols
 #> # Source:       OBR Historical Official Forecasts Database, March 2025
 #> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-08-15 10:24:08 UTC
+#> # Retrieved:    2026-08-23 17:35:55 UTC
 #> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> # Note:         Wide real-time panel for PSNB: rows = forecast vintage, columns = fiscal year.
 #> 
 #>    forecast_date 2024-25

@@ -89,9 +89,9 @@ if (!is.null(mp)) {
 #> # obr_tbl: 12 rows x 6 cols
 #> # Source:       OBR EFO Monthly Profiles, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-monthly-profiles/
-#> # Retrieved:    2026-08-15 10:25:02 UTC
+#> # Retrieved:    2026-08-23 17:36:50 UTC
 #> # File MD5:     b3f3a018bb19
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> # Note:         Monthly profiles are broad-brush and illustrative (OBR). Each series also carries a fiscal_year row with the full-year EFO forecast.
 #> 
 #>     period period_type             series metric_type     value   unit
@@ -109,7 +109,6 @@ if (!is.null(mp)) {
 
 # CGNCR breakdown by month
 cg <- tryCatch(get_monthly_profiles("cgncr"), error = function(e) NULL)
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.

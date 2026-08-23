@@ -66,18 +66,20 @@ Other forecasts:
 ``` r
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
-rev <- get_forecast_revisions()
+try({
+  rev <- get_forecast_revisions()
+  # Top-level revisions only
+  rev[rev$component %in% c("Total", "Policy",
+  "Classifications and one-offs", "Underlying"), ]
+})
 #> ℹ Downloading forecast_revisions.xlsx from OBR...
 #> ✔ Saved to cache.
-# Top-level revisions only
-rev[rev$component %in% c("Total", "Policy",
-                         "Classifications and one-offs", "Underlying"), ]
 #> # obr_tbl: 564 rows x 4 cols
 #> # Source:       OBR Forecast Revisions Database
 #> # URL:          https://obr.uk/download/forecast-revisions-database-march-2025/
-#> # Retrieved:    2026-08-15 10:23:57 UTC
+#> # Retrieved:    2026-08-23 17:35:47 UTC
 #> # File MD5:     88649f739c50
-#> # Package:      obr 0.6.1
+#> # Package:      obr 0.6.2
 #> # Note:         Decomposition of PSNB forecast revisions in GBP billion.
 #> 
 #>    forecast_date component fiscal_year value
