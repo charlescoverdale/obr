@@ -15,6 +15,16 @@ obr.uk returned HTTP 403. Both arguments are now checked before any
 download happens, so malformed input fails fast and offline, and no
 workbook is fetched for a call that cannot succeed.
 
+## DESCRIPTION no longer advertises the FSR pension projections
+
+The package Description still listed "the Fiscal Risks and Sustainability
+Report (50-year state pension projections)" among the sources covered.
+`get_pension_projections()` has been deprecated since 0.5.1 and returns
+NULL, so that clause has been wrong since then and shipped to CRAN in
+0.6.0. Removed. The README limitation covering the same ground has been
+rewritten: it described the v0.4.x state, in which only 4 EFO
+detailed-forecast tables were exposed, when v0.5.0 took that to all 39.
+
 ## Examples hardened against an unreachable obr.uk
 
 Every unguarded `\donttest{}` example that makes a network call is now

@@ -9,9 +9,8 @@ Description: Provides clean, tidy access to data published by the 'Office for
     'OBR' forecast since 2010), the Economic and Fiscal Outlook detailed forecast
     tables (five-year projections from the latest Budget), the monthly
     profiles for the public finances (the 'OBR' forecast apportioned across
-    the months of the fiscal year), the Welfare Trends Report (incapacity
-    benefit spending and caseloads), and the Fiscal Risks and
-    Sustainability Report (50-year state pension projections). All returned
+    the months of the fiscal year), and the Welfare Trends Report
+    (incapacity benefit spending and caseloads). All returned
     objects carry provenance metadata recording the source URL, publication
     vintage, retrieval time, and file fingerprint, so analyses can be audited
     and reproduced. Data is downloaded from the 'OBR' on first use and cached
