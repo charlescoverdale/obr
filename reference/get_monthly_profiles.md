@@ -74,7 +74,7 @@ Other EFO:
 op <- options(obr.cache_dir = tempdir())
 
 mp <- tryCatch(get_monthly_profiles(), error = function(e) NULL)
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Downloading efo_monthly_profiles.xlsx from OBR...
 #> ✔ Saved to cache.
@@ -85,7 +85,7 @@ if (!is.null(mp)) {
 #> # obr_tbl: 12 rows x 6 cols
 #> # Source:       OBR EFO Monthly Profiles, March 2026
 #> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-monthly-profiles/
-#> # Retrieved:    2026-08-23 18:06:14 UTC
+#> # Retrieved:    2026-09-19 10:31:42 UTC
 #> # File MD5:     b3f3a018bb19
 #> # Package:      obr 0.6.2
 #> # Note:         Monthly profiles are broad-brush and illustrative (OBR). Each series also carries a fiscal_year row with the full-year EFO forecast.
@@ -105,6 +105,8 @@ if (!is.null(mp)) {
 
 # CGNCR breakdown by month
 cg <- tryCatch(get_monthly_profiles("cgncr"), error = function(e) NULL)
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.

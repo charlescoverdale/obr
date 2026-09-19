@@ -41,13 +41,11 @@ try({
   psnb <- get_psnb()
   tail(psnb)
 })
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 #> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
 #> # obr_tbl: 6 rows x 6 cols
 #> # Source:       OBR Public Finances Databank
 #> # URL:          https://obr.uk/download/public-finances-databank/
-#> # Retrieved:    2026-08-23 18:05:03 UTC
+#> # Retrieved:    2026-09-19 10:30:11 UTC
 #> # File MD5:     77a07b6641ca
 #> # Package:      obr 0.6.2
 #> 

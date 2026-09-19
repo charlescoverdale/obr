@@ -2,6 +2,8 @@
 
 ## obr 0.6.2
 
+CRAN release: 2026-08-24
+
 Recovery release. obr was archived from CRAN on 2026-08-22 because the
 test ERROR reported for 0.6.0 was not corrected before the 2026-08-21
 deadline. This release carries the 0.6.1 fix, which was prepared on
