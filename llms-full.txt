@@ -2,7 +2,7 @@
 
 > Tidy access to Office for Budget Responsibility data: the Public Finances Databank, Historical Official Forecasts Database, Economic and Fiscal Outlook detailed forecast tables (39 tables via a generic dispatcher), EFO monthly profiles, Welfare Trends Report, Policy Measures Database, fiscal rules, and a vintage layer for reproducibility. Every returned object is an `obr_tbl`: a data.frame with provenance (source URL, vintage, retrieval time, file MD5) attached.
 
-Version: 0.6.0. License: MIT. Author: Charles Coverdale.
+Version: 0.6.2. License: MIT. Author: Charles Coverdale.
 
 Standard schema (v0.4.0+): most data functions return columns `period`, `period_type` (fiscal_year / quarter / calendar_year / month), `series`, `metric_type` (level / yoy_pct / index / pct / pct_pts), `value`, `unit` (gbp_bn, pct, ...). Extra identifying columns are documented per function.
 
