@@ -36,8 +36,8 @@ options(op)
 
 }
 \seealso{
-Other welfare: 
-\code{\link{get_incapacity_spending}()},
-\code{\link{get_welfare_spending}()}
+Other welfare:
+\code{\link[=get_incapacity_spending]{get_incapacity_spending()}},
+\code{\link[=get_welfare_spending]{get_welfare_spending()}}
 }
 \concept{welfare}

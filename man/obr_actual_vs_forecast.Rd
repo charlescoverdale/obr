@@ -54,11 +54,11 @@ options(op)
 
 }
 \seealso{
-Other forecasts: 
-\code{\link{get_forecast_revisions}()},
-\code{\link{get_forecasts}()},
-\code{\link{list_forecast_series}()},
-\code{\link{obr_compare_vintages}()},
-\code{\link{obr_forecast_panel}()}
+Other forecasts:
+\code{\link[=get_forecast_revisions]{get_forecast_revisions()}},
+\code{\link[=get_forecasts]{get_forecasts()}},
+\code{\link[=list_forecast_series]{list_forecast_series()}},
+\code{\link[=obr_compare_vintages]{obr_compare_vintages()}},
+\code{\link[=obr_forecast_panel]{obr_forecast_panel()}}
 }
 \concept{forecasts}

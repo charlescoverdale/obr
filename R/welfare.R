@@ -1,16 +1,20 @@
 # Welfare Trends Report: charts and tables.
-# URL resolved dynamically; resolver warns if it falls through to the
-# hardcoded fallback.
-WTR_FALLBACK <- "https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/"
-WTR_FILENAME <- "welfare_trends.xlsx"
+# Each WTR has its own theme, so its chart numbering is not stable across
+# editions. The October 2024 report is the one on incapacity benefits; the
+# June 2026 report is on fraud and error and has no spending or caseload
+# charts at all. Resolving "the latest WTR" therefore returned the wrong
+# charts under the right names. The incapacity functions are pinned to the
+# October 2024 edition, and parse_wtr_chart() checks each chart title.
+WTR_INCAPACITY_URL      <- "https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/"
+WTR_INCAPACITY_FILENAME <- "welfare_trends_october_2024.xlsx"
 
 wtr_source <- function(refresh = FALSE) {
   obr_get_xlsx(
-    candidates = wtr_url_candidates(),
-    fallback   = WTR_FALLBACK,
-    filename   = WTR_FILENAME,
+    candidates = WTR_INCAPACITY_URL,
+    fallback   = WTR_INCAPACITY_URL,
+    filename   = WTR_INCAPACITY_FILENAME,
     refresh    = refresh,
-    label      = "Welfare Trends Report"
+    label      = "Welfare Trends Report (October 2024)"
   )
 }
 
@@ -18,7 +22,7 @@ wtr_obr_tbl <- function(data, src) {
   new_obr_tbl(
     data        = data,
     publication = "WTR",
-    vintage     = obr_url_vintage(src$url),
+    vintage     = obr_url_vintage(src$final_url %||% src$url),
     source_url  = src$url,
     retrieved   = src$retrieved,
     file_md5    = src$file_md5
@@ -35,10 +39,22 @@ wtr_obr_tbl <- function(data, src) {
 # "pct" when the heuristic classifier cannot assign a more specific unit.
 # Caller can override by post-processing the returned frame (e.g. caseload
 # series that are denominated in thousands of claimants).
-parse_wtr_chart <- function(path, sheet, unit_default = "pct") {
+parse_wtr_chart <- function(path, sheet, title_pattern, unit_default = "pct") {
   raw <- readxl::read_excel(path, sheet = sheet,
                             col_names = FALSE, .name_repair = "minimal")
   col2 <- as.character(unlist(raw[, 2]))
+
+  # Guard against the OBR renumbering charts: the sheet must carry the
+  # chart we expect, otherwise a different series would be returned under
+  # this function's name.
+  title <- if (length(col2) >= 2L) col2[2L] else NA_character_
+  if (is.na(title) || !grepl(title_pattern, title, ignore.case = TRUE)) {
+    cli::cli_abort(c(
+      "Sheet {.val {sheet}} of the Welfare Trends Report does not hold the expected chart.",
+      "i" = "Expected a title matching {.val {title_pattern}}; found {.val {title}}.",
+      "!" = "The OBR may have restructured the workbook. Please file an issue at https://github.com/charlescoverdale/obr/issues."
+    ))
+  }
 
   non_na    <- which(!is.na(col2) & col2 != "")
   data_rows <- non_na[non_na > 2L]
@@ -80,8 +96,10 @@ parse_wtr_chart <- function(path, sheet, unit_default = "pct") {
 #' workbook and returns annual working-age welfare spending as a share of
 #' GDP, split into incapacity-related and non-incapacity spending.
 #'
-#' Data cover fiscal years from 1978-79 through the current forecast horizon.
-#' The exact vintage is recorded in the returned object's provenance.
+#' Data cover fiscal years from 1978-79 to 2028-29, from the October 2024
+#' Welfare Trends Report, the OBR's most recent report on incapacity
+#' benefits. Later reports cover other themes and do not update this
+#' chart.
 #'
 #' @param refresh Logical. If `TRUE`, re-download even if a cached copy
 #'   exists. Defaults to `FALSE`.
@@ -106,14 +124,15 @@ parse_wtr_chart <- function(path, sheet, unit_default = "pct") {
 #' @export
 get_welfare_spending <- function(refresh = FALSE) {
   src <- wtr_source(refresh)
-  wtr_obr_tbl(parse_wtr_chart(src$path, "C1.3"), src)
+  wtr_obr_tbl(parse_wtr_chart(src$path, "C1.3", "working-age spending"), src)
 }
 
 #' Get incapacity benefits spending by type
 #'
 #' Downloads (and caches) the OBR Welfare Trends Report charts and tables
 #' workbook and returns annual spending on each incapacity benefit as a
-#' share of GDP, from 1978-79 to the current forecast horizon.
+#' share of GDP, from 1978-79 to 2028-29, from the October 2024 Welfare
+#' Trends Report (the OBR's most recent report on incapacity benefits).
 #'
 #' Series include: Invalidity Benefit, Incapacity Benefit, Employment and
 #' Support Allowance (ESA), Sickness Benefit, and Severe Disablement
@@ -141,7 +160,7 @@ get_welfare_spending <- function(refresh = FALSE) {
 #' @export
 get_incapacity_spending <- function(refresh = FALSE) {
   src <- wtr_source(refresh)
-  wtr_obr_tbl(parse_wtr_chart(src$path, "C1.1"), src)
+  wtr_obr_tbl(parse_wtr_chart(src$path, "C1.1", "incapacity benefits spending"), src)
 }
 
 #' Get incapacity benefit caseloads
@@ -175,7 +194,7 @@ get_incapacity_spending <- function(refresh = FALSE) {
 #' @export
 get_incapacity_caseloads <- function(refresh = FALSE) {
   src <- wtr_source(refresh)
-  out <- parse_wtr_chart(src$path, "C3.1")
+  out <- parse_wtr_chart(src$path, "C3.1", "incapacity benefits caseload")
   if (!is.null(out)) {
     is_claimants <- out$series == "Claimants"
     out$unit[is_claimants] <- "count_k"

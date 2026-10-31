@@ -74,3 +74,22 @@ test_that("get_forecasts() returns obr_tbl with HFD provenance", {
   expect_match(prov$source_url, "historical-official-forecasts-database")
   expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
 })
+
+test_that("hfd_fix_forecast_dates() relabels the duplicated July 1996 row", {
+  dates <- c("June 1995", "November 1995", "July 1996", "November 1996",
+             "July 1996", "March 1998")
+  fixed <- hfd_fix_forecast_dates(dates)
+  expect_equal(fixed[5], "July 1997")
+  expect_equal(fixed[-5], dates[-5])
+  expect_false(anyDuplicated(fixed) > 0)
+  # Leaves an already-correct sequence untouched
+  ok <- c("July 1996", "November 1996", "July 1997")
+  expect_equal(hfd_fix_forecast_dates(ok), ok)
+})
+
+test_that("HFD and PMD candidates try the undated current-edition slug first", {
+  expect_equal(forecasts_url_candidates()[1],
+               "https://obr.uk/download/historical-official-forecasts-database/")
+  expect_equal(pmd_url_candidates()[1],
+               "https://obr.uk/download/policy-measures-database/")
+})

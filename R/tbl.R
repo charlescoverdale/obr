@@ -50,14 +50,19 @@ obr_publication_label <- function(code) {
   )
 }
 
-# Extract a "Month YYYY" vintage label from an OBR download slug, if present.
-# OBR slugs follow patterns like "march-2026-economic-and-fiscal-outlook-..."
+# Extract a "Month YYYY" vintage label from an OBR URL, if present.
+# Download slugs look like "march-2026-economic-and-fiscal-outlook-..."; the
+# files they redirect to look like "Policy_measures_database_March_2026.xlsx"
+# or "Historical_official_forecasts_database_Spring_2026.xlsx", so hyphens
+# and underscores are both accepted, as are Spring/Autumn labels.
 obr_url_vintage <- function(url) {
   if (is.null(url) || is.na(url)) return(NA_character_)
-  pattern <- "(january|february|march|april|may|june|july|august|september|october|november|december)-([0-9]{4})"
+  pattern <- paste0("(january|february|march|april|may|june|july|august|",
+                    "september|october|november|december|spring|autumn)",
+                    "[-_]([0-9]{4})")
   m <- regmatches(url, regexpr(pattern, url, ignore.case = TRUE))
   if (length(m) == 0L) return(NA_character_)
-  parts <- strsplit(m[1], "-", fixed = TRUE)[[1]]
+  parts <- strsplit(m[1], "[-_]")[[1]]
   month <- paste0(toupper(substring(parts[1], 1, 1)),
                   tolower(substring(parts[1], 2)))
   paste(month, parts[2])

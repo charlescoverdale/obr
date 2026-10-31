@@ -76,3 +76,15 @@ test_that("WTR functions return obr_tbl with WTR provenance", {
     expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
   }
 })
+
+test_that("parse_wtr_chart() refuses a sheet holding a different chart", {
+  path <- tempfile(fileext = ".xlsx")
+  on.exit(unlink(path), add = TRUE)
+  skip_if_not_installed("writexl")
+  df <- data.frame(a = c("Back to contents", NA, NA, NA),
+                   b = c(NA, "Chart 1.1: Fraud and error rate", "x", "Series"),
+                   c = c(NA, NA, "2024-25", "1"))
+  writexl::write_xlsx(list(C1.1 = df), path, col_names = FALSE)
+  expect_error(parse_wtr_chart(path, "C1.1", "incapacity benefits spending"),
+               "does not hold the expected chart")
+})

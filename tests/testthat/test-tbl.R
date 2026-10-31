@@ -90,6 +90,15 @@ test_that("obr_url_vintage() extracts month-year from EFO slug", {
   expect_true(is.na(obr_url_vintage(
     "https://obr.uk/download/public-finances-databank/"
   )))
+  # Files behind undated slugs carry the vintage in the filename
+  expect_equal(
+    obr_url_vintage("https://obr.uk/docs/dlm_uploads/Policy_measures_database_March_2026.xlsx"),
+    "March 2026"
+  )
+  expect_equal(
+    obr_url_vintage("https://obr.uk/docs/dlm_uploads/Historical_official_forecasts_database_Spring_2026.xlsx"),
+    "Spring 2026"
+  )
 })
 
 test_that("obr_publication_label() resolves the codes used in this package", {

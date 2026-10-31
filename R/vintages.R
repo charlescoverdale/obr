@@ -28,7 +28,7 @@ efo_vintage_table <- function() {
     "March 2023", "November 2023",
     "March 2024", "October 2024",
     "March 2025", "November 2025",
-    "March 2026"
+    "March 2026", "October 2026"
   )
   date <- as.Date(c(
     "2010-06-22", "2010-11-29",
@@ -47,7 +47,7 @@ efo_vintage_table <- function() {
     "2023-03-15", "2023-11-22",
     "2024-03-06", "2024-10-30",
     "2025-03-26", "2025-11-26",
-    "2026-03-26"
+    "2026-03-26", "2026-10-28"
   ))
   slug <- vapply(vintage, function(v) {
     parts <- strsplit(tolower(v), " ", fixed = TRUE)[[1]]

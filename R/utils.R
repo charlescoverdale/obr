@@ -71,29 +71,14 @@ efo_url_candidates <- function(suffix) {
   candidates
 }
 
-# Build WTR URL candidates.
-wtr_url_candidates <- function() {
-  current_year <- as.integer(format(Sys.Date(), "%Y"))
-  months <- c("october", "june", "march")
-  candidates <- character(0)
-  for (yr in seq(current_year, current_year - 2L)) {
-    for (mn in months) {
-      candidates <- c(candidates, paste0(
-        "https://obr.uk/download/welfare-trends-report-", mn, "-", yr,
-        "-charts-and-tables/"
-      ))
-    }
-  }
-  candidates
-}
-
 # Build Historical Official Forecasts Database URL candidates.
-# OBR sometimes re-uses an older slug across vintages, so we try recent slugs
-# first and fall through to the known-stable slug as a fallback.
+# The undated slug redirects to the current edition and is tried first. The
+# dated slugs follow for older mirrors (the OBR has also re-used them across
+# vintages).
 forecasts_url_candidates <- function() {
   current_year <- as.integer(format(Sys.Date(), "%Y"))
   months <- c("november", "october", "july", "march")
-  candidates <- character(0)
+  candidates <- "https://obr.uk/download/historical-official-forecasts-database/"
   for (yr in seq(current_year, current_year - 3L)) {
     for (mn in months) {
       candidates <- c(candidates, paste0(

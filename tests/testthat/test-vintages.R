@@ -8,11 +8,13 @@ test_that("obr_efo_vintages() returns a structured table", {
   expect_s3_class(v$date, "Date")
   expect_match(v$slug, "-economic-and-fiscal-outlook$", all = TRUE)
 
-  # 33 EFOs from June 2010 to March 2026 inclusive
+  # 34 EFOs from June 2010 to October 2026 inclusive
   expect_gte(nrow(v), 30L)
   expect_true("June 2010"   %in% v$vintage)
   expect_true("October 2024" %in% v$vintage)
   expect_true("March 2026"  %in% v$vintage)
+  expect_true("October 2026" %in% v$vintage)
+  expect_equal(v$date[v$vintage == "October 2026"], as.Date("2026-10-28"))
   # Dates are unique and ordered ascending in the table source
   expect_equal(anyDuplicated(v$vintage), 0L)
   expect_equal(anyDuplicated(v$date),    0L)

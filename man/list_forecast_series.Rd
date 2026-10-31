@@ -19,11 +19,11 @@ list_forecast_series()
 
 }
 \seealso{
-Other forecasts: 
-\code{\link{get_forecast_revisions}()},
-\code{\link{get_forecasts}()},
-\code{\link{obr_actual_vs_forecast}()},
-\code{\link{obr_compare_vintages}()},
-\code{\link{obr_forecast_panel}()}
+Other forecasts:
+\code{\link[=get_forecast_revisions]{get_forecast_revisions()}},
+\code{\link[=get_forecasts]{get_forecasts()}},
+\code{\link[=obr_actual_vs_forecast]{obr_actual_vs_forecast()}},
+\code{\link[=obr_compare_vintages]{obr_compare_vintages()}},
+\code{\link[=obr_forecast_panel]{obr_forecast_panel()}}
 }
 \concept{forecasts}

@@ -37,5 +37,7 @@ export(obr_provenance)
 export(obr_unpin)
 export(policy_measures_summary)
 importFrom(stats,aggregate)
-importFrom(utils,head)
-importFrom(utils,packageVersion)
+importFrom(utils,
+  head,
+  packageVersion
+)

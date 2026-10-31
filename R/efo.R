@@ -2,9 +2,9 @@
 # URLs are resolved dynamically; the fallback is the latest known good URL
 # at package release. Silent fallbacks were removed in 0.3.0; the resolver
 # warns when it falls through.
-EFO_AGGREGATES_FALLBACK <- "https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/"
+EFO_AGGREGATES_FALLBACK <- "https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/"
 EFO_AGGREGATES_FILENAME <- "efo_aggregates.xlsx"
-EFO_ECONOMY_FALLBACK    <- "https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/"
+EFO_ECONOMY_FALLBACK    <- "https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-economy/"
 EFO_ECONOMY_FILENAME    <- "efo_economy.xlsx"
 
 efo_aggregates_source <- function(refresh = FALSE, vintage = NULL) {

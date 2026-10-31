@@ -62,7 +62,7 @@ options(op)
 
 }
 \seealso{
-Other fiscal rules: 
-\code{\link{obr_fiscal_rules}()}
+Other fiscal rules:
+\code{\link[=obr_fiscal_rules]{obr_fiscal_rules()}}
 }
 \concept{fiscal rules}

@@ -34,7 +34,7 @@ devtools::install_github("charlescoverdale/obr")
 | [Historical Official Forecasts Database](https://obr.uk/data/) | Every forecast the OBR (and pre-OBR Treasury) has published for key fiscal and economic variables since 1970 | Each fiscal event |
 | [Economic and Fiscal Outlook](https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/) | The flagship publication at each Budget - detailed projections across 5 years | Each Budget / Autumn Statement |
 | [Fiscal Sustainability Report](https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics | Annual |
-| [Welfare Trends Report](https://obr.uk/wtr/welfare-trends-report-october-2024/) | Spending trends across the benefits system | Annual |
+| [Welfare Trends Report](https://obr.uk/wtr/welfare-trends-report-october-2024/) | Incapacity benefit spending and caseloads (October 2024 edition; later reports cover other themes) | Annual |
 | [Monthly profiles](https://obr.uk/monthly-public-finances-briefing/) | The EFO forecast for receipts, spending, and the CGNCR apportioned across the months of the fiscal year, against which each month's outturn is judged | Each EFO |
 
 This package covers all six datasets listed above.

@@ -18,10 +18,10 @@ obr_pinned()
 
 }
 \seealso{
-Other vintage: 
-\code{\link{obr_as_of}()},
-\code{\link{obr_efo_vintages}()},
-\code{\link{obr_pin}()},
-\code{\link{obr_unpin}()}
+Other vintage:
+\code{\link[=obr_as_of]{obr_as_of()}},
+\code{\link[=obr_efo_vintages]{obr_efo_vintages()}},
+\code{\link[=obr_pin]{obr_pin()}},
+\code{\link[=obr_unpin]{obr_unpin()}}
 }
 \concept{vintage}

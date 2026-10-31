@@ -46,11 +46,11 @@ cat[cat$section == "Debt", c("table_id", "title")]
 
 }
 \seealso{
-Other EFO: 
-\code{\link{get_efo_economy}()},
-\code{\link{get_efo_fiscal}()},
-\code{\link{get_efo_table}()},
-\code{\link{get_monthly_profiles}()},
-\code{\link{list_efo_economy_measures}()}
+Other EFO:
+\code{\link[=get_efo_economy]{get_efo_economy()}},
+\code{\link[=get_efo_fiscal]{get_efo_fiscal()}},
+\code{\link[=get_efo_table]{get_efo_table()}},
+\code{\link[=get_monthly_profiles]{get_monthly_profiles()}},
+\code{\link[=list_efo_economy_measures]{list_efo_economy_measures()}}
 }
 \concept{EFO}

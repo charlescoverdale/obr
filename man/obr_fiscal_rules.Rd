@@ -48,7 +48,7 @@ obr_fiscal_rules()
 
 }
 \seealso{
-Other fiscal rules: 
-\code{\link{obr_headroom}()}
+Other fiscal rules:
+\code{\link[=obr_headroom]{obr_headroom()}}
 }
 \concept{fiscal rules}

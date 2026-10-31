@@ -19,7 +19,8 @@ column docs.
 \description{
 Downloads (and caches) the OBR Welfare Trends Report charts and tables
 workbook and returns annual spending on each incapacity benefit as a
-share of GDP, from 1978-79 to the current forecast horizon.
+share of GDP, from 1978-79 to 2028-29, from the October 2024 Welfare
+Trends Report (the OBR's most recent report on incapacity benefits).
 }
 \details{
 Series include: Invalidity Benefit, Incapacity Benefit, Employment and
@@ -38,8 +39,8 @@ options(op)
 
 }
 \seealso{
-Other welfare: 
-\code{\link{get_incapacity_caseloads}()},
-\code{\link{get_welfare_spending}()}
+Other welfare:
+\code{\link[=get_incapacity_caseloads]{get_incapacity_caseloads()}},
+\code{\link[=get_welfare_spending]{get_welfare_spending()}}
 }
 \concept{welfare}

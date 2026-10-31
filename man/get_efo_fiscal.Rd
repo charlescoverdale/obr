@@ -56,11 +56,11 @@ options(op)
 
 }
 \seealso{
-Other EFO: 
-\code{\link{get_efo_economy}()},
-\code{\link{get_efo_table}()},
-\code{\link{get_monthly_profiles}()},
-\code{\link{list_efo_economy_measures}()},
-\code{\link{obr_efo_catalogue}()}
+Other EFO:
+\code{\link[=get_efo_economy]{get_efo_economy()}},
+\code{\link[=get_efo_table]{get_efo_table()}},
+\code{\link[=get_monthly_profiles]{get_monthly_profiles()}},
+\code{\link[=list_efo_economy_measures]{list_efo_economy_measures()}},
+\code{\link[=obr_efo_catalogue]{obr_efo_catalogue()}}
 }
 \concept{EFO}

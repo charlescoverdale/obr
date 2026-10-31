@@ -38,10 +38,10 @@ options(op)
 
 }
 \seealso{
-Other vintage: 
-\code{\link{obr_as_of}()},
-\code{\link{obr_efo_vintages}()},
-\code{\link{obr_pinned}()},
-\code{\link{obr_unpin}()}
+Other vintage:
+\code{\link[=obr_as_of]{obr_as_of()}},
+\code{\link[=obr_efo_vintages]{obr_efo_vintages()}},
+\code{\link[=obr_pinned]{obr_pinned()}},
+\code{\link[=obr_unpin]{obr_unpin()}}
 }
 \concept{vintage}

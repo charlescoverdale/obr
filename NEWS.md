@@ -1,3 +1,54 @@
+# obr 0.6.3
+
+Bug-fix release. Three functions failed for any user without a cached
+copy of the source file, and one returned out-of-date data without
+saying so. Local test runs did not catch either because they read from
+the cache.
+
+## Historical forecasts and policy measures download again
+
+The OBR now serves the Historical Official Forecasts Database and the
+Policy Measures Database from undated addresses
+(`/download/historical-official-forecasts-database/` and
+`/download/policy-measures-database/`) that redirect to the current
+file. Every dated address the package probed, including the March 2025
+fallback, now returns 404, so `get_forecasts()`,
+`obr_actual_vs_forecast()`, `obr_forecast_panel()` and
+`get_policy_measures()` errored on a cold cache. The undated addresses
+are now tried first and are the fallback.
+
+The vintage recorded in provenance is now read from the file the
+address redirects to, so these tables report "Spring 2026" and "March
+2026" rather than `NA`. `obr_url_vintage()` accepts the underscore and
+Spring/Autumn forms the OBR uses in filenames.
+
+## Duplicate forecast vintage in the historical database
+
+The Spring 2026 database labels the July 1997 Budget "July 1996", giving
+two forecasts with the same date. `obr_forecast_panel()` kept only the
+first, with a warning from `stats::reshape()`. The second label is now
+corrected to "July 1997" when it follows "November 1996", and every
+series was checked for other duplicate keys (none).
+
+## Welfare Trends Report functions pinned to the incapacity edition
+
+Each Welfare Trends Report has its own theme. The June 2026 report is on
+fraud and error, and its chart numbers point at fraud and error rates.
+Resolving "the latest report", which the package tried to do, therefore
+either failed (`get_welfare_spending()`) or would have returned fraud and
+error rates labelled as incapacity spending (`get_incapacity_spending()`,
+`get_incapacity_caseloads()`). These three functions now read the
+October 2024 report, the most recent on incapacity benefits, and check
+each sheet's chart title before parsing, so a renumbered workbook is an
+error rather than the wrong series.
+
+## October 2026 EFO
+
+* `obr_efo_vintages()`, `obr_as_of()` and `obr_pin()` know the October
+  2026 EFO (published 28 October 2026). `get_efo_fiscal()` and
+  `get_efo_economy()` already resolved it; their offline fallbacks now
+  point at it too.
+
 # obr 0.6.2
 
 Recovery release. obr was archived from CRAN on 2026-08-22 because the

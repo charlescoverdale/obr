@@ -5,16 +5,16 @@
 # the measure, a description, the Treasury head, and the Exchequer effect
 # in GBP million for each fiscal year out to year five.
 
-PMD_FALLBACK <- "https://obr.uk/download/policy-measures-database-march-2025/"
+PMD_STABLE   <- "https://obr.uk/download/policy-measures-database/"
+PMD_FALLBACK <- PMD_STABLE
 PMD_FILENAME <- "policy_measures_database.xlsx"
 
-# Build PMD URL candidates for recent fiscal events. OBR re-uses an older
-# slug across vintages, so we still include the known-stable slug as a
-# fallback after probing the most recent slugs.
+# Build PMD URL candidates. The undated slug redirects to the current
+# edition and is tried first; dated slugs follow for older mirrors.
 pmd_url_candidates <- function() {
   current_year <- as.integer(format(Sys.Date(), "%Y"))
   months <- c("november", "october", "july", "march")
-  candidates <- character(0)
+  candidates <- PMD_STABLE
   for (yr in seq(current_year, current_year - 3L)) {
     for (mn in months) {
       candidates <- c(candidates, paste0(

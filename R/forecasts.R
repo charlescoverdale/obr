@@ -1,7 +1,9 @@
 # Historical Official Forecasts Database.
-# OBR sometimes re-uses an older slug across vintages, so the package tries
-# recent fiscal events first, then falls back to the known-stable slug.
-FORECASTS_FALLBACK <- "https://obr.uk/download/historical-official-forecasts-database-march-2025/"
+# Since 2026 the OBR serves the latest edition from an undated slug that
+# redirects to the current file; the dated slugs are probed after it for
+# older mirrors.
+FORECASTS_STABLE   <- "https://obr.uk/download/historical-official-forecasts-database/"
+FORECASTS_FALLBACK <- FORECASTS_STABLE
 FORECASTS_FILENAME <- "historical_forecasts.xlsx"
 
 forecasts_source <- function(refresh = FALSE) {
@@ -12,6 +14,20 @@ forecasts_source <- function(refresh = FALSE) {
     refresh    = refresh,
     label      = "Historical Forecasts Database"
   )
+}
+
+# Known errors in the forecast-date labels of the HFD. Rows run in
+# chronological order, and in the Spring 2026 edition the July 1997 Budget
+# (the first after the 1997 election) is labelled "July 1996", directly
+# after "November 1996". Left alone it duplicates the (forecast_date,
+# period) key and makes obr_forecast_panel() silently drop one forecast.
+# Only a repeat of the label that follows "November 1996" is corrected.
+hfd_fix_forecast_dates <- function(dates) {
+  i <- which(dates == "July 1996")
+  if (length(i) == 2L && i[2L] > 1L && dates[i[2L] - 1L] == "November 1996") {
+    dates[i[2L]] <- "July 1997"
+  }
+  dates
 }
 
 # User-friendly series name -> primary Excel sheet name.
@@ -158,7 +174,7 @@ get_forecasts <- function(series = "PSNB", refresh = FALSE) {
                                   stringsAsFactors = FALSE)
 
   valid <- grepl("^[A-Za-z]+ [0-9]{4}", forecast_dates)
-  forecast_dates <- forecast_dates[valid]
+  forecast_dates <- hfd_fix_forecast_dates(forecast_dates[valid])
   data_matrix    <- data_matrix[valid, ]
 
   n_dates <- length(forecast_dates)
@@ -183,7 +199,7 @@ get_forecasts <- function(series = "PSNB", refresh = FALSE) {
   new_obr_tbl(
     data        = result,
     publication = "HFD",
-    vintage     = obr_url_vintage(src$url),
+    vintage     = obr_url_vintage(src$final_url %||% src$url),
     source_url  = src$url,
     retrieved   = src$retrieved,
     file_md5    = src$file_md5

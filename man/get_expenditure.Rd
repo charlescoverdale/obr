@@ -32,10 +32,10 @@ options(op)
 
 }
 \seealso{
-Other public finances: 
-\code{\link{get_psnb}()},
-\code{\link{get_psnd}()},
-\code{\link{get_public_finances}()},
-\code{\link{get_receipts}()}
+Other public finances:
+\code{\link[=get_psnb]{get_psnb()}},
+\code{\link[=get_psnd]{get_psnd()}},
+\code{\link[=get_public_finances]{get_public_finances()}},
+\code{\link[=get_receipts]{get_receipts()}}
 }
 \concept{public finances}

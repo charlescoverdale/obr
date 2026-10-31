@@ -37,7 +37,7 @@ options(op)
 
 }
 \seealso{
-Other policy measures: 
-\code{\link{get_policy_measures}()}
+Other policy measures:
+\code{\link[=get_policy_measures]{get_policy_measures()}}
 }
 \concept{policy measures}

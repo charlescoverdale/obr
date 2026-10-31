@@ -75,7 +75,7 @@ options(op)
 
 }
 \seealso{
-Other policy measures: 
-\code{\link{policy_measures_summary}()}
+Other policy measures:
+\code{\link[=policy_measures_summary]{policy_measures_summary()}}
 }
 \concept{policy measures}

@@ -22,8 +22,10 @@ workbook and returns annual working-age welfare spending as a share of
 GDP, split into incapacity-related and non-incapacity spending.
 }
 \details{
-Data cover fiscal years from 1978-79 through the current forecast horizon.
-The exact vintage is recorded in the returned object's provenance.
+Data cover fiscal years from 1978-79 to 2028-29, from the October 2024
+Welfare Trends Report, the OBR's most recent report on incapacity
+benefits. Later reports cover other themes and do not update this
+chart.
 }
 \examples{
 \donttest{
@@ -38,8 +40,8 @@ options(op)
 
 }
 \seealso{
-Other welfare: 
-\code{\link{get_incapacity_caseloads}()},
-\code{\link{get_incapacity_spending}()}
+Other welfare:
+\code{\link[=get_incapacity_caseloads]{get_incapacity_caseloads()}},
+\code{\link[=get_incapacity_spending]{get_incapacity_spending()}}
 }
 \concept{welfare}
