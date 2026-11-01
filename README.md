@@ -292,18 +292,20 @@ Income tax, VAT, and National Insurance together account for around 60% of all g
 
 ---
 
-### 5. What does the March 2026 Budget forecast for borrowing?
+### 5. What does the October 2026 Budget forecast for borrowing?
+
+`get_efo_fiscal()` returns the latest EFO unless you pin a vintage.
 
 ```r
 efo <- get_efo_fiscal()
 efo[efo$series == "Net borrowing", c("period", "series", "value", "unit")]
-#>      period        series  value    unit
-#>     2025-26 Net borrowing  132.7  gbp_bn
-#>     2026-27 Net borrowing  115.5  gbp_bn
-#>     2027-28 Net borrowing   96.5  gbp_bn
-#>     2028-29 Net borrowing   86.0  gbp_bn
-#>     2029-30 Net borrowing   63.4  gbp_bn
-#>     2030-31 Net borrowing   59.0  gbp_bn
+#>   period        series value   unit
+#>  2026-27 Net borrowing 133.2 gbp_bn
+#>  2027-28 Net borrowing 112.0 gbp_bn
+#>  2028-29 Net borrowing  99.5 gbp_bn
+#>  2029-30 Net borrowing  73.8 gbp_bn
+#>  2030-31 Net borrowing  66.9 gbp_bn
+#>  2031-32 Net borrowing  68.3 gbp_bn
 ```
 
 The EFO detailed tables also include the full breakdown: current receipts, current expenditure, depreciation, net investment, and net borrowing - enabling you to see exactly how the deficit is projected to narrow.
