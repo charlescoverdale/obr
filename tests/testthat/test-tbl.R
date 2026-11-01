@@ -115,6 +115,8 @@ test_that("obr_publication_label() resolves the codes used in this package", {
 test_that("strip_footnote() preserves names that legitimately end in a digit", {
   expect_equal(strip_footnote("Income tax2"), "Income tax")
   expect_equal(strip_footnote("VAT3"), "VAT")
+  expect_equal(strip_footnote("Onshore corporation tax (includes Bank Surcharge and EGL)3"),
+               "Onshore corporation tax (includes Bank Surcharge and EGL)")
   # Year-bearing labels (not used in OBR receipts but worth guarding)
   expect_equal(strip_footnote("2024"), "2024")
   expect_equal(strip_footnote("Income tax"), "Income tax")

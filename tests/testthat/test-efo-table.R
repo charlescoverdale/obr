@@ -35,16 +35,29 @@ test_that("get_efo_table() errors on non-string table id", {
 
 # ----- Cross-reference and complex-layout sheets ---------------------------
 
-test_that("get_efo_table() follows cross-references to a previous EFO", {
+test_that("get_efo_table() returns NULL for sheets that point at the EFO report", {
   skip_on_cran()
   skip_if_offline()
-  out <- get_efo_table("6.11")
-  expect_s3_class(out, "obr_tbl")
-  expect_named(out, v04_long_cols)
-  prov <- obr_provenance(out)
-  # Resolves to a previous EFO vintage, not the current one
-  expect_match(prov$vintage, "^[A-Z][a-z]+ [0-9]{4}$")
-  expect_match(prov$notes, "Cross-reference")
+  # 6.11 reads "See Table 6.x of our <vintage> Economic and fiscal outlook":
+  # a table in the report. Sheet 6.x of the workbook is a different table
+  # (general government transactions), so it must not be returned.
+  expect_warning(out <- get_efo_table("6.11"), "EFO report")
+  expect_null(out)
+  expect_warning(out <- get_efo_table("6.15"), "EFO report")
+  expect_null(out)
+})
+
+test_that("cross_reference_text() reads the pointer and ignores data sheets", {
+  path <- tempfile(fileext = ".xlsx")
+  skip_if_not_installed("writexl")
+  writexl::write_xlsx(list(
+    "6.11" = data.frame(a = c("6.11 Public sector net debt: year-on-year changes",
+                              "See Table 6.3 of our October 2026 Economic and fiscal outlook")),
+    "6.3"  = data.frame(a = "Current receipts", b = 506.7)
+  ), path, col_names = FALSE)
+  expect_equal(cross_reference_text(path, "6.11"),
+               "See Table 6.3 of our October 2026 Economic and fiscal outlook")
+  expect_null(cross_reference_text(path, "6.3"))
 })
 
 test_that("get_efo_table('6.4') returns subsector_matrix shape", {

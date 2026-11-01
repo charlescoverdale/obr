@@ -97,6 +97,28 @@ obr_cache_dir <- function() {
   d
 }
 
+# Cache lifetime in hours, from the obr.cache_ttl option. Dated editions
+# never change, but the undated addresses (the forecasts and policy measures
+# databases, the databank fallback) are replaced in place, so a cached copy
+# older than this is fetched again. The default is 7 days.
+obr_cache_ttl <- function() {
+  ttl <- getOption("obr.cache_ttl", default = 24 * 7)
+  if (!is.numeric(ttl) || length(ttl) != 1L || is.na(ttl) || ttl < 0) {
+    cli::cli_abort("Option {.code obr.cache_ttl} must be a single non-negative number of hours.")
+  }
+  ttl
+}
+
+# Cache file name for one edition of a publication: the base name plus the
+# last segment of the address it came from. Before 0.6.3 every edition shared
+# one fixed name, so the first file ever downloaded was served under each
+# later edition's address and provenance.
+edition_cache_name <- function(filename, url) {
+  slug <- gsub("[^A-Za-z0-9-]+", "_", basename(sub("/+$", "", url)))
+  paste0(tools::file_path_sans_ext(filename), "__", slug, ".",
+         tools::file_ext(filename))
+}
+
 # Download a file and cache it; return local path.
 obr_fetch <- function(url, filename, refresh = FALSE) {
   if (!is.logical(refresh) || length(refresh) != 1L || is.na(refresh)) {
@@ -106,8 +128,11 @@ obr_fetch <- function(url, filename, refresh = FALSE) {
   path <- file.path(obr_cache_dir(), filename)
 
   if (file.exists(path) && !refresh) {
-    cli::cli_inform(c("i" = "Loading from cache. Use {.code refresh = TRUE} to re-download."))
-    return(path)
+    age <- difftime(Sys.time(), file.info(path)$mtime, units = "hours")
+    if (as.numeric(age) < obr_cache_ttl()) {
+      cli::cli_inform(c("i" = "Loading from cache. Use {.code refresh = TRUE} to re-download."))
+      return(path)
+    }
   }
 
   cli::cli_inform(c("i" = "Downloading {.file {filename}} from OBR..."))
@@ -131,14 +156,23 @@ obr_fetch <- function(url, filename, refresh = FALSE) {
         backoff      = function(i) min(30, 2 ^ i)
       ) |>
       httr2::req_perform(),
-    error = function(e) {
-      cli::cli_abort(
-        c("Failed to download {.url {url}}.",
-          "x" = conditionMessage(e)),
-        call = NULL
-      )
-    }
+    error = function(e) e
   )
+  if (inherits(resp, "error")) {
+    # An expired copy beats no data: use it, and say how old it is.
+    if (file.exists(path)) {
+      cli::cli_warn(c(
+        "Could not re-download {.file {filename}}; using the cached copy from {format(file.info(path)$mtime, '%Y-%m-%d')}.",
+        "x" = conditionMessage(resp)
+      ))
+      return(path)
+    }
+    cli::cli_abort(
+      c("Failed to download {.url {url}}.",
+        "x" = conditionMessage(resp)),
+      call = NULL
+    )
+  }
 
   writeBin(httr2::resp_body_raw(resp), path)
   cli::cli_inform(c("v" = "Saved to cache."))
@@ -166,7 +200,7 @@ obr_get_xlsx <- function(candidates, fallback, filename, refresh = FALSE,
     source    <- "fallback"
   }
 
-  path <- obr_fetch(url, filename, refresh = refresh)
+  path <- obr_fetch(url, edition_cache_name(filename, url), refresh = refresh)
 
   retrieved <- tryCatch(file.info(path)$mtime,
                         error = function(e) Sys.time())
@@ -281,6 +315,13 @@ obr_long <- function(period, period_type, series, value,
 #'
 #' Deletes all files downloaded and cached by the obr package. The next
 #' function call will re-download fresh data from the OBR website.
+#'
+#' Files are cached in `tools::R_user_dir("obr", "cache")`, or the
+#' directory set with `options(obr.cache_dir = )`. Each edition of a
+#' publication is cached separately, and a cached file is used for 7 days
+#' before it is downloaded again; set `options(obr.cache_ttl = )` to a
+#' number of hours to change this. If a re-download fails, the expired
+#' copy is used with a warning.
 #'
 #' @return Invisibly returns `NULL`.
 #'

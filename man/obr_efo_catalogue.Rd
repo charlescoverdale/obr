@@ -34,8 +34,9 @@ contains, and the default \code{metric_type} / \code{unit} \code{get_efo_table()
 attach. Pass any \code{table_id} to \code{\link[=get_efo_table]{get_efo_table()}}.
 
 Coverage: 17 fiscal aggregates tables (Section 6) plus 22 macro economy
-tables (Section 1). One sheet (6.11) is currently a cross-reference to
-a previous EFO and returns \code{NULL} with a warning rather than data.
+tables (Section 1). Two sheets (6.11 and 6.15) hold only a pointer to
+a table in the EFO report, so \code{\link[=get_efo_table]{get_efo_table()}} returns \code{NULL} with a
+warning rather than data for them.
 }
 \examples{
 head(obr_efo_catalogue())

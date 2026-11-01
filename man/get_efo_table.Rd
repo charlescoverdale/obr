@@ -35,9 +35,10 @@ specific parser, and tags every row with \code{metric_type} and \code{unit}
 according to the catalogue's defaults plus per-row classification.
 
 Coverage today: 17 fiscal Aggregates tables + 22 macro Economy tables.
-One sheet (6.11 PSND year-on-year changes) is a cross-reference to a
-previous EFO and returns \code{NULL} with a warning rather than data; OBR
-itself directs users to the previous EFO for that table.
+Two of the Aggregates sheets, 6.11 (net debt year-on-year changes) and
+6.15 (reconciliation of PSNCR and CGNCR), hold no data, only a pointer
+to a table in the EFO report; for these \code{get_efo_table()} returns \code{NULL}
+with a warning that quotes the pointer.
 
 Headline functions \code{\link[=get_efo_fiscal]{get_efo_fiscal()}} and \code{\link[=get_efo_economy]{get_efo_economy()}} are kept
 as thin wrappers over this dispatcher.

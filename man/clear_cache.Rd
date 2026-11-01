@@ -13,6 +13,14 @@ Invisibly returns \code{NULL}.
 Deletes all files downloaded and cached by the obr package. The next
 function call will re-download fresh data from the OBR website.
 }
+\details{
+Files are cached in \code{tools::R_user_dir("obr", "cache")}, or the
+directory set with \code{options(obr.cache_dir = )}. Each edition of a
+publication is cached separately, and a cached file is used for 7 days
+before it is downloaded again; set \code{options(obr.cache_ttl = )} to a
+number of hours to change this. If a re-download fails, the expired
+copy is used with a warning.
+}
 \examples{
 \donttest{
 op <- options(obr.cache_dir = tempdir())

@@ -13,8 +13,9 @@
 #                      Series names in col 2 (flat or with "of which:" sub-
 #                      indentation in col 3+). The parser flattens hierarchy
 #                      so each row carries the full path as the series name.
-#   cross_reference  - sheet exists but redirects to a previous EFO. Returns
-#                      NULL (with an informative warning) rather than data.
+#   cross_reference  - sheet holds only a pointer to a table in the EFO
+#                      report. Returns NULL (with a warning quoting the
+#                      pointer) rather than data.
 
 efo_catalogue_table <- function() {
   # Hand-curated metadata. The unit / metric_type values follow OBR's own
@@ -89,8 +90,9 @@ efo_catalogue_table <- function() {
 #' attach. Pass any `table_id` to [get_efo_table()].
 #'
 #' Coverage: 17 fiscal aggregates tables (Section 6) plus 22 macro economy
-#' tables (Section 1). One sheet (6.11) is currently a cross-reference to
-#' a previous EFO and returns `NULL` with a warning rather than data.
+#' tables (Section 1). Two sheets (6.11 and 6.15) hold only a pointer to
+#' a table in the EFO report, so [get_efo_table()] returns `NULL` with a
+#' warning rather than data for them.
 #'
 #' @return A data frame with columns:
 #' \describe{

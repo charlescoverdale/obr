@@ -3,7 +3,19 @@
 Bug-fix release. Three functions failed for any user without a cached
 copy of the source file, and one returned out-of-date data without
 saying so. Local test runs did not catch either because they read from
-the cache.
+the cache, which itself never expired.
+
+## Cached files no longer outlive their edition
+
+Every edition of a publication was cached under one fixed file name
+that never expired, so once a file was downloaded, later editions were
+never fetched: the provenance named the new edition while the numbers
+came from the old file. A machine that first ran `get_efo_fiscal()` in
+April 2026 was still returning the March 2026 EFO, labelled October
+2026. Each edition is now cached under its own name, and cached files
+are downloaded again after 7 days (`options(obr.cache_ttl = )`, in
+hours). If that download fails, the expired copy is used with a
+warning.
 
 ## Historical forecasts and policy measures download again
 
@@ -51,6 +63,26 @@ error rates labelled as incapacity spending (`get_incapacity_spending()`,
 October 2024 report, the most recent on incapacity benefits, and check
 each sheet's chart title before parsing, so a renumbered workbook is an
 error rather than the wrong series.
+
+## Tables 6.11 and 6.15 returned a different table
+
+In every EFO workbook since at least October 2024, sheets 6.11 (net debt
+year-on-year changes) and 6.15 (reconciliation of PSNCR and CGNCR) hold
+one line, such as "See Table 6.3 of our October 2026 Economic and fiscal
+outlook". That points at a table in the EFO report. Since 0.5.0,
+`get_efo_table()` fetched the sheet with that number from the workbook
+instead and returned it under the original title: 6.11 gave general
+government receipts labelled as net debt changes, and 6.15 gave Bank of
+England cash transfers or APF runoff. Both now return `NULL` with a
+warning that quotes the OBR's pointer. A sheet with no pointer (some
+older editions) is parsed as an ordinary table.
+
+## Footnote markers after a bracket
+
+`strip_footnote()` removed a trailing footnote digit only after a letter,
+full stop or space, so a series named "Onshore corporation tax (includes
+Bank Surcharge and EGL)3" kept its marker. A closing bracket now counts
+too.
 
 ## October 2026 EFO
 

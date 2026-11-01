@@ -6,11 +6,11 @@ An R package for accessing data published by the [Office for Budget Responsibili
 
 ## What is the OBR?
 
-The Office for Budget Responsibility is the UK's independent fiscal watchdog. It was created in 2010 by the coalition government to provide an independent check on the government's fiscal plans - a role previously held by HM Treasury itself.
+The Office for Budget Responsibility is the UK's independent fiscal watchdog. It was created in 2010 by the coalition government to provide an independent check on the government's fiscal plans, a role HM Treasury previously held itself.
 
 The distinction matters. HM Treasury is the government department that *sets* fiscal policy: it decides tax rates, spending plans, and how much the government intends to borrow. The OBR's job is to *scrutinise* those plans independently, producing its own economic and fiscal forecasts that are not influenced by ministers. Think of it as the equivalent of the Bank of England's independence for monetary policy, but applied to public finances.
 
-In practice, this means the OBR publishes forecasts at each Budget and Autumn Statement showing whether it thinks the government is on track to meet its own fiscal rules - and it has no political incentive to be optimistic.
+In practice, this means the OBR publishes forecasts at each Budget and Autumn Statement showing whether it thinks the government is on track to meet its own fiscal rules, and it has no political incentive to be optimistic.
 
 ---
 
@@ -32,7 +32,7 @@ devtools::install_github("charlescoverdale/obr")
 |---|---|---|
 | [Public Finances Databank](https://obr.uk/public-finances-databank-2019-20/) | Outturn data on PSNB, PSND, receipts, and expenditure back to 1946-47 | Monthly |
 | [Historical Official Forecasts Database](https://obr.uk/data/) | Every forecast the OBR (and pre-OBR Treasury) has published for key fiscal and economic variables since 1970 | Each fiscal event |
-| [Economic and Fiscal Outlook](https://obr.uk/efo/economic-and-fiscal-outlook-march-2026/) | The flagship publication at each Budget - detailed projections across 5 years | Each Budget / Autumn Statement |
+| [Economic and Fiscal Outlook](https://obr.uk/efo/economic-and-fiscal-outlook-october-2026/) | The flagship publication at each Budget: detailed projections across 5 years | Each Budget / Autumn Statement |
 | [Fiscal Sustainability Report](https://obr.uk/frs/fiscal-risks-and-sustainability-july-2025/) | Long-run projections over 50 years, covering ageing, health, and debt dynamics | Annual |
 | [Welfare Trends Report](https://obr.uk/wtr/welfare-trends-report-october-2024/) | Incapacity benefit spending and caseloads (October 2024 edition; later reports cover other themes) | Annual |
 | [Monthly profiles](https://obr.uk/monthly-public-finances-briefing/) | The EFO forecast for receipts, spending, and the CGNCR apportioned across the months of the fiscal year, against which each month's outturn is judged | Each EFO |
@@ -45,7 +45,7 @@ This package covers all six datasets listed above.
 
 All OBR data is freely available at [obr.uk](https://obr.uk). The problem is *how* it is available: as Excel files with non-standard layouts, inconsistent headers, and footnote-laden sheets that require significant wrangling before they are usable in R.
 
-For example, the Public Finances Databank has column headers buried in row 4 of the spreadsheet, data starting in row 8, and trailing footnote numbers appended to column names. The Historical Forecasts Database stores forecasts as a vintage matrix - rows are fiscal events, columns are fiscal years - which needs reshaping into a long format before it can be plotted or analysed.
+For example, the Public Finances Databank has column headers buried in row 4 of the spreadsheet, data starting in row 8, and trailing footnote numbers appended to column names. The Historical Forecasts Database stores forecasts as a vintage matrix (rows are fiscal events, columns are fiscal years), which needs reshaping into a long format before it can be plotted or analysed.
 
 This package handles all of that automatically. One function call returns a clean, tidy data frame. Data is cached locally so subsequent calls are instant.
 
@@ -70,14 +70,25 @@ Every data-returning function returns an `obr_tbl`: a `data.frame` with attached
 ```r
 library(obr)
 get_efo_fiscal()
-#> # obr_tbl: <rows> x <cols>
-#> # Source:       OBR Economic and Fiscal Outlook, <vintage>
-#> # URL:          https://obr.uk/download/<vintage-slug>/
-#> # Retrieved:    <timestamp>
-#> # File MD5:     <md5 prefix>
-#> # Package:      obr <version>
-#>
-#> <data rows ...>
+#> # obr_tbl: 48 rows x 6 cols
+#> # Source:       OBR Economic and Fiscal Outlook, October 2026
+#> # URL:          https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
+#> # Retrieved:    2026-11-01 09:09:13 GMT
+#> # File MD5:     09851806b48f
+#> # Package:      obr 0.6.3
+#> 
+#>   period period_type              series metric_type    value   unit
+#>  2026-27 fiscal_year    Current receipts       level 1315.971 gbp_bn
+#>  2027-28 fiscal_year    Current receipts       level 1392.025 gbp_bn
+#>  2028-29 fiscal_year    Current receipts       level 1448.986 gbp_bn
+#>  2029-30 fiscal_year    Current receipts       level 1513.185 gbp_bn
+#>  2030-31 fiscal_year    Current receipts       level 1571.493 gbp_bn
+#>  2031-32 fiscal_year    Current receipts       level 1629.320 gbp_bn
+#>  2026-27 fiscal_year Current expenditure       level 1278.433 gbp_bn
+#>  2027-28 fiscal_year Current expenditure       level 1326.805 gbp_bn
+#>  2028-29 fiscal_year Current expenditure       level 1370.322 gbp_bn
+#>  2029-30 fiscal_year Current expenditure       level 1408.826 gbp_bn
+#> # ... with 38 more rows
 ```
 
 Use `obr_provenance()` to extract the metadata as a list, or `summary()` for the full provenance card. Provenance survives `[` subsetting and is stripped only on explicit `as.data.frame()`. This means an analysis pinned against an `obr_tbl` always carries the audit trail of which OBR publication produced the numbers.
@@ -97,10 +108,10 @@ obr_provenance(psnb)
 
 | Function | Returns |
 |---|---|
-| `get_psnb()` | Annual Public Sector Net Borrowing in £bn |
-| `get_psnd()` | Annual Public Sector Net Debt in £bn |
-| `get_expenditure()` | Annual Total Managed Expenditure in £bn |
-| `get_receipts()` | Tax receipts broken down by type, in £bn |
+| `get_psnb()` | Annual Public Sector Net Borrowing in GBP bn |
+| `get_psnd()` | Annual Public Sector Net Debt in GBP bn |
+| `get_expenditure()` | Annual Total Managed Expenditure in GBP bn |
+| `get_receipts()` | Tax receipts broken down by type, in GBP bn |
 | `get_public_finances()` | All aggregate series in tidy long format |
 
 ### Historical Forecasts Database
@@ -119,7 +130,7 @@ obr_provenance(psnb)
 | Function | Returns |
 |---|---|
 | `obr_efo_catalogue()` | All 39 detailed-forecast tables this package recognises, with id, section, title, layout, and default `metric_type` / `unit`. No download needed. |
-| `get_efo_table(id)` | Generic fetcher: pass a catalogue id (e.g. `"6.13"`, `"1.19"`, `"4.1"`) and get the parsed contents in the standard v0.4 schema. Covers ~35 tables across receipts, expenditure, debt, GDP, labour, inflation, housing, and household balance sheets. |
+| `get_efo_table(id)` | Generic fetcher: pass a catalogue id (e.g. `"6.13"`, `"1.19"`, `"6.5"`) and get the parsed contents in the standard v0.4 schema. Covers the 37 tables that hold data, across receipts, expenditure, debt, GDP, labour, inflation, housing, and household balance sheets. |
 | `get_efo_fiscal()` | Net borrowing components (Table 6.5). Convenience wrapper over `get_efo_table("6.5")`. |
 | `get_efo_economy(measure)` | Quarterly economic projections: `"inflation"`, `"labour"`, or `"output_gap"`. Convenience wrapper over `get_efo_table()`. |
 | `list_efo_economy_measures()` | The three measures available via `get_efo_economy()` (no download needed). |
@@ -209,62 +220,88 @@ library(obr)
 psnb <- get_psnb()
 psnb[psnb$period %in% c("2018-19", "2019-20", "2020-21", "2021-22", "2022-23"),
      c("period", "value", "unit")]
-#>       period   value   unit
-#>     2018-19    42.5  gbp_bn
-#>     2019-20    57.1  gbp_bn
-#>     2020-21   317.8  gbp_bn   # ← COVID year
-#>     2021-22   144.8  gbp_bn
-#>     2022-23    87.6  gbp_bn
+#> # obr_tbl: 5 rows x 3 cols
+#> # Source:       OBR Public Finances Databank, October 2026
+#> # URL:          https://obr.uk/download/public-finances-databank-october-2026-efo/
+#> # Retrieved:    2026-11-01 09:09:12 GMT
+#> # File MD5:     be7530ecb36f
+#> # Package:      obr 0.6.3
+#> 
+#>   period   value   unit
+#>  2018-19  44.073 gbp_bn
+#>  2019-20  58.763 gbp_bn
+#>  2020-21 310.834 gbp_bn
+#>  2021-22 115.978 gbp_bn
+#>  2022-23 123.816 gbp_bn
 ```
 
-The UK borrowed £318bn in 2020-21 - roughly seven times the pre-pandemic level - to fund furlough, bounce-back loans, and emergency NHS spending.
+The UK borrowed GBP 311bn in 2020-21, more than five times the GBP 59bn of 2019-20, to pay for furlough, bounce-back loans and emergency NHS spending.
 
 ---
 
 ### 2. How has the OBR's borrowing forecast changed over time?
 
-The OBR first forecast 2024-25 borrowing at **£37bn** (March 2022). By November 2025, that estimate had risen to **£149bn** - four times the original figure.
+The OBR first forecast 2024-25 borrowing at **GBP 58bn** (March 2020). Its lowest forecast was **GBP 37bn** in March 2022; by March 2026 the estimate had reached **GBP 153bn**, more than four times that low point.
 
 ```r
 psnb_fc <- get_forecasts("PSNB")
 fc_2425 <- psnb_fc[psnb_fc$period == "2024-25", c("forecast_date", "value")]
-fc_2425
-#>    forecast_date   value
-#>     March 2022    36.5
-#>  November 2022    84.3
-#>     March 2023    85.4
-#>  November 2023    84.6
-#>     March 2024    87.2
-#>   October 2024   127.5
-#>     March 2025   137.3
-#>  November 2025   149.5
+print(fc_2425, n = 20)
+#> # obr_tbl: 13 rows x 2 cols
+#> # Source:       OBR Historical Official Forecasts Database, Spring 2026
+#> # URL:          https://obr.uk/download/historical-official-forecasts-database/
+#> # Retrieved:    2026-11-01 09:09:15 GMT
+#> # File MD5:     4312a0cf5075
+#> # Package:      obr 0.6.3
+#> 
+#>  forecast_date     value
+#>     March 2020  57.92369
+#>  November 2020  99.57407
+#>     March 2021  74.43927
+#>   October 2021  46.32206
+#>     March 2022  36.52329
+#>  November 2022  84.32658
+#>     March 2023  85.39792
+#>  November 2023  84.57033
+#>     March 2024  87.22658
+#>   October 2024 127.49186
+#>     March 2025 137.32912
+#>  November 2025 149.45600
+#>     March 2026 152.74200
 ```
 
 The `get_forecasts()` function returns every published forecast across all fiscal events, making it straightforward to visualise forecast drift and assess how fiscal plans have evolved.
 
 ---
 
-### 3. Has the UK ever run a surplus - and how likely is it to again?
+### 3. Has the UK ever run a surplus, and will it again?
 
 ```r
 psnb <- get_psnb()
 
 # Years with a surplus (negative PSNB = receipts exceed spending)
 psnb[psnb$value < 0, c("period", "value")]
-#>       period   value
-#>     1969-70    -0.5
-#>     1970-71    -1.3
-#>     1971-72    -0.1
-#>     1988-89    -9.0
-#>     1989-90    -8.0
-#>     1990-91    -0.1
-#>     1997-98   -12.7
-#>     1998-99   -14.5
-#>     1999-00   -17.9
-#>     2000-01    -0.5
+#> # obr_tbl: 10 rows x 2 cols
+#> # Source:       OBR Public Finances Databank, October 2026
+#> # URL:          https://obr.uk/download/public-finances-databank-october-2026-efo/
+#> # Retrieved:    2026-11-01 09:09:12 GMT
+#> # File MD5:     be7530ecb36f
+#> # Package:      obr 0.6.3
+#> 
+#>   period   value
+#>  1948-49  -0.496
+#>  1949-50  -0.587
+#>  1950-51  -0.466
+#>  1951-52  -0.069
+#>  1955-56  -0.038
+#>  1969-70  -0.872
+#>  1970-71  -0.323
+#>  1988-89  -5.530
+#>  1999-00 -11.406
+#>  2000-01 -16.305
 ```
 
-The UK last ran a surplus in 2000-01. In the 24 years since, the government has borrowed every year. Combine with `get_forecasts("PSNB_pct")` to see whether the OBR projects any future surpluses.
+The UK has run a surplus in only ten years since 1946-47, the last in 2000-01. The databank includes the OBR's forecast to 2031-32, which has borrowing in every year.
 
 ---
 
@@ -277,18 +314,25 @@ receipts <- get_receipts()
 r <- receipts[receipts$period == "2023-24", ]
 r <- r[order(-r$value), ]
 head(r[, c("series", "value", "unit")], 8)
-#>                              series   value    unit
-#>   Public sector current receipts   1101.5  gbp_bn
-#>                       Income tax    290.4  gbp_bn
-#>                              VAT    183.1  gbp_bn
-#>    National insurance contributions 182.4  gbp_bn
-#>                    Corporation tax   88.4  gbp_bn
-#>                       Council tax   44.9  gbp_bn
-#>                         Fuel duty   24.5  gbp_bn
-#>                    Stamp duties     18.4  gbp_bn
+#> # obr_tbl: 8 rows x 3 cols
+#> # Source:       OBR Public Finances Databank, October 2026
+#> # URL:          https://obr.uk/download/public-finances-databank-october-2026-efo/
+#> # Retrieved:    2026-11-01 09:09:12 GMT
+#> # File MD5:     be7530ecb36f
+#> # Package:      obr 0.6.3
+#> 
+#>                                                     series    value   unit
+#>                             Public sector current receipts 1096.559 gbp_bn
+#>                                    National accounts taxes  976.080 gbp_bn
+#>                         Pay as your earn (PAYE) income tax  238.968 gbp_bn
+#>                    National insurance contributions (NICs)  179.081 gbp_bn
+#>                                   VAT (net of VAT refunds)  168.305 gbp_bn
+#>  Onshore corporation tax (includes Bank Surcharge and EGL)   89.503 gbp_bn
+#>                Public sector gross operating surplus (GOS)   74.662 gbp_bn
+#>                     Other public sector taxes and receipts   59.039 gbp_bn
 ```
 
-Income tax, VAT, and National Insurance together account for around 60% of all government receipts. Breaking this down over time reveals long-run shifts - such as the rising share of income tax as fiscal drag pulls more earners into higher bands.
+Income tax, National Insurance and VAT together raised 57% of current receipts in 2023-24. Over time the breakdown shows long-run shifts, such as income tax's rising share as fiscal drag pulls more earners into higher bands.
 
 ---
 
@@ -299,16 +343,23 @@ Income tax, VAT, and National Insurance together account for around 60% of all g
 ```r
 efo <- get_efo_fiscal()
 efo[efo$series == "Net borrowing", c("period", "series", "value", "unit")]
-#>   period        series value   unit
-#>  2026-27 Net borrowing 133.2 gbp_bn
-#>  2027-28 Net borrowing 112.0 gbp_bn
-#>  2028-29 Net borrowing  99.5 gbp_bn
-#>  2029-30 Net borrowing  73.8 gbp_bn
-#>  2030-31 Net borrowing  66.9 gbp_bn
-#>  2031-32 Net borrowing  68.3 gbp_bn
+#> # obr_tbl: 6 rows x 4 cols
+#> # Source:       OBR Economic and Fiscal Outlook, October 2026
+#> # URL:          https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
+#> # Retrieved:    2026-11-01 09:09:13 GMT
+#> # File MD5:     09851806b48f
+#> # Package:      obr 0.6.3
+#> 
+#>   period        series     value   unit
+#>  2026-27 Net borrowing 133.19601 gbp_bn
+#>  2027-28 Net borrowing 111.98047 gbp_bn
+#>  2028-29 Net borrowing  99.53613 gbp_bn
+#>  2029-30 Net borrowing  73.78046 gbp_bn
+#>  2030-31 Net borrowing  66.90011 gbp_bn
+#>  2031-32 Net borrowing  68.33916 gbp_bn
 ```
 
-The EFO detailed tables also include the full breakdown: current receipts, current expenditure, depreciation, net investment, and net borrowing - enabling you to see exactly how the deficit is projected to narrow.
+The EFO detailed tables also include the full breakdown: current receipts, current expenditure, depreciation, net investment and net borrowing, so you can see exactly how the deficit is projected to narrow.
 
 ### 5a. Reproducing an analysis as it would have looked on a past date
 
@@ -323,10 +374,22 @@ oct_2024[oct_2024$series == "Net borrowing" & oct_2024$period == "2027-28", ]
 mar_2026[mar_2026$series == "Net borrowing" & mar_2026$period == "2027-28", ]
 
 # Or in one step, with the v0.4.0 helper:
-obr_compare_vintages("October 2024", "March 2026", what = "fiscal")
-#>   period period_type        series metric_type   unit value_a value_b revision
-#>  2027-28 fiscal_year Net borrowing       level gbp_bn    81.7    96.5     14.8
-#>  ...
+diffs <- obr_compare_vintages("October 2024", "March 2026", what = "fiscal")
+diffs[diffs$series == "Net borrowing", c("period", "value_a", "value_b", "revision")]
+#> # obr_tbl: 5 rows x 4 cols
+#> # Source:       OBR Economic and Fiscal Outlook, March 2026
+#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
+#> # Retrieved:    2026-11-01 09:09:17 GMT
+#> # File MD5:     5b5eeaf79b96
+#> # Package:      obr 0.6.3
+#> # Note:         Vintage diff: October 2024 (a) -> March 2026 (b). revision = value_b - value_a. Earlier vintage URL: https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
+#> 
+#>   period   value_a   value_b  revision
+#>  2025-26 105.57651 132.73508 27.158562
+#>  2026-27  88.45967 115.46142 27.001754
+#>  2027-28  72.16790  96.46737 24.299469
+#>  2028-29  71.90672  86.01563 14.108919
+#>  2029-30  70.58379  63.40344 -7.180343
 
 # Or pin once and let every subsequent EFO call use that vintage
 obr_pin("October 2024")
@@ -345,27 +408,51 @@ obr_as_of("2024-12-15")
 
 ```r
 welfare <- get_welfare_spending()
-# Working-age incapacity spending, last 10 years
+# Working-age incapacity benefits spending, % of GDP (outturn, then forecast)
 ic <- welfare[welfare$series == "Working-age incapacity benefits spending" &
-              welfare$period >= "2014-15", ]
-ic[, c("period", "series", "value", "unit")]
-#>      period                                   series  value  unit
-#>     2014-15 Working-age incapacity benefits spending   1.44   pct
-#>     2015-16 Working-age incapacity benefits spending   1.33   pct
-#>     ...
-#>     2023-24 Working-age incapacity benefits spending   1.78   pct
-#>     2024-25 Working-age incapacity benefits spending   2.02   pct
-#>     2025-26 Working-age incapacity benefits spending   2.16   pct
+              welfare$period >= "2018-19", c("period", "value", "unit")]
+print(ic, n = 11)
+#> # obr_tbl: 11 rows x 3 cols
+#> # Source:       OBR Welfare Trends Report, October 2024
+#> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
+#> # Retrieved:    2026-11-01 09:09:18 GMT
+#> # File MD5:     c587017c08a1
+#> # Package:      obr 0.6.3
+#> 
+#>   period     value unit
+#>  2018-19 0.6756497  pct
+#>  2019-20 0.7386774  pct
+#>  2020-21 0.8825464  pct
+#>  2021-22 0.8717820  pct
+#>  2022-23 0.8423765  pct
+#>  2023-24 0.9239248  pct
+#>  2024-25 0.9980306  pct
+#>  2025-26 1.0051716  pct
+#>  2026-27 1.0038338  pct
+#>  2027-28 1.0023592  pct
+#>  2028-29 1.0056712  pct
 
-# Number of people on incapacity benefits (in thousands)
+# Incapacity benefit claimants (thousands)
 cases <- get_incapacity_caseloads()
-cases[cases$series == "Claimants", c("period", "value", "unit")]
-#>     2008-09  2360  count_k
-#>     ...
-#>     2024-25  3140  count_k
+cases[cases$series == "Claimants" & cases$period >= "2018-19",
+      c("period", "value", "unit")]
+#> # obr_tbl: 6 rows x 3 cols
+#> # Source:       OBR Welfare Trends Report, October 2024
+#> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
+#> # Retrieved:    2026-11-01 09:09:18 GMT
+#> # File MD5:     c587017c08a1
+#> # Package:      obr 0.6.3
+#> 
+#>   period    value    unit
+#>  2018-19 2129.911 count_k
+#>  2019-20 2257.000 count_k
+#>  2020-21 2396.000 count_k
+#>  2021-22 2544.000 count_k
+#>  2022-23 2744.000 count_k
+#>  2023-24 2930.000 count_k
 ```
 
-Incapacity benefit spending and caseloads have risen sharply since the pandemic - a key driver of welfare reform debate in 2025.
+Working-age incapacity benefits spending rose from 0.7% of GDP in 2018-19 to 0.9% in 2023-24, and the October 2024 forecast holds it at about 1.0% to 2028-29. Claimant numbers rose from 2.1 million to 2.9 million over the same five years.
 
 ---
 
@@ -403,17 +490,18 @@ Returns the three Charter for Budget Responsibility rules in force (stability ru
 ```r
 # Every detailed-forecast table the package recognises
 cat <- obr_efo_catalogue()
-nrow(cat)  # 39 (35 currently parseable, 2 cross-references, 2 complex layouts)
+nrow(cat)  # 39; 6.11 and 6.15 only point at tables in the EFO report
 
 # All Debt-section tables
 cat[cat$section == "Debt", c("table_id", "title")]
-#>   table_id                                                 title
-#>      6.11  Public sector net debt year-on-year changes
-#>      6.12  Total gross financing
-#>      6.13  Composition of public sector net debt
-#>      6.14  Composition of public sector net worth
-#>      6.16  Central government debt interest by financing component
-#>      6.17  Outstanding stocks, debt interest payments and effective rates
+#>  table_id                                                          title
+#>      6.11                    Public sector net debt year-on-year changes
+#>      6.12                                          Total gross financing
+#>      6.13                          Composition of public sector net debt
+#>      6.14                         Composition of public sector net worth
+#>      6.15                              Reconciliation of PSNCR and CGNCR
+#>      6.16        Central government debt interest by financing component
+#>      6.17 Outstanding stocks, debt interest payments and effective rates
 
 # Pull any one
 get_efo_table("6.13")             # composition of net debt, % of GDP
@@ -430,13 +518,13 @@ The `get_efo_table()` dispatcher routes each id to a layout-specific parser and 
 
 A few things `obr` deliberately does not do, and a few caveats worth knowing.
 
-- **Fiscal Risks and Sustainability coverage is thin.** The EFO detailed-forecast tables are complete: v0.5.0 closed the last gaps and `obr` now reaches all 39 in the Aggregates and Economy workbooks, discoverable through `obr_efo_catalogue()` and fetchable with `get_efo_table()`. The FSR long-run projections are the exception. `get_pension_projections()` was deprecated in v0.5.1 after the OBR restructured the FSR workbooks in July 2026, and nothing has replaced it yet.
+- **Fiscal Risks and Sustainability coverage is thin.** The EFO detailed-forecast tables are complete: `obr` reaches all 37 that hold data in the Aggregates and Economy workbooks (sheets 6.11 and 6.15 only point at tables in the EFO report), discoverable through `obr_efo_catalogue()` and fetchable with `get_efo_table()`. The FSR long-run projections are the exception. `get_pension_projections()` was deprecated in v0.5.1 after the OBR restructured the FSR workbooks in July 2026, and nothing has replaced it yet.
 - **EFO and PFD use the standard v0.4.0 schema; FRD and PMD do not yet.** `get_forecast_revisions()` and `get_policy_measures()` return their existing multi-dimensional schemas (forecast date x revision component, fiscal event x measure x head). Migration to the v0.4.0 layout is queued for a later release.
 - **Vintage table is hardcoded and needs maintenance.** `obr_efo_vintages()` returns a static list of EFOs. When a new EFO publishes, the package needs a release to recognise it as a pinnable vintage. Until then, the dynamic resolver will still find the live file but `obr_pin("November 2026")` will error.
 - **The `classify_metric_type()` heuristic is regex-based.** It correctly handles the OBR's current naming conventions (Index, deflator, inflation, growth, rate). New series with unusual names may default to `metric_type = "level"`; the per-measure default supplied by `get_efo_economy()` corrects this for the inflation sheet but may need tuning if OBR adds a new sheet.
 - **UK only.** The package wraps OBR publications; it does not cover the US Congressional Budget Office, the Australian Parliamentary Budget Office, or other fiscal-watchdog equivalents.
 - **No Python equivalent.** A port to Python is not planned; users wanting the same data in Python should use the OBR's published Excel files directly or contribute a port.
-- **Network access is required on first use.** Cached files persist across sessions but `clear_cache()` or a refresh argument forces a re-download. There is no offline mode.
+- **Network access is required on first use.** Each edition is cached separately and reused for 7 days (`options(obr.cache_ttl = )` sets the lifetime in hours); `clear_cache()` or `refresh = TRUE` forces a re-download. If a re-download fails, the expired copy is used with a warning. There is no offline mode.
 
 ---
 

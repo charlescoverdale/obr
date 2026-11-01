@@ -178,42 +178,23 @@ parse_quarterly_indented <- function(path, sheet,
   )
 }
 
-# Cross-reference follow-through: a sheet whose only content is a redirect
-# like "See Table 6.2 of our November 2025 Economic and fiscal outlook".
-# Resolves the redirect, fetches the named table from the named vintage's
-# Aggregates workbook, and parses it with parse_fiscal_year_wide.
-follow_cross_reference <- function(path, sheet, refresh = FALSE) {
+# Cross-reference sheets: in every workbook since at least October 2024,
+# 6.11 and 6.15 hold one line, such as "See Table 6.3 of our October 2026
+# Economic and fiscal outlook". That is a table in the EFO report, not a
+# sheet of any workbook: sheet 6.3 of the same workbook is general
+# government transactions. Before 0.6.3 the package fetched the numbered
+# sheet and returned it under this table's title, so 6.11 gave receipts
+# data labelled as net debt changes. Returns the pointer text, or NULL if
+# the sheet has none (it then holds data, as some older editions may).
+cross_reference_text <- function(path, sheet) {
   raw <- readxl::read_excel(path, sheet = sheet,
                             col_names = FALSE, .name_repair = "minimal")
   txt <- paste(stats::na.omit(as.character(unlist(raw))), collapse = " ")
-  m <- regmatches(
-    txt,
-    regexec(paste0("See Table ([0-9]+\\.[0-9]+[a-z]?) of our ",
-                   "([A-Z][a-z]+) ([0-9]{4})"), txt)
-  )[[1L]]
-  if (length(m) < 4L) return(NULL)
-  target_table <- m[2L]
-  vintage      <- paste(m[3L], m[4L])
-
-  src <- tryCatch(
-    efo_aggregates_source(refresh = refresh, vintage = vintage),
-    error = function(e) NULL
-  )
-  if (is.null(src)) return(NULL)
-
-  data <- parse_fiscal_year_wide(
-    src$path, target_table,
-    default_metric_type = "level",
-    default_unit        = "gbp_bn"
-  )
-  if (is.null(data)) return(NULL)
-
-  list(
-    data         = data,
-    src          = src,
-    target_table = target_table,
-    vintage      = vintage
-  )
+  m <- regmatches(txt, regexpr(
+    "See Table [0-9]+\\.[0-9]+[a-z]? of our [A-Z][a-z]+ [0-9]{4} Economic and fiscal outlook",
+    txt
+  ))
+  if (length(m)) m else NULL
 }
 
 # Internal: pick the row above first_data_row most likely to be the header.
@@ -463,9 +444,10 @@ efo_single_series_overrides <- function() {
 #' according to the catalogue's defaults plus per-row classification.
 #'
 #' Coverage today: 17 fiscal Aggregates tables + 22 macro Economy tables.
-#' One sheet (6.11 PSND year-on-year changes) is a cross-reference to a
-#' previous EFO and returns `NULL` with a warning rather than data; OBR
-#' itself directs users to the previous EFO for that table.
+#' Two of the Aggregates sheets, 6.11 (net debt year-on-year changes) and
+#' 6.15 (reconciliation of PSNCR and CGNCR), hold no data, only a pointer
+#' to a table in the EFO report; for these `get_efo_table()` returns `NULL`
+#' with a warning that quotes the pointer.
 #'
 #' Headline functions [get_efo_fiscal()] and [get_efo_economy()] are kept
 #' as thin wrappers over this dispatcher.
@@ -517,31 +499,20 @@ get_efo_table <- function(table_id, vintage = NULL, refresh = FALSE) {
     efo_economy_source(refresh = refresh, vintage = vintage)
   }
 
-  # Cross-reference: follow the redirect to the previous EFO and return its
-  # equivalent table. Provenance points at the previous vintage; notes
-  # explain the redirect.
+  # Cross-reference: the sheet points at a table in the EFO report, which
+  # holds the numbers; the workbook does not.
   if (meta$layout == "cross_reference") {
-    redirect <- follow_cross_reference(src$path, table_id, refresh = refresh)
-    if (is.null(redirect)) {
+    ref <- cross_reference_text(src$path, table_id)
+    if (!is.null(ref)) {
       cli::cli_warn(c(
-        "EFO table {.val {table_id}} ({meta$title}) is a cross-reference.",
-        "i" = "Could not resolve the redirect to a previous EFO."
+        "EFO table {.val {table_id}} ({meta$title}) has no data in the detailed forecast tables.",
+        "i" = "The OBR's sheet reads: {.emph {ref}}. That table is in the EFO report, not the workbook."
       ))
       return(NULL)
     }
-    notes <- sprintf(
-      "Cross-reference: this current-EFO sheet points at Table %s of the %s EFO. Data sourced from there.",
-      redirect$target_table, redirect$vintage
-    )
-    return(new_obr_tbl(
-      data        = redirect$data,
-      publication = "EFO",
-      vintage     = redirect$vintage,
-      source_url  = redirect$src$url,
-      retrieved   = redirect$src$retrieved,
-      file_md5    = redirect$src$file_md5,
-      notes       = notes
-    ))
+    meta$layout <- "fiscal_year_wide"
+    meta$default_metric_type <- "level"
+    meta$default_unit <- "gbp_bn"
   }
 
   data <- switch(

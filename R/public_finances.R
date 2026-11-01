@@ -30,11 +30,12 @@ pfd_source <- function(refresh = FALSE) {
 }
 
 # Strip a trailing footnote marker (1 or 2 trailing digits) from a label, but
-# only when preceded by a letter, period, or whitespace, so genuinely numeric
-# trailing chars (e.g. years) are preserved. This protects series names that
+# only when preceded by a letter, period, whitespace or closing bracket
+# ("...(includes Bank Surcharge and EGL)3"), so genuinely numeric trailing
+# chars (e.g. years) are preserved. This protects series names that
 # legitimately end in digits from being silently corrupted.
 strip_footnote <- function(x) {
-  trimws(gsub("(?<=[A-Za-z\\.\\s])[0-9]{1,2}$", "", x, perl = TRUE))
+  trimws(gsub("(?<=[A-Za-z\\.\\s)])[0-9]{1,2}$", "", x, perl = TRUE))
 }
 
 # Parse "Aggregates (£bn)" sheet in tidy long format.
