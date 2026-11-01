@@ -3,8 +3,9 @@
 ## Purpose
 
 Bug-fix release. The OBR moved two of its databases to new download
-addresses, so four functions errored for users without a cached file,
-and a themed report changed its chart layout. Details in NEWS.md. No
+addresses, so four functions errored for users without a cached file;
+the public finances databank address stopped tracking the latest
+edition; and a themed report changed its chart layout. Details in NEWS.md. No
 change to exported function signatures.
 
 ## Test environments

@@ -22,6 +22,16 @@ address redirects to, so these tables report "Spring 2026" and "March
 2026" rather than `NA`. `obr_url_vintage()` accepts the underscore and
 Spring/Autumn forms the OBR uses in filenames.
 
+## Public finances databank was a year old
+
+`get_psnb()`, `get_psnd()`, `get_receipts()`, `get_expenditure()` and
+`get_public_finances()` read the databank from an undated address that,
+after the October 2026 EFO, still served the November 2025 edition.
+Each edition now has a dated address
+(`public-finances-databank-october-2026-efo`); these are probed newest
+first, with the undated one as the fallback, and the vintage in
+provenance is read from the dated address ("October 2026").
+
 ## Duplicate forecast vintage in the historical database
 
 The Spring 2026 database labels the July 1997 Budget "July 1996", giving

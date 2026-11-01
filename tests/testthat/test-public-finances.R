@@ -103,3 +103,9 @@ test_that("PFD-backed functions return obr_tbl with PFD provenance", {
     expect_match(prov$package_version, "^[0-9]+\\.[0-9]+\\.[0-9]+")
   }
 })
+
+test_that("databank candidates try dated editions before the undated slug", {
+  cands <- pfd_url_candidates()
+  expect_match(cands[1], "public-finances-databank-november-[0-9]{4}-efo/$")
+  expect_equal(cands[length(cands)], PFD_URL)
+})

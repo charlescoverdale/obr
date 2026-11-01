@@ -1,10 +1,27 @@
-# Stable OBR download URL (server redirects to the latest vintage).
+# The undated slug used to redirect to the latest databank, but after the
+# October 2026 EFO it still served the November 2025 file; each edition now
+# has a dated slug ("public-finances-databank-october-2026-efo"). Dated
+# slugs are probed newest first, with the undated one as the fallback.
 PFD_URL      <- "https://obr.uk/download/public-finances-databank/"
 PFD_FILENAME <- "public_finances_databank.xlsx"
 
+pfd_url_candidates <- function() {
+  current_year <- as.integer(format(Sys.Date(), "%Y"))
+  months <- c("november", "october", "march")
+  candidates <- character(0)
+  for (yr in seq(current_year, current_year - 2L)) {
+    for (mn in months) {
+      candidates <- c(candidates, sprintf(
+        "https://obr.uk/download/public-finances-databank-%s-%d-efo/", mn, yr
+      ))
+    }
+  }
+  c(candidates, PFD_URL)
+}
+
 pfd_source <- function(refresh = FALSE) {
   obr_get_xlsx(
-    candidates = PFD_URL,
+    candidates = pfd_url_candidates(),
     fallback   = PFD_URL,
     filename   = PFD_FILENAME,
     refresh    = refresh,
@@ -100,7 +117,9 @@ pfd_obr_tbl <- function(data, src) {
   new_obr_tbl(
     data        = data,
     publication = "PFD",
-    vintage     = obr_url_vintage(src$final_url %||% src$url),
+    # The dated slug carries month and year; the file it redirects to
+    # ("PSF_aggregates_databank_Oct_EFO.xlsx") only an abbreviated month.
+    vintage     = obr_url_vintage(src$url) %||% obr_url_vintage(src$final_url),
     source_url  = src$url,
     retrieved   = src$retrieved,
     file_md5    = src$file_md5
