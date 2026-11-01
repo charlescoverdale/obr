@@ -47,9 +47,10 @@ specific parser, and tags every row with `metric_type` and `unit`
 according to the catalogue's defaults plus per-row classification.
 
 Coverage today: 17 fiscal Aggregates tables + 22 macro Economy tables.
-One sheet (6.11 PSND year-on-year changes) is a cross-reference to a
-previous EFO and returns `NULL` with a warning rather than data; OBR
-itself directs users to the previous EFO for that table.
+Two of the Aggregates sheets, 6.11 (net debt year-on-year changes) and
+6.15 (reconciliation of PSNCR and CGNCR), hold no data, only a pointer
+to a table in the EFO report; for these `get_efo_table()` returns `NULL`
+with a warning that quotes the pointer.
 
 Headline functions
 [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
@@ -85,29 +86,47 @@ try({
   # Pin to a specific vintage
   get_efo_table("6.5", vintage = "October 2024")
 })
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> # obr_tbl: 56 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, October 2024
-#> # URL:          https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-09-19 10:30:07 UTC
-#> # File MD5:     e647b168d466
-#> # Package:      obr 0.6.2
-#> 
-#>     period period_type              series metric_type    value   unit
-#> 1  2023-24 fiscal_year    Current receipts       level 1100.811 gbp_bn
-#> 2  2024-25 fiscal_year    Current receipts       level 1148.687 gbp_bn
-#> 3  2025-26 fiscal_year    Current receipts       level 1229.480 gbp_bn
-#> 4  2026-27 fiscal_year    Current receipts       level 1290.534 gbp_bn
-#> 5  2027-28 fiscal_year    Current receipts       level 1345.979 gbp_bn
-#> 6  2028-29 fiscal_year    Current receipts       level 1389.767 gbp_bn
-#> 7  2029-30 fiscal_year    Current receipts       level 1439.914 gbp_bn
-#> 8  2023-24 fiscal_year Current expenditure       level 1087.805 gbp_bn
-#> 9  2024-25 fiscal_year Current expenditure       level 1134.438 gbp_bn
-#> 10 2025-26 fiscal_year Current expenditure       level 1182.846 gbp_bn
-#> # ... with 46 more rows
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■          
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Warning: Could not resolve a current EFO Aggregates URL from 9 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading
+#>   efo_aggregates__october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates.xlsx
+#>   from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Error : Failed to download
+#> <https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```

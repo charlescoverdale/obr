@@ -66,46 +66,76 @@ try({
   eval2425 <- eval[eval$period == "2024-25", ]
   eval2425[order(eval2425$forecast_date), ]
 })
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> # obr_tbl: 13 rows x 8 cols
-#> # Source:       OBR Historical Official Forecasts Database, March 2025
-#> # URL:          https://obr.uk/download/historical-official-forecasts-database-march-2025/
-#> # Retrieved:    2026-09-19 10:30:21 UTC
-#> # File MD5:     4312a0cf5075
-#> # Package:      obr 0.6.2
-#> # Note:         Forecast vs outturn for PSNB. error = value_forecast - value_actual. Outturn source: https://obr.uk/download/public-finances-databank/
-#> 
-#>     forecast_date  period period_type series   unit value_forecast value_actual
-#> 509    March 2020 2024-25 fiscal_year   PSNB gbp_bn       57.92369     99.57407
-#> 500    March 2021 2024-25 fiscal_year   PSNB gbp_bn       74.43927     99.57407
-#> 504    March 2022 2024-25 fiscal_year   PSNB gbp_bn       36.52329     99.57407
-#> 502    March 2023 2024-25 fiscal_year   PSNB gbp_bn       85.39792     99.57407
-#> 508    March 2024 2024-25 fiscal_year   PSNB gbp_bn       87.22658     99.57407
-#> 506    March 2025 2024-25 fiscal_year   PSNB gbp_bn      137.32912     99.57407
-#> 511    March 2026 2024-25 fiscal_year   PSNB gbp_bn      152.74200     99.57407
-#> 499 November 2020 2024-25 fiscal_year   PSNB gbp_bn       99.57407     99.57407
-#> 501 November 2022 2024-25 fiscal_year   PSNB gbp_bn       84.32658     99.57407
-#> 507 November 2023 2024-25 fiscal_year   PSNB gbp_bn       84.57033     99.57407
-#>         error
-#> 509 -41.65038
-#> 500 -25.13480
-#> 504 -63.05078
-#> 502 -14.17616
-#> 508 -12.34749
-#> 506  37.75505
-#> 511  53.16793
-#> 499   0.00000
-#> 501 -15.24749
-#> 507 -15.00375
-#> # ... with 3 more rows
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■                      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■                      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■                       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■                       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■                       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Warning: Could not resolve a current Historical Forecasts Database URL from 17
+#> candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/historical-official-forecasts-database/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading historical_forecasts__historical-official-forecasts-database.xlsx
+#>   from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Error : Failed to download
+#> <https://obr.uk/download/historical-official-forecasts-database/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```

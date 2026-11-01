@@ -63,15 +63,15 @@ head(obr_efo_vintages())
 #> 6 december-2012-economic-and-fiscal-outlook
 tail(obr_efo_vintages(), 5)
 #>    publication       vintage       date
-#> 29         EFO    March 2024 2024-03-06
 #> 30         EFO  October 2024 2024-10-30
 #> 31         EFO    March 2025 2025-03-26
 #> 32         EFO November 2025 2025-11-26
 #> 33         EFO    March 2026 2026-03-26
+#> 34         EFO  October 2026 2026-10-28
 #>                                         slug
-#> 29    march-2024-economic-and-fiscal-outlook
 #> 30  october-2024-economic-and-fiscal-outlook
 #> 31    march-2025-economic-and-fiscal-outlook
 #> 32 november-2025-economic-and-fiscal-outlook
 #> 33    march-2026-economic-and-fiscal-outlook
+#> 34  october-2026-economic-and-fiscal-outlook
 ```

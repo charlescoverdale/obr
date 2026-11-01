@@ -67,49 +67,91 @@ Other fiscal rules:
 op <- options(obr.cache_dir = tempdir())
 
 hr <- tryCatch(obr_headroom(), error = function(e) NULL)
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■                       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■                       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■                       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Warning: Could not resolve a current EFO Aggregates URL from 9 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading
+#>   efo_aggregates__october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates.xlsx
+#>   from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■    
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 if (!is.null(hr)) hr
-#> # obr_tbl: 6 rows x 6 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-09-19 10:30:06 UTC
-#> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.2
-#> # Note:         Derived from EFO Table 6.5: value = -(Current budget deficit). Positive = surplus = margin against the Charter stability rule.
-#> 
-#>    period period_type                 series metric_type      value   unit
-#> 1 2025-26 fiscal_year Current budget surplus       level -49.181816 gbp_bn
-#> 2 2026-27 fiscal_year Current budget surplus       level -33.917536 gbp_bn
-#> 3 2027-28 fiscal_year Current budget surplus       level  -4.559471 gbp_bn
-#> 4 2028-29 fiscal_year Current budget surplus       level   3.288368 gbp_bn
-#> 5 2029-30 fiscal_year Current budget surplus       level  23.563635 gbp_bn
-#> 6 2030-31 fiscal_year Current budget surplus       level  30.293367 gbp_bn
 
 # Flag the target year and read off the margin
 hr <- tryCatch(obr_headroom(target_year = "2029-30"),
                error = function(e) NULL)
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■      
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■       
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Warning: Could not resolve a current EFO Aggregates URL from 9 candidates.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading
+#>   efo_aggregates__october-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates.xlsx
+#>   from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
 if (!is.null(hr)) hr[hr$is_target_year, ]
-#> # obr_tbl: 1 rows x 7 cols
-#> # Source:       OBR Economic and Fiscal Outlook, March 2026
-#> # URL:          https://obr.uk/download/march-2026-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/
-#> # Retrieved:    2026-09-19 10:30:06 UTC
-#> # File MD5:     5b5eeaf79b96
-#> # Package:      obr 0.6.2
-#> # Note:         Derived from EFO Table 6.5: value = -(Current budget deficit). Positive = surplus = margin against the Charter stability rule. Target year flagged: 2029-30.
-#> 
-#>    period period_type                 series metric_type    value   unit
-#> 5 2029-30 fiscal_year Current budget surplus       level 23.56364 gbp_bn
-#>   is_target_year
-#> 5           TRUE
 
 options(op)
 # }

@@ -26,9 +26,9 @@ spending as a percentage of GDP; `metric_type` is `"pct"`, `unit` is
 
 ## Details
 
-Data cover fiscal years from 1978-79 through the current forecast
-horizon. The exact vintage is recorded in the returned object's
-provenance.
+Data cover fiscal years from 1978-79 to 2028-29, from the October 2024
+Welfare Trends Report, the OBR's most recent report on incapacity
+benefits. Later reports cover other themes and do not update this chart.
 
 ## See also
 
@@ -46,44 +46,26 @@ try({
   welfare[welfare$series == "Working-age incapacity benefits spending" &
   welfare$period >= "2000-01", ]
 })
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> # obr_tbl: 29 rows x 6 cols
-#> # Source:       OBR Welfare Trends Report, October 2024
-#> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
-#> # Retrieved:    2026-09-19 10:31:27 UTC
-#> # File MD5:     c587017c08a1
-#> # Package:      obr 0.6.2
-#> 
-#>     period period_type                                   series metric_type
-#> 23 2000-01 fiscal_year Working-age incapacity benefits spending       level
-#> 24 2001-02 fiscal_year Working-age incapacity benefits spending       level
-#> 25 2002-03 fiscal_year Working-age incapacity benefits spending       level
-#> 26 2003-04 fiscal_year Working-age incapacity benefits spending       level
-#> 27 2004-05 fiscal_year Working-age incapacity benefits spending       level
-#> 28 2005-06 fiscal_year Working-age incapacity benefits spending       level
-#> 29 2006-07 fiscal_year Working-age incapacity benefits spending       level
-#> 30 2007-08 fiscal_year Working-age incapacity benefits spending       level
-#> 31 2008-09 fiscal_year Working-age incapacity benefits spending       level
-#> 32 2009-10 fiscal_year Working-age incapacity benefits spending       level
-#>        value unit
-#> 23 1.0914588  pct
-#> 24 1.0812179  pct
-#> 25 1.0345429  pct
-#> 26 0.9930008  pct
-#> 27 0.9203422  pct
-#> 28 0.8546259  pct
-#> 29 0.8089978  pct
-#> 30 0.8035180  pct
-#> 31 0.7741892  pct
-#> 32 0.7877039  pct
-#> # ... with 19 more rows
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Warning: Could not resolve a current Welfare Trends Report (October 2024) URL from 1
+#> candidate.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading
+#>   welfare_trends_october_2024__welfare-trends-report-october-2024-charts-and-tables.xlsx
+#>   from OBR...
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Error : Failed to download
+#> <https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```

@@ -42,35 +42,24 @@ try({
   cases <- get_incapacity_caseloads()
   cases[cases$series == "Claimants", ]
 })
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
 #> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ℹ Downloading welfare_trends.xlsx from OBR...
-#> ✔ Saved to cache.
-#> # obr_tbl: 16 rows x 6 cols
-#> # Source:       OBR Welfare Trends Report, October 2024
-#> # URL:          https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/
-#> # Retrieved:    2026-09-19 10:31:27 UTC
-#> # File MD5:     c587017c08a1
-#> # Package:      obr 0.6.2
-#> 
-#>     period period_type    series metric_type    value    unit
-#> 1  2008-09 fiscal_year Claimants       level 2588.000 count_k
-#> 2  2009-10 fiscal_year Claimants       level 2350.000 count_k
-#> 3  2010-11 fiscal_year Claimants       level 2253.000 count_k
-#> 4  2011-12 fiscal_year Claimants       level 2179.000 count_k
-#> 5  2012-13 fiscal_year Claimants       level 1959.000 count_k
-#> 6  2013-14 fiscal_year Claimants       level 1864.000 count_k
-#> 7  2014-15 fiscal_year Claimants       level 1880.001 count_k
-#> 8  2015-16 fiscal_year Claimants       level 2012.076 count_k
-#> 9  2016-17 fiscal_year Claimants       level 2047.989 count_k
-#> 10 2017-18 fiscal_year Claimants       level 2032.168 count_k
-#> # ... with 6 more rows
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■               
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Warning: Could not resolve a current Welfare Trends Report (October 2024) URL from 1
+#> candidate.
+#> ℹ Falling back to
+#>   <https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/>.
+#> ! Returned data may be older than expected. Run with internet access, or pin a
+#>   vintage explicitly when that feature ships.
+#> ℹ Downloading
+#>   welfare_trends_october_2024__welfare-trends-report-october-2024-charts-and-tables.xlsx
+#>   from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■                
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Error : Failed to download
+#> <https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```

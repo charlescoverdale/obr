@@ -39,5 +39,5 @@ Other vintage:
 obr_as_of("2024-11-15")
 #> [1] "October 2024"
 obr_as_of(Sys.Date())
-#> [1] "March 2026"
+#> [1] "October 2026"
 ```

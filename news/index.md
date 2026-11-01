@@ -1,5 +1,118 @@
 # Changelog
 
+## obr 0.6.3
+
+Bug-fix release. Three functions failed for any user without a cached
+copy of the source file, and one returned out-of-date data without
+saying so. Local test runs did not catch either because they read from
+the cache, which itself never expired.
+
+### Cached files no longer outlive their edition
+
+Every edition of a publication was cached under one fixed file name that
+never expired, so once a file was downloaded, later editions were never
+fetched: the provenance named the new edition while the numbers came
+from the old file. A machine that first ran
+[`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
+in April 2026 was still returning the March 2026 EFO, labelled October
+2026. Each edition is now cached under its own name, and cached files
+are downloaded again after 7 days (`options(obr.cache_ttl = )`, in
+hours). If that download fails, the expired copy is used with a warning.
+
+### Historical forecasts and policy measures download again
+
+The OBR now serves the Historical Official Forecasts Database and the
+Policy Measures Database from undated addresses
+(`/download/historical-official-forecasts-database/` and
+`/download/policy-measures-database/`) that redirect to the current
+file. Every dated address the package probed, including the March 2025
+fallback, now returns 404, so
+[`get_forecasts()`](https://charlescoverdale.github.io/obr/reference/get_forecasts.md),
+[`obr_actual_vs_forecast()`](https://charlescoverdale.github.io/obr/reference/obr_actual_vs_forecast.md),
+[`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
+and
+[`get_policy_measures()`](https://charlescoverdale.github.io/obr/reference/get_policy_measures.md)
+errored on a cold cache. The undated addresses are now tried first and
+are the fallback.
+
+The vintage recorded in provenance is now read from the file the address
+redirects to, so these tables report “Spring 2026” and “March 2026”
+rather than `NA`. `obr_url_vintage()` accepts the underscore and
+Spring/Autumn forms the OBR uses in filenames.
+
+### Public finances databank was a year old
+
+[`get_psnb()`](https://charlescoverdale.github.io/obr/reference/get_psnb.md),
+[`get_psnd()`](https://charlescoverdale.github.io/obr/reference/get_psnd.md),
+[`get_receipts()`](https://charlescoverdale.github.io/obr/reference/get_receipts.md),
+[`get_expenditure()`](https://charlescoverdale.github.io/obr/reference/get_expenditure.md)
+and
+[`get_public_finances()`](https://charlescoverdale.github.io/obr/reference/get_public_finances.md)
+read the databank from an undated address that, after the October 2026
+EFO, still served the November 2025 edition. Each edition now has a
+dated address (`public-finances-databank-october-2026-efo`); these are
+probed newest first, with the undated one as the fallback, and the
+vintage in provenance is read from the dated address (“October 2026”).
+
+### Duplicate forecast vintage in the historical database
+
+The Spring 2026 database labels the July 1997 Budget “July 1996”, giving
+two forecasts with the same date.
+[`obr_forecast_panel()`](https://charlescoverdale.github.io/obr/reference/obr_forecast_panel.md)
+kept only the first, with a warning from
+[`stats::reshape()`](https://rdrr.io/r/stats/reshape.html). The second
+label is now corrected to “July 1997” when it follows “November 1996”,
+and every series was checked for other duplicate keys (none).
+
+### Welfare Trends Report functions pinned to the incapacity edition
+
+Each Welfare Trends Report has its own theme. The June 2026 report is on
+fraud and error, and its chart numbers point at fraud and error rates.
+Resolving “the latest report”, which the package tried to do, therefore
+either failed
+([`get_welfare_spending()`](https://charlescoverdale.github.io/obr/reference/get_welfare_spending.md))
+or would have returned fraud and error rates labelled as incapacity
+spending
+([`get_incapacity_spending()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_spending.md),
+[`get_incapacity_caseloads()`](https://charlescoverdale.github.io/obr/reference/get_incapacity_caseloads.md)).
+These three functions now read the October 2024 report, the most recent
+on incapacity benefits, and check each sheet’s chart title before
+parsing, so a renumbered workbook is an error rather than the wrong
+series.
+
+### Tables 6.11 and 6.15 returned a different table
+
+In every EFO workbook since at least October 2024, sheets 6.11 (net debt
+year-on-year changes) and 6.15 (reconciliation of PSNCR and CGNCR) hold
+one line, such as “See Table 6.3 of our October 2026 Economic and fiscal
+outlook”. That points at a table in the EFO report. Since 0.5.0,
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md)
+fetched the sheet with that number from the workbook instead and
+returned it under the original title: 6.11 gave general government
+receipts labelled as net debt changes, and 6.15 gave Bank of England
+cash transfers or APF runoff. Both now return `NULL` with a warning that
+quotes the OBR’s pointer. A sheet with no pointer (some older editions)
+is parsed as an ordinary table.
+
+### Footnote markers after a bracket
+
+`strip_footnote()` removed a trailing footnote digit only after a
+letter, full stop or space, so a series named “Onshore corporation tax
+(includes Bank Surcharge and EGL)3” kept its marker. A closing bracket
+now counts too.
+
+### October 2026 EFO
+
+- [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md),
+  [`obr_as_of()`](https://charlescoverdale.github.io/obr/reference/obr_as_of.md)
+  and
+  [`obr_pin()`](https://charlescoverdale.github.io/obr/reference/obr_pin.md)
+  know the October 2026 EFO (published 28 October 2026).
+  [`get_efo_fiscal()`](https://charlescoverdale.github.io/obr/reference/get_efo_fiscal.md)
+  and
+  [`get_efo_economy()`](https://charlescoverdale.github.io/obr/reference/get_efo_economy.md)
+  already resolved it; their offline fallbacks now point at it too.
+
 ## obr 0.6.2
 
 CRAN release: 2026-08-24

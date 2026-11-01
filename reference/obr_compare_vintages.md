@@ -81,16 +81,13 @@ try({
   di_diff <- obr_compare_vintages("November 2025", "March 2026",
   what = "6.16")
 })
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Downloading efo_aggregates_march_2026.xlsx from OBR...
-#> ✔ Saved to cache.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
-#> ℹ Downloading efo_aggregates_november_2025.xlsx from OBR...
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> ✔ Saved to cache.
-#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> ℹ Downloading efo_aggregates_october_2024.xlsx from OBR...
+#> Waiting 4s for retry backoff ■■■■■■■■                        
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■         
+#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Error : Failed to download
+#> <https://obr.uk/download/october-2024-economic-and-fiscal-outlook-detailed-forecast-tables-aggregates/>.
+#> ✖ HTTP 403 Forbidden.
 options(op)
 # }
 ```

@@ -19,7 +19,7 @@ library(obr)
 
 efos <- obr_efo_vintages()
 nrow(efos)
-#> [1] 33
+#> [1] 34
 head(efos, 3)
 #>   publication       vintage       date
 #> 1         EFO     June 2010 2010-06-22
@@ -31,13 +31,13 @@ head(efos, 3)
 #> 3    march-2011-economic-and-fiscal-outlook
 tail(efos, 3)
 #>    publication       vintage       date
-#> 31         EFO    March 2025 2025-03-26
 #> 32         EFO November 2025 2025-11-26
 #> 33         EFO    March 2026 2026-03-26
+#> 34         EFO  October 2026 2026-10-28
 #>                                         slug
-#> 31    march-2025-economic-and-fiscal-outlook
 #> 32 november-2025-economic-and-fiscal-outlook
 #> 33    march-2026-economic-and-fiscal-outlook
+#> 34  october-2026-economic-and-fiscal-outlook
 ```
 
 [`obr_efo_vintages()`](https://charlescoverdale.github.io/obr/reference/obr_efo_vintages.md)

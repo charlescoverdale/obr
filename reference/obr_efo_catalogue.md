@@ -55,8 +55,10 @@ will attach. Pass any `table_id` to
 [`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md).
 
 Coverage: 17 fiscal aggregates tables (Section 6) plus 22 macro economy
-tables (Section 1). One sheet (6.11) is currently a cross-reference to a
-previous EFO and returns `NULL` with a warning rather than data.
+tables (Section 1). Two sheets (6.11 and 6.15) hold only a pointer to a
+table in the EFO report, so
+[`get_efo_table()`](https://charlescoverdale.github.io/obr/reference/get_efo_table.md)
+returns `NULL` with a warning rather than data for them.
 
 ## See also
 
