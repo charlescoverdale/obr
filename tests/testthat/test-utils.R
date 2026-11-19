@@ -133,3 +133,12 @@ test_that("URL candidates probe autumn slugs before spring within a year", {
   expect_true(grep(paste0("november-", yr), fc) <
                 grep(paste0("march-", yr), fc))
 })
+
+test_that("OBR requests carry connect and stall timeouts", {
+  # Builds the request only; nothing is performed, so this stays offline.
+  req <- obr_request("https://obr.uk/download/example/")
+  expect_equal(req$options$connecttimeout, 20L)
+  expect_equal(req$options$low_speed_limit, 1L)
+  expect_equal(req$options$low_speed_time, 60L)
+  expect_match(req$options$useragent, "obr R package", fixed = TRUE)
+})

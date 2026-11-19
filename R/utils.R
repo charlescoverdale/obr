@@ -1,3 +1,21 @@
+# Base request shared by every OBR call: user agent, polite throttle and
+# transfer timeouts. httr2 sets no timeout of its own, so a server that
+# accepts the connection and then stalls would hang the session (and a CRAN
+# check) indefinitely. The low-speed limit aborts a transfer that moves under
+# 1 byte/s for 60s, so slow but live downloads of the large databanks still
+# finish. A stall raises an ordinary error, which the callers turn into
+# their usual informative message.
+obr_request <- function(url) {
+  httr2::request(url) |>
+    httr2::req_user_agent("obr R package (https://github.com/charlescoverdale/obr)") |>
+    httr2::req_throttle(rate = 5 / 10) |>
+    httr2::req_options(
+      connecttimeout  = 20L,
+      low_speed_limit = 1L,
+      low_speed_time  = 60L
+    )
+}
+
 # Try a sequence of OBR download URLs until one responds with status < 400.
 # Returns a list with: $url        (the working candidate URL or NA),
 #                      $final_url  (URL after redirects, used to recover the
@@ -12,9 +30,7 @@ obr_resolve_url <- function(url_candidates) {
     # Redirects are followed so the final URL can be recovered for
     # publications that use a stable slug.
     resp <- tryCatch(
-      httr2::request(url) |>
-        httr2::req_user_agent("obr R package (https://github.com/charlescoverdale/obr)") |>
-        httr2::req_throttle(rate = 5 / 10) |>
+      obr_request(url) |>
         # The OBR CDN sometimes 403s bursts of probes (each vintage probe is
         # a fresh GET). Those are rate-limit responses, not missing files, so
         # back off and retry them; genuine 404s fail fast.
@@ -138,9 +154,7 @@ obr_fetch <- function(url, filename, refresh = FALSE) {
   cli::cli_inform(c("i" = "Downloading {.file {filename}} from OBR..."))
 
   resp <- tryCatch(
-    httr2::request(url) |>
-      httr2::req_user_agent("obr R package (https://github.com/charlescoverdale/obr)") |>
-      httr2::req_throttle(rate = 5 / 10) |>
+    obr_request(url) |>
       httr2::req_retry(
         # 403 is included alongside 429/503 because the OBR's CDN occasionally
         # returns 403 to legitimate requests when probing many URLs in quick
