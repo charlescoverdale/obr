@@ -1,6 +1,18 @@
 # Changelog
 
+## obr (development version)
+
+- Every request to the OBR now has a 20-second connection timeout and
+  aborts a transfer that stalls (under 1 byte per second for 60
+  seconds). Previously httr2’s default of no timeout applied, so a
+  server that accepted the connection and then stopped responding hung
+  the R session indefinitely instead of raising the usual “Failed to
+  download” error. Slow but live downloads of the large databanks are
+  unaffected.
+
 ## obr 0.6.3
+
+CRAN release: 2026-11-01
 
 Bug-fix release. Three functions failed for any user without a cached
 copy of the source file, and one returned out-of-date data without

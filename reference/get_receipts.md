@@ -43,47 +43,41 @@ try({
   receipts <- get_receipts()
   receipts[grepl("income tax", receipts$series, ignore.case = TRUE), ]
 })
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■           
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■            
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■             
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■              
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■               
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Warning: Could not resolve a current Public Finances Databank URL from 10 candidates.
-#> ℹ Falling back to <https://obr.uk/download/public-finances-databank/>.
-#> ! Returned data may be older than expected. Run with internet access, or pin a
-#>   vintage explicitly when that feature ships.
-#> ℹ Downloading public_finances_databank__public-finances-databank.xlsx from
-#>   OBR...
-#> Waiting 4s for retry backoff ■■■■■■■■                        
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■               
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Error : Failed to download <https://obr.uk/download/public-finances-databank/>.
-#> ✖ HTTP 403 Forbidden.
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■                 
+#> Waiting 2s for throttling delay ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
+#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> # obr_tbl: 99 rows x 6 cols
+#> # Source:       OBR Public Finances Databank, October 2026
+#> # URL:          https://obr.uk/download/public-finances-databank-october-2026-efo/
+#> # Retrieved:    2026-11-19 09:02:27 UTC
+#> # File MD5:     22109612e810
+#> # Package:      obr 0.6.3.9000
+#> 
+#>      period period_type                             series metric_type   value
+#> 463 1999-00 fiscal_year Pay as your earn (PAYE) income tax       level  80.320
+#> 464 2000-01 fiscal_year Pay as your earn (PAYE) income tax       level  89.778
+#> 465 2001-02 fiscal_year Pay as your earn (PAYE) income tax       level  92.128
+#> 466 2002-03 fiscal_year Pay as your earn (PAYE) income tax       level  94.681
+#> 467 2003-04 fiscal_year Pay as your earn (PAYE) income tax       level 100.323
+#> 468 2004-05 fiscal_year Pay as your earn (PAYE) income tax       level 107.546
+#> 469 2005-06 fiscal_year Pay as your earn (PAYE) income tax       level 114.908
+#> 470 2006-07 fiscal_year Pay as your earn (PAYE) income tax       level 123.424
+#> 471 2007-08 fiscal_year Pay as your earn (PAYE) income tax       level 131.866
+#> 472 2008-09 fiscal_year Pay as your earn (PAYE) income tax       level 126.418
+#>       unit
+#> 463 gbp_bn
+#> 464 gbp_bn
+#> 465 gbp_bn
+#> 466 gbp_bn
+#> 467 gbp_bn
+#> 468 gbp_bn
+#> 469 gbp_bn
+#> 470 gbp_bn
+#> 471 gbp_bn
+#> 472 gbp_bn
+#> # ... with 89 more rows
 options(op)
 # }
 ```

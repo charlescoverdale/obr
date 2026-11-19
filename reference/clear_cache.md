@@ -28,8 +28,8 @@ is used with a warning.
 # \donttest{
 op <- options(obr.cache_dir = tempdir())
 clear_cache()
-#> Warning: cannot remove file '/tmp/RtmpIG70RJ/bslib-7db53ff92ec092c0dbca0588320fd109', reason 'Directory not empty'
-#> Warning: cannot remove file '/tmp/RtmpIG70RJ/downlit', reason 'Directory not empty'
+#> Warning: cannot remove file '/tmp/Rtmp8CyiPE/bslib-7db53ff92ec092c0dbca0588320fd109', reason 'Directory not empty'
+#> Warning: cannot remove file '/tmp/Rtmp8CyiPE/downlit', reason 'Directory not empty'
 #> Removed 4 cached files.
 options(op)
 # }

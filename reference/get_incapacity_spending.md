@@ -47,26 +47,15 @@ try({
   ib <- get_incapacity_spending()
   unique(ib$series)
 })
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Warning: Could not resolve a current Welfare Trends Report (October 2024) URL from 1
-#> candidate.
-#> ℹ Falling back to
-#>   <https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/>.
-#> ! Returned data may be older than expected. Run with internet access, or pin a
-#>   vintage explicitly when that feature ships.
-#> ℹ Downloading
-#>   welfare_trends_october_2024__welfare-trends-report-october-2024-charts-and-tables.xlsx
-#>   from OBR...
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■                 
-#> Waiting 2s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■                  
-#> Waiting 4s for retry backoff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  
-#> Error : Failed to download
-#> <https://obr.uk/download/welfare-trends-report-october-2024-charts-and-tables/>.
-#> ✖ HTTP 403 Forbidden.
+#> ℹ Loading from cache. Use `refresh = TRUE` to re-download.
+#> [1] "Employment and support allowance (excluding assessment phase)"
+#> [2] "Incapacity benefit"                                           
+#> [3] "Invalidity benefit"                                           
+#> [4] "Sickness benefit"                                             
+#> [5] "Severe disablement allowance"                                 
+#> [6] "Universal credit health (excluding assessment phase)"         
+#> [7] "Income support (incapacity/sick and disabled)"                
+#> [8] "Incapacity benefits (total)"                                  
 options(op)
 # }
 ```
